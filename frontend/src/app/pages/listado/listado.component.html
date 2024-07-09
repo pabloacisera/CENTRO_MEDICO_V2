@@ -1,0 +1,40 @@
+@if(cargando) {
+  <h1>Cargando Clientes...</h1>
+}
+@if(!cargando) {
+  <div class="container">
+    <div class="card">
+      <table>
+        <thead>
+          <th>protocolo</th>
+          <th>nombre y apellido</th>
+          <th>dni</th>
+          <th>fecha de nacimiento</th>
+          <th>edad</th>
+          <th>telefono</th>
+          <th>Fecha de creacion</th>
+          <th>acciones</th>
+        </thead>
+        <tbody>
+          @for(cliente of clientesGuardados; track cliente.id) {
+            <tr>
+              <td>{{cliente.protocolo}}</td>
+              <td>{{cliente.nombre}}</td>
+              <td>{{cliente.dni}}</td>
+              <td>{{cliente.nacimiento}}</td>
+              <td>{{cliente.edad}}</td>
+              <td>{{cliente.telefono}}</td>
+              <td>{{cliente.createdAt}}</td>
+              <td>
+                <button (click)="mostrarId(cliente.id)">ver</button>
+                <button (click)="idParaActualizarCliente(cliente.id)" >editar</button>
+                <button (click)="borrar(cliente.id)">eliminar</button>
+                <button (click)="idClienteParaResultados(cliente.id)" >cargar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

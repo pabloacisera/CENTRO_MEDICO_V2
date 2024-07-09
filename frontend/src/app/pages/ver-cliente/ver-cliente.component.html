@@ -1,0 +1,20 @@
+<div *ngIf="cargando">
+  <h1>Cargando datos del cliente...</h1>
+</div>
+<div *ngIf="!cargando && unCliente">
+  <div class="container">
+    <div class="card">
+      <h1>Datos del cliente:</h1>
+      <h3>Nombre: {{ unCliente.nombre }}</h3>
+      <h5>Apellido: {{ unCliente.apellido }}</h5>
+      <h5>DNI: {{ unCliente.dni }}</h5>
+      <h5>Edad: {{ unCliente.edad }}</h5>
+      <h5>Teléfono: {{ unCliente.telefono }}</h5>
+      <h5>Email: {{ unCliente.email }}</h5>
+      <h5>Direccion: {{ unCliente.direccion }}</h5>
+      <h5>Localidad: {{ unCliente.localidad }}</h5>
+      <h5>Obra Social: {{ unCliente.obraSocial }}</h5>
+      <h5>Observaciones: {{ unCliente.obs }}</h5>
+    </div>
+  </div>
+</div>

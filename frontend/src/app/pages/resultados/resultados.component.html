@@ -1,0 +1,13 @@
+<div>
+   
+  <form (submit)="buscarPorCodigo($event)">
+        <label for="valor">Codigo para buscar:</label>    
+    <input
+      type="number"
+      id="codigo"
+      name="codigo"
+      [(ngModel)]="valorIntroducido"
+    />
+        <button type="submit">Buscar</button>  
+  </form>
+</div>

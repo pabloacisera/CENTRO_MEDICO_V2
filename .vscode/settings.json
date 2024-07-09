@@ -9,5 +9,7 @@
       "database": "centro_medico",
       "username": "postgres"
     }
-  ]
+  ],
+  "editor.fontFamily": "\"Cascadia Mono\"",
+  "editor.fontSize": 13
 }

@@ -1,0 +1,10 @@
+<!-- perfil.component.html -->
+<div *ngFor="let usuario of usuarioGuardado">
+  <h1>{{ usuario.data.nombre }}</h1>
+  <h2>{{ usuario.data.email }}</h2>
+  <strong>{{ usuario.data.rol }}</strong>
+  <p>{{ usuario.data.area }}</p>
+</div>
+<div>
+  <button (click)="salir()">salir</button>
+</div>
