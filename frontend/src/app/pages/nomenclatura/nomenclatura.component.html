@@ -1,4 +1,7 @@
-<div>
+<div *ngIf="carga">
+  <h3>Cargando nomenclatura...</h3>
+</div>
+<div *ngIf="!carga">
   <input type="text" placeholder="Buscar por codigo o determinacion" (input)="onSearchTermChange($event)">
 </div>
 <div>

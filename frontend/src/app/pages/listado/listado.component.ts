@@ -79,5 +79,6 @@ export class ListadoComponent implements OnInit {
   idClienteParaResultados(id: number) {
     const idCliente = id;
     this.ruta.navigate([`/resultado/${idCliente}`])
+    console.log('Id de cliente: ', idCliente)
   }
 }

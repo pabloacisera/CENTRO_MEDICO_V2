@@ -19,13 +19,26 @@ export class NomenclaturaService {
     });
   }
 
-  async obtenerTodosLosRegistros(){
+  async obtenerTodosLosRegistros() {
     try {
       const respuesta = await this.peticion.get(this.baseUrl);
-      return respuesta.data;  // Ensure this returns the actual data object
+      return respuesta.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+      throw new Error('Error al obtener los registros');
+    }
+  }
+
+  async buscarPorCodigo(codigo: number) {
+    try {
+      const response = await axios.get<any>(`${this.baseUrl}/${codigo}`);
+      return response.data;
     } catch (error) {
-      console.log(error);
-      throw Error;
+      throw new Error('Error al buscar el código');
     }
   }
 }

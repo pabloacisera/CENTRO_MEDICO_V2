@@ -10,6 +10,6 @@
       "username": "postgres"
     }
   ],
-  "editor.fontFamily": "\"Cascadia Mono\"",
-  "editor.fontSize": 13
+  "editor.fontFamily": "'Cascadia Mono'",
+  "editor.fontSize": 12
 }

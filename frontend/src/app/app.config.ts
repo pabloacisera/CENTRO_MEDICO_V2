@@ -11,6 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { autenticacionInterceptor } from './usuario/autenticacion/autenticacion.interceptor';
 
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -20,5 +23,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(RouterModule),
     importProvidersFrom(FormsModule),
     importProvidersFrom(ReactiveFormsModule),
+    importProvidersFrom(BrowserAnimationsModule), // required animations module
+    importProvidersFrom(ToastrModule.forRoot()),
   ],
 };

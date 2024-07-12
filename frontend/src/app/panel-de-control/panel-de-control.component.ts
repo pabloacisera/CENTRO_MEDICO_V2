@@ -15,7 +15,7 @@ export class PanelDeControlComponent{
     { label: "perfil", ruta:"/perfil" },
     { label: "listado", ruta:"/listado" },
     { label: "nuevo", ruta:"/nuevo" },
-    { label: "resultado", ruta:"/resultado" },
+    { label: "resultado", ruta:"/resultado/:id" },
     { label: "nomenclatura", ruta:"/nomenclatura" },
     { label: "turno", ruta:"/turno" },
   ]

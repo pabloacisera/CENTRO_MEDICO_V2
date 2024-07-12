@@ -12,3 +12,13 @@ export const environmentNomenclatura = {
   production: false,
   apiUrl: "http://localhost:3000/api/v2/nomenclatura",
 }
+
+export const environmentsResultado = {
+  production: false,
+  apiUrl: "http://localhost:3000/api/v2/resultado",
+}
+
+export const environmentIngresoPaciente ={
+  production: false,
+  apiUrl: "http://localhost:3000/api/v2/ingreso-cliente",
+}

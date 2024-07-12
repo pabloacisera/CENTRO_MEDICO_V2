@@ -12,6 +12,7 @@ import { NomenclaturaComponent } from './pages/nomenclatura/nomenclatura.compone
 import { TurnoComponent } from './pages/turno/turno.component';
 import { VerClienteComponent } from './pages/ver-cliente/ver-cliente.component';
 import { ActualizarComponent } from './pages/actualizar/actualizar.component';
+import { LoginComponent } from './pacientes/login/login.component';
 
 export const routes: Routes = [
   {path:'', component: PrincipalComponent},
@@ -26,5 +27,6 @@ export const routes: Routes = [
   {path: 'turno', component: TurnoComponent, canActivate: [autenticacionGuard]},
   {path: 'ver/:id', component: VerClienteComponent, canActivate: [autenticacionGuard]},
   {path:'actualizar/:id', component: ActualizarComponent, canActivate: [autenticacionGuard]},
+  {path: 'acceso-paciente', component: LoginComponent},
   {path: '**', redirectTo:''}
 ];

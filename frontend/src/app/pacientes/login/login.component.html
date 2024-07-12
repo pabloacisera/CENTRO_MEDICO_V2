@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="card">
+    <h3>Ingreso al sistema</h3>
+    <form [formGroup]="datosPaciente">
+      <label for="email">Email:</label>
+      <input type="email" name="email" formControlName="email">
+      <label for="dni">DNI:</label>
+      <input type="text" name="dni" formControlName="dni" >
+      <button type="submit" (click)="accederAlSistema()">Ingresar</button>
+    </form>
+  </div>
+</div>

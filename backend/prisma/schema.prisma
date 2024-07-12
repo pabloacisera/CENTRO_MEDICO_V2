@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:kayascodelario2024@localhost:5432/centro_medico"
+}
+
+model Usuario {
+  id       Int      @id @default(autoincrement())
+  rol      String
+  area     String
+  nombre   String
+  email    String   @unique
+  password String
+  // Relación con Cliente
+  clientes Cliente[]
+}
+
+model Cliente {
+  id              Int          @id @default(autoincrement())
+  protocolo       Int          @unique
+  nombre          String
+  dni             String
+  nacimiento      DateTime
+  edad            Int
+  direccion       String
+  localidad       String
+  telefono        String
+  email           String       @unique
+  seguridadSocial String
+  obs             String?
+  userId          Int
+  createdAt       DateTime     @default(now())
+  usuario         Usuario      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+
+  resultados      Resultado[]
+}
+
+model Nomenclatura {
+  id            Int    @id @default(autoincrement())
+  codigo        Int
+  determinacion String
+  unidadBase    Int
+}
+
+model Resultado {
+  id            Int       @id @default(autoincrement())
+  codigo        Int
+  determinacion String
+  unidadBase    Int
+  valor         Float
+  valorTotal    Float
+  clienteId     Int
+  cliente       Cliente   @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+}
