@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma-service/prisma-service.service';
 @Injectable()
 export class ClienteService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(createClienteDto: CreateClienteDto) {
     try {
       const lastCliente = await this.prisma.cliente.findFirst({

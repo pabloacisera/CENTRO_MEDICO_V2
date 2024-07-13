@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
@@ -21,26 +22,26 @@ export class ClienteController {
   }
 
   @Get()
-  findAll(@Body() userId: number) {
-    return this.clienteService.findAll(userId);
+  findAll(@Query('userId') userId: number) {
+    return this.clienteService.findAll(Number(userId));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Body() userId: number) {
-    return this.clienteService.findOne(+id, userId);
+  findOne(@Param('id') id: string, @Query('userId') userId: number) {
+    return this.clienteService.findOne(+id, Number(userId));
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateClienteDto: UpdateClienteDto,
-    @Body() userId: number,
+    @Query('userId') userId: number,
   ) {
-    return this.clienteService.update(+id, updateClienteDto, userId);
+    return this.clienteService.update(+id, updateClienteDto, Number(userId));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Body() userId: number) {
-    return this.clienteService.remove(+id, userId);
+  remove(@Param('id') id: string, @Query('userId') userId: number) {
+    return this.clienteService.remove(+id, Number(userId));
   }
 }

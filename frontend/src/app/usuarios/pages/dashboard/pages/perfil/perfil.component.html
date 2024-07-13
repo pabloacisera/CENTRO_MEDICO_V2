@@ -1,0 +1,13 @@
+<div *ngIf="carga" class="card">
+  <h5>Cargando datos del usuario, por favor espere</h5>
+</div>
+
+<div *ngIf="!carga" class="container">
+  <div *ngFor="let dato of datosGuardados" class="card">
+    <button (click)="volver()">Panel de Control</button>
+    <p>{{ dato.area }}</p>
+    <h4>{{ dato.nombre }}</h4>
+    <p>{{ dato.email }}</p>
+    <button (click)="usuarioSalir()">Salir</button>
+  </div> 
+</div>

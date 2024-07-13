@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="card">
+    <h3>Logear</h3>
+    <form [formGroup]="formularioDeLogeo" (ngSubmit)="onSubmit()">
+      <label for="email">Email</label>
+      <input type="email" placeholder="ingrese su email" formControlName="email" name="email">
+      <label for="password">password</label>
+      <input type="password" placeholder="ingrese su password" formControlName="password" name="password">
+      <button>Ingresar</button>
+    </form>
+  </div>
+</div>

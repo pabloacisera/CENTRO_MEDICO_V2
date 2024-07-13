@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaService } from 'src/prisma-service/prisma-service.service';
@@ -65,19 +69,42 @@ export class UsuarioService {
     return { data: usuarioEncontrado, token };
   }
 
-  findAll() {
-    return `This action returns all usuario`;
+  async findAll(): Promise<any> {
+    return await this.servicio.usuario.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number): Promise<any> {
+    const usuario = await this.servicio.usuario.findUnique({
+      where: { id: id },
+    });
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+    }
+    return usuario;
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<any> {
+    const usuario = await this.servicio.usuario.findUnique({
+      where: { id: id },
+    });
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+    }
+    return await this.servicio.usuario.update({
+      where: { id: id },
+      data: updateUsuarioDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: number): Promise<any> {
+    const usuario = await this.servicio.usuario.findUnique({
+      where: { id: id },
+    });
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+    }
+    return await this.servicio.usuario.delete({
+      where: { id: id },
+    });
   }
 }
