@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:kayascodelario2024@localhost:5432/centro_medico"
+  url      = "postgresql://postgres:kayascodelario2024@localhost:5432/postgres"
 }
 
 model Usuario {

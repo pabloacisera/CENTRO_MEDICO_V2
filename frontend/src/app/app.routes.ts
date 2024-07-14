@@ -1,15 +1,11 @@
 import { Routes } from '@angular/router';
-import { RegistroComponent } from './usuarios/pages/registro/registro.component';
-import { LogeoComponent } from './usuarios/pages/logeo/logeo.component';
-import { DashboardComponent } from './usuarios/pages/dashboard/dashboard.component';
-import { guardGuard } from './usuarios/pages/guard.guard';
-import { PerfilComponent } from './usuarios/pages/dashboard/pages/perfil/perfil.component';
+import { RegistrarComponent } from './registrar/registrar.component';
+import { LogearComponent } from './logear/logear.component';
+import { PrincipalComponent } from './principal/principal.component';
 
-
-export const routes: Routes = [  
-  {path: 'registro', component: RegistroComponent},
-  {path: 'logear', component: LogeoComponent},
-  {path: 'dashboard', component: DashboardComponent, canActivate: [guardGuard]},
-  {path: 'perfil', component: PerfilComponent, canActivate: [guardGuard]},
-  {path: '**', redirectTo:''}
-];
+export const routes: Routes = [
+    {path: 'principal', component: PrincipalComponent},
+    {path: 'registrar', component: RegistrarComponent},
+    {path: 'logear', component: LogearComponent},
+    {path: '**', redirectTo:'principal'},
+]

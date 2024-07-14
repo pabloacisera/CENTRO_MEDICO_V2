@@ -11,5 +11,6 @@
     }
   ],
   "editor.fontFamily": "'Cascadia Mono'",
-  "editor.fontSize": 12
+  "editor.fontSize": 12,
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
