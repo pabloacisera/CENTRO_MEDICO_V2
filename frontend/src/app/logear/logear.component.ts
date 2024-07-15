@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {  Router } from '@angular/router';
+import {  Router, RouterLink } from '@angular/router';
 import { catchError } from 'rxjs';
 import { LogearService } from './logear.service';
 
 @Component({
   selector: 'app-logear',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './logear.component.html',
   styleUrl: './logear.component.css'
 })

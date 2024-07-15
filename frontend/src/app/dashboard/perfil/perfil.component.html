@@ -1,0 +1,10 @@
+<div class="container">
+    <div class="card" *ngFor="let dato of datosDeUsuario">
+        <h3>Perfil de Usuario</h3>
+        <h5>Rol: {{dato.rol}}</h5>
+        <h6>Area: {{dato.area}}</h6>
+        <p><strong>Nombre: {{dato.nombre}}</strong></p>
+        <p>Email: {{dato.email}}</p>
+        <button (click)="funcionSalir()">Salir</button>
+    </div>
+</div>

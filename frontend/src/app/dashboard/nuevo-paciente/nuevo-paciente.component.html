@@ -2,6 +2,9 @@
     <div class="card">
       <h4>Nueva ficha</h4>
       <form [formGroup]="clienteForm" (ngSubmit)="submitForm()">
+        <label for="protocolo">Protocolo nº:</label>
+        <input type="number" placeholder="ingresar protocolo" name="protocolo" formControlName="protocolo">>
+
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" formControlName="nombre"><br><br>
   

@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="card">
+        <h3>DATOS DEL PACIENTE</h3>
+        <p>Fecha de creacion: {{ datosDeCliente.createdAt | dateFormat }}</p>
+        <h2><strong>Nombre y apellido: </strong>{{ datosDeCliente.nombre }}</h2>
+        <p>DNI: {{ datosDeCliente.dni }}</p>
+        <p>Fecha de Nacimiento: {{ datosDeCliente.nacimiento | dateFormat }}</p>
+        <p>Email: {{ datosDeCliente.email }}</p>
+        <p>Telefono: {{ datosDeCliente.telefono }}</p>
+        <p>Direccion: {{ datosDeCliente.direccion }}</p>
+        <p>Localidad: {{ datosDeCliente.localidad }}</p>
+        <p>Obra Social: {{ datosDeCliente.obraSocial }}</p>
+        <p>Observaciones: {{ datosDeCliente.obs }}</p>
+      </div>
+    <div class="card">
+        <h3>RESULTADOS</h3>
+        <table>
+            <thead>
+                <th>codigo</th>
+                <th>determinacion</th>
+                <th>resultado</th>
+                <th>U.B</th>
+                <th>valor</th>
+            </thead>
+            <tbody>
+                aqui van los datos
+            </tbody>
+        </table>
+    </div>
+</div>

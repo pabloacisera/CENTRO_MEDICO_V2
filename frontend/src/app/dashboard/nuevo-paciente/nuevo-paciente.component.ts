@@ -18,6 +18,7 @@ export class NuevoPacienteComponent implements OnInit {
     private service: NuevoPacienteService
   ) {
     this.clienteForm = this.fb.group({
+      protocolo: [''],
       nombre: ['', Validators.required],
       dni: ['', Validators.required],
       nacimiento: ['', Validators.required],

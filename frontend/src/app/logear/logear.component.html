@@ -7,6 +7,7 @@
             <label for="password">PASSWORD</label>
             <input type="password" placeholder="ingrese password" name="password" formControlName="password">
             <button [disabled]="!formularioDeLogeo.valid" >Logear</button>
+            <span>Si no tienes una cuenta, ingresa <a routerLink="/registrar">AQUI</a></span>
         </form>
     </div>
 </div>
