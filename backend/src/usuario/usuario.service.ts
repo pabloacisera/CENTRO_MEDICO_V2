@@ -10,11 +10,18 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Login } from './dto/login-usuario.dto';
 
-const jwtSecret = process.env.JWT_SECRET;
-
 @Injectable()
 export class UsuarioService {
-  constructor(private readonly servicio: PrismaService) {}
+  jwtSecret = process.env.jwtSecret || 'other key';
+
+  constructor(
+    private readonly servicio: PrismaService,
+  ) {
+    this.jwtSecret
+    if (!this.jwtSecret) {
+      throw new Error('JWT_SECRET is not set in config.json');
+    }
+  }
 
   async create(usuario: CreateUsuarioDto): Promise<any> {
     const datosDeUsuario = {
@@ -34,7 +41,7 @@ export class UsuarioService {
         nombre: usuarioCreado.nombre,
         email: usuarioCreado.email,
       },
-      jwtSecret,
+      this.jwtSecret,
       { expiresIn: '1d' },
     );
 
@@ -62,7 +69,7 @@ export class UsuarioService {
         nombre: usuarioEncontrado.nombre,
         email: usuarioEncontrado.email,
       },
-      jwtSecret,
+      this.jwtSecret,
       { expiresIn: '1d' },
     );
 

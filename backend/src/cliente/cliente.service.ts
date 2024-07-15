@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { PrismaService } from 'src/prisma-service/prisma-service.service';
@@ -13,11 +13,11 @@ export class ClienteService {
         where: { userId: createClienteDto.userId },
         orderBy: { protocolo: 'desc' },
       });
-      const protocolo = lastCliente
-        ? lastCliente.protocolo + 1
-        : createClienteDto.protocolo;
 
-      return this.prisma.cliente.create({
+      const protocolo = lastCliente ? lastCliente.protocolo + 1 : createClienteDto.protocolo;
+
+      // Asegúrate de que el número de protocolo sea único
+      const cliente = await this.prisma.cliente.create({
         data: {
           protocolo,
           nombre: createClienteDto.nombre,
@@ -33,9 +33,11 @@ export class ClienteService {
           userId: createClienteDto.userId,
         },
       });
+
+      return cliente;
     } catch (error) {
       console.log(error);
-      throw new Error('Error al crear cliente');
+      throw new InternalServerErrorException('Error al crear cliente');
     }
   }
 

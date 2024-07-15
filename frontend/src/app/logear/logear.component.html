@@ -1,1 +1,12 @@
-<p>logear works!</p>
+<div class="container">
+    <div class="card">
+        <h4>SingIn</h4>
+        <form [formGroup]="formularioDeLogeo" (ngSubmit)="onSubmit()">
+            <label for="email">EMAIL</label>
+            <input type="email" placeholder="ingrese email" name="email" formControlName="email">
+            <label for="password">PASSWORD</label>
+            <input type="password" placeholder="ingrese password" name="password" formControlName="password">
+            <button [disabled]="!formularioDeLogeo.valid" >Logear</button>
+        </form>
+    </div>
+</div>
