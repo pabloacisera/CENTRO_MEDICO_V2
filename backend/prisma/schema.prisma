@@ -57,8 +57,8 @@ model Resultado {
   id            Int       @id @default(autoincrement())
   codigo        Int
   determinacion String
+  resultado     Float
   unidadBase    Int
-  valor         Float
   valorTotal    Float
   clienteId     Int
   cliente       Cliente   @relation(fields: [clienteId], references: [id], onDelete: Cascade)

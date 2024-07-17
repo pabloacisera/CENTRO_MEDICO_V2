@@ -3,11 +3,15 @@ import { ListadoService } from './listado.service';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from '../../date-format.pipe';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FiltroNombrePipeModule } from './filtro-nombre.pipe.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { OrderModule } from 'ngx-order-pipe';
 
 @Component({
   selector: 'app-listado',
   standalone: true,
-  imports: [CommonModule, DateFormatPipe, RouterLink],
+  imports: [CommonModule, FiltroNombrePipeModule, RouterLink, FormsModule, ReactiveFormsModule, DateFormatPipe, NgxPaginationModule, OrderModule],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css'
 })
@@ -17,6 +21,10 @@ export class ListadoComponent implements OnInit{
   clienteId!: number;
   datosDeCliente: any[] = []
   loader: boolean = false;
+  filtroDeBusqueda: any = { busquedaNombre: '' };
+  p:number = 1;
+  order: string = "nombre"
+  reversa: boolean = true;
 
   constructor(private readonly servicio: ListadoService, private route: ActivatedRoute){}
 
@@ -61,5 +69,16 @@ export class ListadoComponent implements OnInit{
     } catch (error) {
       console.error('Error al borrar cliente', error)
     }
+  }
+
+  setOrderBy(columna:string){
+
+    if(this.order === columna){
+      this.reversa = !this.reversa
+    } else {
+      this.reversa = false;
+    }
+
+    this.order = columna;
   }
 }

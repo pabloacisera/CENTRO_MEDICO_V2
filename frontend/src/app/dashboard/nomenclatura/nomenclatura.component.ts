@@ -1,0 +1,37 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NomenclaturaService } from './nomenclatura.service';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FiltroDeterminacionPipe } from '../../filtro-determinacion.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+
+@Component({
+  selector: 'app-nomenclatura',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FiltroDeterminacionPipe, NgxPaginationModule],
+  templateUrl: './nomenclatura.component.html',
+  styleUrl: './nomenclatura.component.css'
+})
+export class NomenclaturaComponent implements OnInit {
+
+  nomenclaturaCompleta: any[] = [];
+  filtroDeBusqueda: any = {busquedaDeterminacion: ''}
+  p: number = 1;
+ 
+
+  constructor(private readonly peticion: NomenclaturaService) { }
+
+  ngOnInit(): void {
+    this.traerNomenclatura();
+  }
+
+  async traerNomenclatura() {
+    try {
+      const response = await this.peticion.traerTodos();
+      this.nomenclaturaCompleta = response;
+      console.log('Datos del backend: ', this.nomenclaturaCompleta); 
+    } catch (error) {
+      console.error('Error al obtener nomenclatura', error);
+    }
+  }  
+}

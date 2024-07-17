@@ -1,31 +1,38 @@
 <div class="container-table">
     <h4 class="title">Listado de pacientes</h4>
+    <div class="card">
+      <label>Búsqueda</label>
+      <input type="text" [(ngModel)]="filtroDeBusqueda.busquedaNombre">
+    </div>
     <table class="listado-table">
-        <thead>
-            <tr>
-                <th>Protocolo</th>
-                <th>Nombre y apellido</th>
-                <th>DNI</th>
-                <th>Fecha de nacimiento</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let data of datosDeCliente">
-                <td>{{ data.protocolo }}</td>
-                <td>{{ data.nombre }}</td>
-                <td>{{ data.dni }}</td>
-                <td>{{ data.nacimiento | dateFormat }}</td>
-                <td>{{ data.direccion }}</td>
-                <td>{{ data.telefono }}</td>
-                <td class="acciones">
-                    <button [routerLink]="['/detalles', data.id]">Ver</button>
-                    <button [routerLink]="['/actualizar-paciente', data.id]">Editar</button>
-                    <button (click)="funcionEliminarCliente(data.id)" >Eliminar</button>
-                </td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th (click)="setOrderBy('protocolo')">
+            Protocolo</th>
+          <th (click)="setOrderBy('nombre')">Nombre y apellido</th>
+          <th (click)="setOrderBy('dni')">DNI</th>
+          <th (click)="setOrderBy('fechaNacimiento')">Fecha de nacimiento</th>
+          <th (click)="setOrderBy('direccion')">Dirección</th>
+          <th (click)="setOrderBy('telefono')">Teléfono</th>
+          <th >Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of datosDeCliente | filtroNombre: filtroDeBusqueda.busquedaNombre |orderBy: order: reversa  | paginate: {itemsPerPage: 5, currentPage: p}">
+          <td>{{ data.protocolo }}</td>
+          <td>{{ data.nombre }}</td>
+          <td>{{ data.dni }}</td>
+          <td>{{ data.nacimiento | dateFormat }}</td>
+          <td>{{ data.direccion }}</td>
+          <td>{{ data.telefono }}</td>
+          <td class="acciones">
+            <button [routerLink]="['/detalles', data.id]">Ver</button>
+            <button [routerLink]="['/actualizar-paciente', data.id]">Editar</button>
+            <button (click)="funcionEliminarCliente(data.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-</div>
+    <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+  </div>
+

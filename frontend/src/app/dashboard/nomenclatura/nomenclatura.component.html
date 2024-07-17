@@ -1,0 +1,21 @@
+<div class="card">
+  <label>Busqueda</label>
+  <input type="text" [(ngModel)]="filtroDeBusqueda.busquedaDeterminacion" >
+</div>
+<table class="card table-card">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Determinación</th>
+      <th>U.B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of nomenclaturaCompleta | filtroDeterminacion: filtroDeBusqueda.busquedaDeterminacion | paginate: {itemsPerPage: 20, currentPage: p}">
+      <td>{{ item.codigo }}</td>
+      <td>{{ item.determinacion }}</td>
+      <td>{{item.unidadBase}}</td>
+    </tr>
+  </tbody>
+</table>
+<pagination-controls (pageChange)="p= $event" previousLabel="anterior" nextLabel="siguiente"></pagination-controls>

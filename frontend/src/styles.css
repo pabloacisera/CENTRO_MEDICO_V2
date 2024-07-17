@@ -40,13 +40,6 @@
   background-color: #0056b3;
 }
 
-/* Estilos para contenedores */
-.container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px; /* Espaciado entre componentes */
-}
-
 /* Estilos generales para tarjetas (cards) */
 .card {
   border: 1px solid #ccc;
@@ -129,7 +122,7 @@
   border-collapse: collapse; /* Colapso de bordes */
   border: 1px solid #ddd; /* Borde delgada gris */
   background-color: #fff; /* Fondo blanco */
-  font-family: Arial, sans-serif; /* Fuente */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Fuente */
 }
 
 .listado-table th,
@@ -168,4 +161,14 @@
   font-size: 24px; /* Tamaño de fuente del título */
 }
 
+.container {
+  display: flex;
+  flex-direction: column; /* Cambiamos la dirección a columna */
+  align-items: center; /* Centramos los elementos horizontalmente */
+  margin-bottom: 20px; /* Espaciado entre componentes */
+}
+
+.container .card {
+  margin-bottom: 20px; /* Espacio entre tarjetas */
+}
 

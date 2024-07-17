@@ -1,0 +1,18 @@
+/* CSS global para las cards */
+.card {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    /* Ancho máximo para todas las cards */
+    max-width: 400px; /* Ajusta este valor según tus necesidades */
+  }
+  
+  /* CSS específico para la tarjeta que contiene la tabla */
+  .card.table-card {
+    max-width: none; /* Anula el ancho máximo para esta tarjeta */
+    width: auto; /* Permite que la tarjeta se ajuste al contenido */
+    overflow-x: auto; /* Agrega scroll horizontal si es necesario */
+  }
+  

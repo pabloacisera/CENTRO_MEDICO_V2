@@ -8,6 +8,7 @@ import axios from 'axios';
 export class DetallesPacienteService {
 
   url = environment.backendRoute.nuevo
+  resultadoUrl = environment.backendResultado.resultado
 
   constructor() { }
 
@@ -21,6 +22,16 @@ export class DetallesPacienteService {
       return response.data;
     } catch (error) {
       console.error('Error al obtener cliente: ', error)
+    }
+  }
+
+  async eliminarResultadoPorId(id: number) {
+    try {
+      const response = await axios.delete(`${this.resultadoUrl}/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al eliminar el resultado:', error);
+      throw new Error(`Error al eliminar el resultado`);
     }
   }
 }

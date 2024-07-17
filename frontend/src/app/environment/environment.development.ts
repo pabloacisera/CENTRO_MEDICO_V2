@@ -5,5 +5,11 @@ export const environment = {
     },
     backendRouteUsuario: {
         usuario: "http://localhost:3000/api/v2/usuario"
+    },
+    backendNomenclatura: {
+        nomen: "http://localhost:3000/api/v2/nomenclatura"
+    },
+    backendResultado:{
+        resultado: "http://localhost:3000/api/v2/resultado"
     }
 }

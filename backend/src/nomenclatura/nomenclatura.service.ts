@@ -5,6 +5,8 @@ import { PrismaService } from 'src/prisma-service/prisma-service.service';
 @Injectable()
 export class NomenclaturaService {
   constructor(private readonly prisma: PrismaService) {}
+
+  
   findAll(): Promise<CreateNomenclaturaDto[]> {
     return this.prisma.nomenclatura.findMany();
   }

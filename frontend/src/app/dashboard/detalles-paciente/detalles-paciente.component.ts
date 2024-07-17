@@ -3,11 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DetallesPacienteService } from './detalles-paciente.service';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from '../../date-format.pipe';
+import { ResultadosService } from '../resultados/resultados.service';
 
 @Component({
   selector: 'app-detalles-paciente',
   standalone: true,
-  imports: [CommonModule, DateFormatPipe],
+  imports: [CommonModule, DateFormatPipe, CommonModule],
   templateUrl: './detalles-paciente.component.html',
   styleUrl: './detalles-paciente.component.css'
 })
@@ -15,9 +16,12 @@ export class DetallesPacienteComponent implements OnInit {
 
   userId!: number;
   clienteId!: number;
-  datosDeCliente: any= {}; 
+  datosDeCliente: any= {};
+  resultados: any[] = []; 
 
-  constructor(private route: ActivatedRoute, private readonly peticion: DetallesPacienteService) { }
+  constructor(private route: ActivatedRoute, private readonly peticion: DetallesPacienteService,
+    private resultadosService: ResultadosService,
+  ) { }
 
   ngOnInit(): void {
     this.recolectarDatos();
@@ -44,6 +48,7 @@ export class DetallesPacienteComponent implements OnInit {
     this.obtenerDatosUsuario();
     this.obtenerDatosCliente();
     this.obtenerClientePorId(this.clienteId, this.userId)
+    this.obtenerResultados(this.clienteId)
   }
 
   async obtenerClientePorId(clienteId: number, userId: number) {
@@ -54,5 +59,27 @@ export class DetallesPacienteComponent implements OnInit {
     } catch (error) {
       console.error('Error en .ts: ', error);
     }
+  }
+
+  async obtenerResultados(clienteId?: number) {
+    try {
+      this.resultados = await this.resultadosService.findAllResultados(clienteId);
+      console.log('Resutlados por id',this.resultados)
+    } catch (error) {
+      console.error('Error obteniendo resultados:', error);
+      // Manejar el error según sea necesario (por ejemplo, mostrar un mensaje de error en la UI)
+    }
+  }
+
+  async eliminarResultadoPorId(id:number){
+    console.log('Este es el id del resultado a borrrar',id)
+    this.peticion.eliminarResultadoPorId(id)
+      .then((resonse)=>{
+        console.log('resultado eliminado')
+        this.obtenerResultados(this.clienteId)
+      })
+      .catch((error)=>{
+        throw new Error('No se ha podido borrar resultado: ', error)
+      })
   }
 }

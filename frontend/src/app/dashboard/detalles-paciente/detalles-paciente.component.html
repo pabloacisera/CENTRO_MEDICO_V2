@@ -11,20 +11,29 @@
         <p>Localidad: {{ datosDeCliente.localidad }}</p>
         <p>Obra Social: {{ datosDeCliente.obraSocial }}</p>
         <p>Observaciones: {{ datosDeCliente.obs }}</p>
-      </div>
-    <div class="card">
-        <h3>RESULTADOS</h3>
-        <table>
-            <thead>
-                <th>codigo</th>
-                <th>determinacion</th>
-                <th>resultado</th>
-                <th>U.B</th>
-                <th>valor</th>
-            </thead>
-            <tbody>
-                aqui van los datos
-            </tbody>
-        </table>
     </div>
+
+    <h3>RESULTADOS</h3>
+    <table>
+        <thead>
+            <th>codigo</th>
+            <th>determinacion</th>
+            <th>resultado</th>
+            <th>U.B</th>
+            <th>valor</th>
+            <th>Accion</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of resultados">
+                <td>{{item.codigo}}</td>
+                <td>{{item.determinacion}}</td>
+                <td>{{item.resultado}}</td>
+                <td>{{item.unidadBase}}</td>
+                <td>{{item.valorTotal}}</td>
+                <td>
+                    <button (click)="eliminarResultadoPorId(item.id)">eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
