@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-header">
+        <h4 class="title-right">Datos de cliente</h4>
+    </div>
+    <div class="card-body">
+        <div class="column">
+            <h5><strong>Nombre:</strong> {{datosDeCliente.nombre}}</h5>
+            <h5><strong>DNI:</strong> {{datosDeCliente.dni}}</h5>
+            <h5><strong>Fecha de nacimiento:</strong> {{datosDeCliente.nacimiento}}</h5>
+            <h5><strong>Edad:</strong> {{datosDeCliente.edad}}</h5>
+            <h5><strong>Teléfono:</strong> {{datosDeCliente.telefono}}</h5>
+            <h5><strong>Email:</strong> {{datosDeCliente.email}}</h5>
+        </div>
+        <div class="column">
+            <h5><strong>Obra Social:</strong> {{datosDeCliente.obraSocial}}</h5>
+            <h5><strong>Dirección:</strong> {{datosDeCliente.direccion}}</h5>
+            <h5><strong>Localidad:</strong> {{datosDeCliente.localidad}}</h5>
+            <h5><strong>Observaciones:</strong> {{datosDeCliente.obs}}</h5>
+            <button (click)="salir()" >Salir</button>
+        </div>
+    </div>
+</div>
+
+<h4 class="text-center">Resultados</h4>
+<div class="card" *ngIf="sinResultados">
+    Aun no se han cargado los resultados de sus exámenes.
+</div>
+<div class="listado-table" *ngIf="!sinResultados">
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Determinación</th>
+                <th>Resultado</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí va el contenido de la tabla, si hay resultados -->
+        </tbody>
+    </table>
+</div>
+
+

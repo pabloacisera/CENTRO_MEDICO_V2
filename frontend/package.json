@@ -22,6 +22,7 @@
     "ngx-filter-pipe": "^2.1.2",
     "ngx-order-pipe": "^3.0.0",
     "ngx-pagination": "^6.0.3",
+    "primeng": "^17.18.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

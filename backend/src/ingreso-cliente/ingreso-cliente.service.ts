@@ -8,40 +8,40 @@ const jwtSecret = process.env.JWT_SECRET || 'defaultSecret';
 export class IngresoClienteService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async login(
-    email: string,
-    dni: string,
-  ): Promise<{ data: any; token: string }> {
+  async login(email: string, dni: string): Promise<{ data: any; token: string }> {
     try {
-      // Buscar el cliente por email
+      console.log('Intento de inicio de sesión con email:', email, 'y dni:', dni);
+
       const cliente = await this.prisma.cliente.findUnique({
         where: {
           email,
         },
       });
 
+      console.log('Cliente encontrado:', cliente);
+
       if (!cliente) {
         throw new NotFoundException('El email ingresado no es válido');
       }
 
-      // Verificar que el DNI coincida
       if (cliente.dni !== dni) {
         throw new NotFoundException('El DNI no es válido');
       }
 
-      // Generar y retornar el token JWT
       const token = jwt.sign(
         {
           nombre: cliente.nombre,
           email: cliente.email,
-          // Incluir más datos del cliente si es necesario
         },
         jwtSecret,
         { expiresIn: '1d' },
       );
 
+      console.log('Token generado:', token);
+
       return { data: cliente, token };
     } catch (error) {
+      console.error('Error al intentar autenticar al cliente:', error);
       throw new NotFoundException('No se pudo autenticar al cliente');
     }
   }

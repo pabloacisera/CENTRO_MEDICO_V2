@@ -1,90 +1,78 @@
 import { Component, OnInit } from '@angular/core';
-import { ListadoService } from '../listado/listado.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DetallesPacienteService } from '../detalles-paciente/detalles-paciente.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Nomenclatura } from '../resultados/resultado.interface';
+import { FormGroup, FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NomenclaturaService } from '../nomenclatura/nomenclatura.service';
-import { Nomenclatura } from './resultado.interface';
-import { ResultadosService } from './resultados.service';
-import { NgxPaginationModule } from 'ngx-pagination';
-
+import { ResultadosService } from '../resultados/resultados.service';
 
 @Component({
-  selector: 'app-resultados',
+  selector: 'app-cargar-resultado',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgxPaginationModule, RouterLink],
-  templateUrl: './resultados.component.html',
-  styleUrl: './resultados.component.css'
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './cargar-resultado.component.html',
+  styleUrl: './cargar-resultado.component.css'
 })
-export class ResultadosComponent implements OnInit {
+export class CargarResultadoComponent implements OnInit{
 
-  userId!: number;
-  datosDeCliente: any[] = [];
-  loader = false;
-  clienteSeleccionado: any;
-  searchText = '';
-  filteredData: any[] = [];
+  clienteId: number = 0;
+  datosDeCliente: any= {};
+  userId: number = 0
   searchForm: FormGroup;
   resultMessage = '';
   nomenclaturas: Nomenclatura[] = [];
   showResult = false;
-  clienteId: number = 0
-  p: number = 1
 
-  constructor(
-    private readonly servicio: ListadoService,
-    private formBuilder: FormBuilder,
+  constructor(private readonly route: ActivatedRoute,
+    private readonly peticion: DetallesPacienteService,
     private nomenclaturaService: NomenclaturaService,
     private resultadoService: ResultadosService,
+    private fb: FormBuilder,
     private ruta: Router
-  ) {
-    this.searchForm = this.formBuilder.group({
+  ){
+    this.searchForm = this.fb.group({
       codigo: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
+    this.recolectarFunciones();
+  }
+
+  recolectarFunciones(){
+    this.obtenerDatosUsuario()
+    this.obtenerDatosCliente()
+    this.obtenerClientePorId(this.clienteId, this.userId)
+  }
+
+  obtenerDatosUsuario() {
     const userData = localStorage.getItem('userData');
     if (userData) {
       const userDataObj = JSON.parse(userData);
       this.userId = userDataObj.id;
-      this.obtenerClientPorId(this.userId);
-    } else {
-      console.error('No se encontró userData en el localStorage');
+      console.log('Id del usuario: ', this.userId);
     }
   }
 
-  async obtenerClientPorId(userId: number): Promise<void> {
+  obtenerDatosCliente() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.clienteId = parseInt(idParam, 10);
+      console.log('Id del cliente: ', this.clienteId);
+    }
+  }
+
+  async obtenerClientePorId(clienteId: number, userId: number) {
     try {
-      this.loader = true;
-      const response = await this.servicio.obtenerClientesById(userId);
-      this.datosDeCliente = response;
-      this.filteredData = this.filterData(); // Actualizamos el filtro de datos
+      const response = await this.peticion.encontrarClienteById(clienteId, userId);
+      console.log('Response:', response);
+      this.datosDeCliente = response; // Asignamos la respuesta al objeto datosDeCliente
+      console.log('Datos guardados: ', this.datosDeCliente)
+      console.log(typeof this.datosDeCliente)
     } catch (error) {
-      console.error('No se ha podido obtener datos de clientes: ', error);
-    } finally {
-      this.loader = false;
+      console.error('Error en .ts: ', error);
     }
-  }
-
-  funcionSeleccionar(item: any) {
-    this.clienteSeleccionado = item;
-    this.clienteId = item.id;
-  }
-
-  filterData(): any[] {
-    if (!this.searchText) {
-      return this.datosDeCliente;
-    }
-    const lowerCaseSearch = this.searchText.toLowerCase();
-    return this.datosDeCliente.filter(item =>
-      (item.protocolo && item.protocolo.toString().toLowerCase().includes(lowerCaseSearch)) ||
-      (item.nombre && item.nombre.toString().toLowerCase().includes(lowerCaseSearch))
-    );
-  }
-
-  onSearchTextChange(): void {
-    this.filteredData = this.filterData();
   }
 
   onSubmit(): void {

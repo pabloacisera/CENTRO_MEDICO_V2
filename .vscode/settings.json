@@ -5,8 +5,8 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "name": "centro_v2",
-      "database": "centro_medico",
+      "name": "centro",
+      "database": "postgres",
       "username": "postgres"
     }
   ],

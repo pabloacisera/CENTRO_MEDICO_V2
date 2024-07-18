@@ -1,3 +1,4 @@
+<button routerLink="/dashboard">volver</button>
 <div class="container">
     <div class="card" *ngFor="let dato of datosDeUsuario">
         <h3>Perfil de Usuario</h3>
@@ -7,4 +8,21 @@
         <p>Email: {{dato.email}}</p>
         <button (click)="funcionSalir()">Salir</button>
     </div>
+    <div class="card">
+        <h4>Nueva Indicacion</h4>
+        <input type="text" placeholder="INGRESE TITULO EN MAYUSCULAS" [(ngModel)]="nuevaIndicacionTitulo">
+        <textarea rows="5" cols="30" [(ngModel)]="nuevaIndicacionTexto" placeholder="ingresar indicacioens en minusculas"></textarea>
+        <button (click)="crearNuevaIndicacion()">Crear</button>
+    </div>
 </div>
+
+
+<p-accordion [activeIndex]="0">
+    <p-accordionTab [header]="tab.titulo" *ngFor="let tab of indicacionesBackend">
+        <p class="m-0">
+            {{ tab.texto }}
+        </p>
+        <button (click)="onDelete(tab.id)">Eliminar</button>
+    </p-accordionTab>
+</p-accordion>
+

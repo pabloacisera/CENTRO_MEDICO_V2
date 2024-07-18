@@ -20,8 +20,8 @@ model Usuario {
   nombre   String
   email    String   @unique
   password String
-  // Relación con Cliente
   clientes Cliente[]
+  indicaciones Indicacion[]
 }
 
 model Cliente {
@@ -62,4 +62,14 @@ model Resultado {
   valorTotal    Float
   clienteId     Int
   cliente       Cliente   @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+}
+
+model Indicacion {
+  id      Int      @id @default(autoincrement())
+  titulo  String
+  texto   String
+  userId  Int
+  usuario Usuario  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

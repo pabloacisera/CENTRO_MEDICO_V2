@@ -4,11 +4,12 @@ import { NomenclaturaService } from './nomenclatura.service';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FiltroDeterminacionPipe } from '../../filtro-determinacion.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nomenclatura',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, FiltroDeterminacionPipe, NgxPaginationModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FiltroDeterminacionPipe, NgxPaginationModule, RouterLink],
   templateUrl: './nomenclatura.component.html',
   styleUrl: './nomenclatura.component.css'
 })

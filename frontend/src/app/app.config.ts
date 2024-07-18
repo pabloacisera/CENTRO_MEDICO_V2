@@ -10,10 +10,12 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { OrderModule } from 'ngx-order-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes),
     importProvidersFrom(BrowserModule),
+    importProvidersFrom(BrowserAnimationsModule),
     importProvidersFrom(RouterLink),
     importProvidersFrom(FormsModule),
     importProvidersFrom(ReactiveFormsModule),

@@ -8,6 +8,7 @@ import { environment } from '../../environment/environment.development';
 export class PerfilService {
 
   url = environment.backendRouteUsuario.usuario;
+  indUrl = environment.backendIndicacion.indicacion;
 
   constructor() { }
 
@@ -19,4 +20,35 @@ export class PerfilService {
       console.error('No se puedo obtener datos del usuario', error)
     }
   }
+
+  async obtenerTodosLasIndicaciones(userId: number) {
+    try {
+      const response = await axios.get(`${this.indUrl}/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('No se pudo obtener las indicaciones: ', error);
+      throw error;
+    }
+  }
+
+  async crearNuevaIndicacion(nuevaIndicacion: any) {
+    try {
+      const response = await axios.post(this.indUrl, nuevaIndicacion);
+      return response.data;
+    } catch (error) {
+      console.error('Error al crear la indicación:', error);
+      throw error;
+    }
+  }
+
+  async eliminarIndicacion(id: number, userId: number) {
+    try {
+      const response = await axios.delete(`${this.indUrl}/${userId}/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al eliminar la indicación:', error);
+      throw new Error('Error al eliminar la indicación');
+    }
+  }
 }
+  

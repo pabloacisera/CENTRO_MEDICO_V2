@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DetallesPacienteService } from './detalles-paciente.service';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from '../../date-format.pipe';
@@ -8,7 +8,7 @@ import { ResultadosService } from '../resultados/resultados.service';
 @Component({
   selector: 'app-detalles-paciente',
   standalone: true,
-  imports: [CommonModule, DateFormatPipe, CommonModule],
+  imports: [CommonModule, DateFormatPipe, CommonModule, RouterLink],
   templateUrl: './detalles-paciente.component.html',
   styleUrl: './detalles-paciente.component.css'
 })
@@ -18,6 +18,7 @@ export class DetallesPacienteComponent implements OnInit {
   clienteId!: number;
   datosDeCliente: any= {};
   resultados: any[] = []; 
+  isLoading: boolean = false;
 
   constructor(private route: ActivatedRoute, private readonly peticion: DetallesPacienteService,
     private resultadosService: ResultadosService,
@@ -53,21 +54,27 @@ export class DetallesPacienteComponent implements OnInit {
 
   async obtenerClientePorId(clienteId: number, userId: number) {
     try {
+      this.isLoading = true;
       const response = await this.peticion.encontrarClienteById(clienteId, userId);
       console.log('Response:', response);
       this.datosDeCliente = response; // Asignamos la respuesta al objeto datosDeCliente
+      this.isLoading = false;
     } catch (error) {
       console.error('Error en .ts: ', error);
+      this.isLoading = false;
     }
   }
 
   async obtenerResultados(clienteId?: number) {
     try {
+      this.isLoading = true;
       this.resultados = await this.resultadosService.findAllResultados(clienteId);
       console.log('Resutlados por id',this.resultados)
+      this.isLoading = false;
     } catch (error) {
       console.error('Error obteniendo resultados:', error);
       // Manejar el error según sea necesario (por ejemplo, mostrar un mensaje de error en la UI)
+      this.isLoading = false;
     }
   }
 

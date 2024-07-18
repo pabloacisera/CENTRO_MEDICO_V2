@@ -1,30 +1,7 @@
-<button routerLink="/dashboard" >volver</button>
+<button routerLink="/listado">volver</button>
 <div class="card">
-    <input type="search" [(ngModel)]="searchText" placeholder="Buscar..." (ngModelChange)="onSearchTextChange()">
-    <table>
-        <thead>
-            <tr>
-                <th>Protocolo</th>
-                <th>Nombre y apellido</th>
-                <th>Seleccionar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of filteredData | paginate: {itemsPerPage: 5, currentPage: p}">
-                <td>{{item.protocolo}}</td>
-                <td>{{item.nombre}}</td>
-                <td>
-                    <button (click)="funcionSeleccionar(item)">Seleccionar</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
-
-    <div *ngIf="clienteSeleccionado" class="detalle-cliente">
-        <h3>Detalles del Cliente Seleccionado</h3>
-        <p><strong>Cliente seleccionado:</strong> {{ clienteSeleccionado.nombre }}</p>
-    </div>
+    <h2>Cliente seleccionado: </h2>
+    <p>Nombre: {{ datosDeCliente.nombre }}</p>
 </div>
 
 <div class="card">
@@ -35,7 +12,6 @@
         <p><strong>Valor de U.B cargado: </strong>{{ valor_unitario }}</p>
     </div>
 </div>
-
 
 <div class="container">
     <div class="card">
@@ -60,6 +36,9 @@
         </div>
     </div>
 
+   
+
+
     <div class="container-table" *ngIf="showResult && nomenclaturas.length > 0">
         <h4 class="title">Lista de Resultado</h4>
         <table class="listado-table">
@@ -79,13 +58,10 @@
                     <td><input type="number" [(ngModel)]="nomenclatura.resultado"></td>
                     <td>{{ nomenclatura.unidadBase }}</td>
                     <td>{{ nomenclatura.valorTotal }}</td>
-                  </tr>
-                  
+                </tr>
+
             </tbody>
         </table>
-        
-
         <button (click)="guardarResultados()">Guardar Resultado</button>
-        
     </div>
 </div>

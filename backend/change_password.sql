@@ -1,1 +1,1 @@
-ALTER USER postgres WITH 'kayascodelario2024';
+SELECT * FROM "Usuario";

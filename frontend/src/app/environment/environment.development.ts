@@ -11,5 +11,13 @@ export const environment = {
     },
     backendResultado:{
         resultado: "http://localhost:3000/api/v2/resultado"
+    },
+
+    backendIndicacion: {
+        indicacion: "http://localhost:3000/api/v2/indicaciones"
+    },
+
+    backend_ingreso_paciente: {
+        ingreso_paciente: "http://localhost:3000/api/v2/ingreso-cliente"
     }
 }

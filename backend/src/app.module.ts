@@ -7,9 +7,10 @@ import { ClienteModule } from './cliente/cliente.module';
 import { NomenclaturaModule } from './nomenclatura/nomenclatura.module';
 import { ResultadoModule } from './resultado/resultado.module';
 import { IngresoClienteModule } from './ingreso-cliente/ingreso-cliente.module';
+import { IndicacionesModule } from './indicaciones/indicaciones.module';
 
 @Module({
-  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IngresoClienteModule],
+  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IngresoClienteModule, IndicacionesModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

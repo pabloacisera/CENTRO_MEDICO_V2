@@ -1,0 +1,29 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: right;
+}
+
+.card-body {
+    display: flex;
+}
+
+.column {
+    flex: 1;
+    padding: 10px;
+}
+
+.title-right {
+    margin: 0;
+}
+
+.text-center {
+    text-align: center;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ListadoService } from './listado.service';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from '../../date-format.pipe';
@@ -25,6 +25,7 @@ export class ListadoComponent implements OnInit{
   p:number = 1;
   order: string = "nombre"
   reversa: boolean = true;
+  isLoading: boolean = false;
 
   constructor(private readonly servicio: ListadoService, private route: ActivatedRoute){}
 
@@ -42,14 +43,14 @@ export class ListadoComponent implements OnInit{
 
   async obtenerClientPorId(userId: number): Promise<void> {
     try {
-      this.loader= true;
+      this.isLoading = true;
       const response = await this.servicio.obtenerClientesById(userId);
       this.datosDeCliente = response; 
       console.log(this.datosDeCliente);
-      this.loader= false;
+      this.isLoading = false;
     } catch (error) {
       console.error('No se ha podido obtener datos de clientes: ', error);
-      this.loader= false;
+      this.isLoading= false;
     }
   }
 
