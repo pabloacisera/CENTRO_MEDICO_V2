@@ -1,30 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Registro } from './registro';
-import { RegistrarService } from './registrar.service';
-import { catchError, firstValueFrom } from 'rxjs';
+import { RegistrarService } from '../registrar/registrar.service';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
+
 
 @Component({
-  selector: 'app-registrar',
+  selector: 'app-acceso-administrativo',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule],
-  templateUrl: './registrar.component.html',
-  styleUrl: './registrar.component.css'
+  templateUrl: './acceso-administrativo.component.html',
+  styleUrl: './acceso-administrativo.component.css'
 })
-export class RegistrarComponent implements OnInit{
-
+export class AccesoAdministrativoComponent {
   public datosDeRegistro!: any;
 
   formularioDeRegistro!: FormGroup;
 
-  constructor(private fb: FormBuilder, private peticion: RegistrarService, private route: Router) { // Se corrigió el constructor y se inicializó correctamente el FormBuilder
+  constructor(private fb: FormBuilder, private peticion: RegistrarService, private route: Router) { // 
     this.formularioDeRegistro = this.fb.group({
       rol: ['', Validators.required],
-      area: ['', Validators.required],
+      area: [''],
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.minLength(6)], // Aquí deberías usar Validators.minLength(6) para validar la longitud mínima del campo
+      password: ['', Validators.minLength(6)], 
     });
   }
   ngOnInit(): void {
@@ -46,10 +45,12 @@ export class RegistrarComponent implements OnInit{
           localStorage.setItem('token', response.token);
           localStorage.setItem('userData', JSON.stringify(response.data));
           console.log('Usuario registrado exitosamente:', response.data);
-          this.route.navigate(['/dashboard'])
+          this.route.navigate(['/dashboard-administrativo'])
           // Aquí podrías manejar la respuesta exitosa como lo necesites
         });
       
     }
   }
 }
+
+

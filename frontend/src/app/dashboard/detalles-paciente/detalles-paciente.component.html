@@ -5,15 +5,17 @@
 <div class="container" *ngIf="!isLoading">
     <div class="card">
         <h3>DATOS DEL PACIENTE</h3>
+        <p>Nº de protocolo: {{datosDeCliente.protocolo}}</p>
         <p>Fecha de creacion: {{ datosDeCliente.createdAt | dateFormat }}</p>
         <h2><strong>Nombre y apellido: </strong>{{ datosDeCliente.nombre }}</h2>
         <p>DNI: {{ datosDeCliente.dni }}</p>
         <p>Fecha de Nacimiento: {{ datosDeCliente.nacimiento | dateFormat }}</p>
+        <p>Edad: {{datosDeCliente.edad}} años</p>
         <p>Email: {{ datosDeCliente.email }}</p>
         <p>Telefono: {{ datosDeCliente.telefono }}</p>
         <p>Direccion: {{ datosDeCliente.direccion }}</p>
         <p>Localidad: {{ datosDeCliente.localidad }}</p>
-        <p>Obra Social: {{ datosDeCliente.obraSocial }}</p>
+        <p>Obra Social: {{ datosDeCliente.seguridadSocial }}</p>
         <p>Observaciones: {{ datosDeCliente.obs }}</p>
     </div>
 
@@ -43,4 +45,5 @@
             </tr>
         </tbody>
     </table>
+    <p>Valor Total: ${{valorSumar}}</p>
 </div>

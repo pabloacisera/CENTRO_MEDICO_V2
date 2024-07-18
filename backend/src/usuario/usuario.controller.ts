@@ -10,7 +10,7 @@ import {
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { Login } from './dto/login-usuario.dto';
+import { Login, LoginAdmin } from './dto/login-usuario.dto';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -24,6 +24,11 @@ export class UsuarioController {
   @Post('autenticacion')
   logear(@Body() dtoLogeo: Login) {
     return this.usuarioService.login(dtoLogeo);
+  }
+
+  @Post('auth-admin')
+  logearAdmin(@Body() dtoLogeo: Login) {
+    return this.usuarioService.loginAdministrativos(dtoLogeo);
   }
 
   @Get()

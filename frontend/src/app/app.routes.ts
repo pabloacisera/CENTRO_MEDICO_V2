@@ -14,22 +14,42 @@ import { NomenclaturaComponent } from './dashboard/nomenclatura/nomenclatura.com
 import { CargarResultadoComponent } from './dashboard/cargar-resultado/cargar-resultado.component';
 import { LoginComponent } from './acceso-paciente/login/login.component';
 import { DashboardPacienteComponent } from './acceso-paciente/dashboard-paciente/dashboard-paciente.component';
+import { AccesoAdministrativoComponent } from './acceso-administrativo/acceso-administrativo.component';
+import { DashboardAdministrativoComponent } from './acceso-administrativo/dashboard/dashboard.component';
+import { LogearAdministrativoComponent } from './acceso-administrativo/logear-administrativo/logear-administrativo.component';
+import { NuevaFichaComponent } from './acceso-administrativo/dashboard/nueva-ficha/nueva-ficha.component';
+import { TurnoAdminComponent } from './acceso-administrativo/dashboard/turno-admin/turno-admin.component';
 
 export const routes: Routes = [
     { path: 'principal', component: PrincipalComponent },
     { path: 'registrar', component: RegistrarComponent },
     { path: 'logear', component: LogearComponent },
+    { path: 'logear-administrativo', component: LogearAdministrativoComponent },
     { path: 'acceso-paciente', component: LoginComponent },
-    { path: 'dashboard', canActivate: [protectedRouteGuard],component: DashboardComponent,},
-    { path: 'nuevo', canActivate: [protectedRouteGuard],component: NuevoPacienteComponent,},
-    { path: 'listado', canActivate: [protectedRouteGuard],component: ListadoComponent,},
-    { path: 'perfil', canActivate: [protectedRouteGuard],component: PerfilComponent,},
-    { path: 'detalles/:id', canActivate: [protectedRouteGuard],component: DetallesPacienteComponent,},
-    { path: 'actualizar-paciente/:id', canActivate: [protectedRouteGuard],component:ActualizarPacienteComponent,},
-    { path: 'resultado',canActivate: [protectedRouteGuard], component: ResultadosComponent },
-    { path: 'resultado-carga/:id',canActivate: [protectedRouteGuard], component: CargarResultadoComponent },
-    { path: 'nomenclatura', canActivate: [protectedRouteGuard], component: NomenclaturaComponent},
-    { path: 'dashboard-paciente', canActivate: [protectedRouteGuard], component: DashboardPacienteComponent},
+    { path: 'acceso-administrativo', component: AccesoAdministrativoComponent },
+
+
+    { path: 'nuevo-admin', canActivate: [protectedRouteGuard], component: NuevaFichaComponent },
+    { path: 'dashboard-administrativo', canActivate: [protectedRouteGuard], component: DashboardAdministrativoComponent, },
+    {path: 'turno-admin', canActivate: [protectedRouteGuard], component: TurnoAdminComponent},
+
+    { path: 'dashboard', canActivate: [protectedRouteGuard], component: DashboardComponent, },
+    { path: 'nueva-ficha', canActivate: [protectedRouteGuard], component: NuevoPacienteComponent, },
+    { path: 'listado', canActivate: [protectedRouteGuard], component: ListadoComponent, },
+    { path: 'perfil', canActivate: [protectedRouteGuard], component: PerfilComponent, },
+    { path: 'detalles/:id', canActivate: [protectedRouteGuard], component: DetallesPacienteComponent, },
+    { path: 'actualizar-paciente/:id', canActivate: [protectedRouteGuard], component: ActualizarPacienteComponent, },
+
+
+    { path: 'resultado', canActivate: [protectedRouteGuard], component: ResultadosComponent },
+    { path: 'resultado-carga/:id', canActivate: [protectedRouteGuard], component: CargarResultadoComponent },
+
+    { path: 'nomenclatura', canActivate: [protectedRouteGuard], component: NomenclaturaComponent },
+
+
+    { path: 'dashboard-paciente', canActivate: [protectedRouteGuard], component: DashboardPacienteComponent },
+
+
     { path: '', redirectTo: '/principal', pathMatch: 'full' },
     { path: '**', redirectTo: '/principal' }
 ];

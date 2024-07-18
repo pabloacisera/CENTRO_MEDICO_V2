@@ -19,6 +19,7 @@ export class DetallesPacienteComponent implements OnInit {
   datosDeCliente: any= {};
   resultados: any[] = []; 
   isLoading: boolean = false;
+  valorSumar: number = 0
 
   constructor(private route: ActivatedRoute, private readonly peticion: DetallesPacienteService,
     private resultadosService: ResultadosService,
@@ -65,11 +66,16 @@ export class DetallesPacienteComponent implements OnInit {
     }
   }
 
+  sumarValorTotal(){
+    this.valorSumar = this.resultados.reduce((acc, item)=> acc + item.valorTotal, 0)
+  }
+
   async obtenerResultados(clienteId?: number) {
     try {
       this.isLoading = true;
       this.resultados = await this.resultadosService.findAllResultados(clienteId);
       console.log('Resutlados por id',this.resultados)
+      this.sumarValorTotal();
       this.isLoading = false;
     } catch (error) {
       console.error('Error obteniendo resultados:', error);

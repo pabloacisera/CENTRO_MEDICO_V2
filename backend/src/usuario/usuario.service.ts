@@ -8,7 +8,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaService } from 'src/prisma-service/prisma-service.service';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { Login } from './dto/login-usuario.dto';
+import { Login, LoginAdmin } from './dto/login-usuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -72,6 +72,41 @@ export class UsuarioService {
       this.jwtSecret,
       { expiresIn: '1d' },
     );
+
+    return { data: usuarioEncontrado, token };
+  }
+
+  async loginAdministrativos(data: Login): Promise<any> {
+    const { email, password } = data;
+    const usuarioEncontrado = await this.servicio.usuario.findUnique({
+      where: { email: email },
+    });
+
+    if (!usuarioEncontrado) {
+      throw new UnauthorizedException('Error en el proceso de logeo');
+    }
+
+    const verificarContraseña = await bcrypt.compare(
+      password,
+      usuarioEncontrado.password,
+    );
+
+    if (!verificarContraseña) {
+      throw new UnauthorizedException('Error en el proceso de logeo');
+    }
+
+    // Verificar el rol del usuario
+    if (usuarioEncontrado.rol !== 'administrativo') {
+      throw new UnauthorizedException('Acceso denegado. El usuario no tiene permisos administrativos.');
+    }
+
+    // Generar el token JWT
+    const token = jwt.sign({
+      id: usuarioEncontrado.id,
+      nombre: usuarioEncontrado.nombre,
+      email: usuarioEncontrado.email,
+      rol: usuarioEncontrado.rol,
+    }, { expiresIn: '1d' });
 
     return { data: usuarioEncontrado, token };
   }

@@ -34,6 +34,7 @@ export class PerfilService {
   async crearNuevaIndicacion(nuevaIndicacion: any) {
     try {
       const response = await axios.post(this.indUrl, nuevaIndicacion);
+      console.log('Respuesta de Axios:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error al crear la indicación:', error);
