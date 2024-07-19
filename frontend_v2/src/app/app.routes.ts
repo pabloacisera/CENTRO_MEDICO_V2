@@ -9,6 +9,8 @@ import { NuevaFichaComponent } from './page/dashboard-profesional/nueva-ficha/nu
 import { BuscarNomenclaturaComponent } from './page/dashboard-profesional/buscar-nomenclatura/buscar-nomenclatura.component';
 import { CargarResultadosComponent } from './page/dashboard-profesional/cargar-resultados/cargar-resultados.component';
 import { PerfilComponent } from './page/dashboard-profesional/perfil/perfil.component';
+import { ListadoPacientesComponent } from './page/dashboard-profesional/listado-pacientes/listado-pacientes.component';
+import { NuevaIndicacionComponent } from './page/dashboard-profesional/perfil/nueva-indicacion/nueva-indicacion.component';
 
 export const routes: Routes = [
 
@@ -19,13 +21,16 @@ export const routes: Routes = [
     { path: 'logear', component: LogeoComponent },
 
     /**paginas de profesionales */
-    { path: 'dash-prof',canActivate:[protectedRouteGuard] ,component: DashboardProfesionalComponent },
-    {path:'nueva-ficha', canActivate:[protectedRouteGuard], component:NuevaFichaComponent},
-    {path:'buscar-nomenclatura', canActivate:[protectedRouteGuard], component: BuscarNomenclaturaComponent},
-    {path:'cargar-resultados', canActivate:[protectedRouteGuard], component:CargarResultadosComponent},
-    {path:'perfil', canActivate:[protectedRouteGuard], component:PerfilComponent},
+    { path: 'dash-prof', canActivate: [protectedRouteGuard], component: DashboardProfesionalComponent },
+    { path: 'listado-pacientes', canActivate: [protectedRouteGuard], component: ListadoPacientesComponent },
+    { path: 'nueva-ficha', canActivate: [protectedRouteGuard], component: NuevaFichaComponent },
+    { path: 'buscar-nomenclatura', canActivate: [protectedRouteGuard], component: BuscarNomenclaturaComponent },
+    { path: 'cargar-resultados', canActivate: [protectedRouteGuard], component: CargarResultadosComponent },
+    { path: 'perfil', canActivate: [protectedRouteGuard], component: PerfilComponent },
+    { path: 'nueva-indicac', canActivate: [protectedRouteGuard], component: NuevaIndicacionComponent },
 
     /*paginas de pacientes*/
+
 
     /**paginas de administrativos */
     { path: '**', redirectTo: '/home' }

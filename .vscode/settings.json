@@ -8,6 +8,15 @@
       "name": "centro",
       "database": "postgres",
       "username": "postgres"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "centroMedico",
+      "database": "postgres",
+      "username": "postgres"
     }
   ],
   "editor.fontFamily": "FiraCode-Retina",

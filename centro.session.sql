@@ -1,1 +1,1 @@
-select * FROM "Usuario";
+select * FROM "Cliente";
