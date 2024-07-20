@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NuevaFichaService } from './nueva-ficha.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nueva-ficha',
@@ -18,7 +19,8 @@ export class NuevaFichaComponent {
   constructor(
     private fb: FormBuilder,
     private service: NuevaFichaService,
-    private router: Router
+    private router: Router, 
+    private toast: ToastrService
   ) {
     this.clienteForm = this.fb.group({
       protocolo: [''],
@@ -52,6 +54,7 @@ export class NuevaFichaComponent {
         const clienteCreado = await this.service.nuevoCliente(this.clienteForm.value);
         console.log('Cliente creado:', clienteCreado);
         this.router.navigate(['/listado-pacientes']);
+        this.toast.success('Se ha creado 1 nuevo paciente', 'Actualizacion de Base de datos:')
       } catch (error) {
         console.error('Error al crear cliente:', error);
       }

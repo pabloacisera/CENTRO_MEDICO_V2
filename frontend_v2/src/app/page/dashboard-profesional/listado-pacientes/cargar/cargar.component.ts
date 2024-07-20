@@ -1,88 +1,78 @@
 import { Component } from '@angular/core';
-import { CargarResultadosService } from './cargar-resultados.service';
-import { NomenclaturaService } from '../buscar-nomenclatura/nomenclatura.service';
+import { Nomenclatura } from '../../cargar-resultados/resultado.interface';
+import { VerPacienteService } from '../ver/ver.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CargarResultadosService } from '../../cargar-resultados/resultado.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ListadoPacientesService } from '../listado-pacientes/listado-pacientes.service';
-import { Nomenclatura } from './resultado.interface';
-import { Router } from '@angular/router';
+import { NomenclaturaService } from '../../buscar-nomenclatura/nomenclatura.service';
 import { CommonModule } from '@angular/common';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
-  selector: 'app-cargar-resultados',
+  selector: 'app-cargar',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule],
-  templateUrl: './cargar-resultados.component.html',
-  styleUrl: './cargar-resultados.component.css'
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  templateUrl: './cargar.component.html',
+  styleUrl: './cargar.component.css'
 })
-export class CargarResultadosComponent {
-  userId!: number;
-  datosDeCliente: any[] = [];
-  loader = false;
-  clienteSeleccionado: any;
-  searchText = '';
-  filteredData: any[] = [];
+export class CargarComponent {
+
+  clienteId: number = 0;
+  datosDeCliente: any= {};
+  userId: number = 0
   searchForm: FormGroup;
   resultMessage = '';
   nomenclaturas: Nomenclatura[] = [];
   showResult = false;
-  clienteId: number = 0
-  p: number = 1
 
-  constructor(
-    private readonly servicio: ListadoPacientesService,
-    private formBuilder: FormBuilder,
+  constructor(private readonly route: ActivatedRoute,
+    private readonly peticion: VerPacienteService,
     private nomenclaturaService: NomenclaturaService,
     private resultadoService: CargarResultadosService,
+    private fb: FormBuilder,
     private ruta: Router
-  ) {
-    this.searchForm = this.formBuilder.group({
+  ){
+    this.searchForm = this.fb.group({
       codigo: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
+    this.recolectarFunciones();
+  }
+
+  recolectarFunciones(){
+    this.obtenerDatosUsuario()
+    this.obtenerDatosCliente()
+    this.obtenerClientePorId(this.clienteId, this.userId)
+  }
+
+  obtenerDatosUsuario() {
     const userData = localStorage.getItem('userData');
     if (userData) {
       const userDataObj = JSON.parse(userData);
       this.userId = userDataObj.id;
-      this.obtenerClientPorId(this.userId);
-    } else {
-      console.error('No se encontró userData en el localStorage');
+      console.log('Id del usuario: ', this.userId);
     }
   }
 
-  async obtenerClientPorId(userId: number): Promise<void> {
+  obtenerDatosCliente() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.clienteId = parseInt(idParam, 10);
+      console.log('Id del cliente: ', this.clienteId);
+    }
+  }
+
+  async obtenerClientePorId(clienteId: number, userId: number) {
     try {
-      this.loader = true;
-      const response = await this.servicio.obtenerClientesById(userId);
-      this.datosDeCliente = response;
-      this.filteredData = this.filterData(); // Actualizamos el filtro de datos
+      const response = await this.peticion.encontrarClienteById(clienteId, userId);
+      console.log('Response:', response);
+      this.datosDeCliente = response; // Asignamos la respuesta al objeto datosDeCliente
+      console.log('Datos guardados: ', this.datosDeCliente)
+      console.log(typeof this.datosDeCliente)
     } catch (error) {
-      console.error('No se ha podido obtener datos de clientes: ', error);
-    } finally {
-      this.loader = false;
+      console.error('Error en .ts: ', error);
     }
-  }
-
-  funcionSeleccionar(item: any) {
-    this.clienteSeleccionado = item;
-    this.clienteId = item.id;
-  }
-
-  filterData(): any[] {
-    if (!this.searchText) {
-      return this.datosDeCliente;
-    }
-    const lowerCaseSearch = this.searchText.toLowerCase();
-    return this.datosDeCliente.filter(item =>
-      (item.protocolo && item.protocolo.toString().toLowerCase().includes(lowerCaseSearch)) ||
-      (item.nombre && item.nombre.toString().toLowerCase().includes(lowerCaseSearch))
-    );
-  }
-
-  onSearchTextChange(): void {
-    this.filteredData = this.filterData();
   }
 
   onSubmit(): void {
@@ -161,3 +151,4 @@ export class CargarResultadosComponent {
       });
   }
 }
+

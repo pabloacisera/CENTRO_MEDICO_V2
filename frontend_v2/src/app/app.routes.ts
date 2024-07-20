@@ -11,6 +11,9 @@ import { CargarResultadosComponent } from './page/dashboard-profesional/cargar-r
 import { PerfilComponent } from './page/dashboard-profesional/perfil/perfil.component';
 import { ListadoPacientesComponent } from './page/dashboard-profesional/listado-pacientes/listado-pacientes.component';
 import { NuevaIndicacionComponent } from './page/dashboard-profesional/perfil/nueva-indicacion/nueva-indicacion.component';
+import { VerComponent } from './page/dashboard-profesional/listado-pacientes/ver/ver.component';
+import { EditarComponent } from './page/dashboard-profesional/listado-pacientes/editar/editar.component';
+import { CargarComponent } from './page/dashboard-profesional/listado-pacientes/cargar/cargar.component';
 
 export const routes: Routes = [
 
@@ -30,7 +33,9 @@ export const routes: Routes = [
     { path: 'nueva-indicac', canActivate: [protectedRouteGuard], component: NuevaIndicacionComponent },
 
     /*paginas de pacientes*/
-
+    {path: 'ver/:id',canActivate: [protectedRouteGuard], component: VerComponent},
+    {path: 'editar/:id',canActivate: [protectedRouteGuard], component: EditarComponent},
+    {path: 'cargar/:id',canActivate: [protectedRouteGuard], component: CargarComponent},
 
     /**paginas de administrativos */
     { path: '**', redirectTo: '/home' }

@@ -3,18 +3,21 @@ import { PerfilService } from './perfi.service';
 import { Router, RouterLink } from '@angular/router';
 import { Indicaciones } from './indicaciones';
 import { CommonModule } from '@angular/common';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent {
-  userId!: number;
-  datosDeUsuario: any[] = [];
+  userId!: number
+  datosDeUsuario: any[] = []
   indicaciones: Indicaciones[] = []
+  loadingUsuario: boolean = false;
+  loadingIndicaciones: boolean = false;
 
   public ruta = inject(Router)
 
@@ -32,14 +35,17 @@ export class PerfilComponent {
   }
 
   async obtenerDatosDeUsuario(userId: number) {
+    this.loadingUsuario = true;
     this.peticion.obtenerUsuarioById(userId)
       .then((response) => {
         if (Array.isArray(response)) {
           this.datosDeUsuario = response;
           console.log('Datos de usuarios: ', this.datosDeUsuario)
+          this.loadingUsuario = false;
         } else {
           this.datosDeUsuario = [response]; // Convertir objeto a array con un solo elemento
           console.log('Datos de usuarios: ', this.datosDeUsuario)
+          this.loadingUsuario = false;
         }
       })
       .catch((error) => {
@@ -57,12 +63,15 @@ export class PerfilComponent {
   indicacionesBackend: any[] = []
 
   async obtenerIndicaciones(userId: number) {
+    this.loadingIndicaciones = true;
     try {
       const response = await this.peticion.obtenerTodosLasIndicaciones(userId)
       this.indicacionesBackend = response;
       console.log('Indicaciones obtenidos: ', this.indicacionesBackend)
+      this.loadingIndicaciones = false;
     } catch (error) {
       console.log(error)
+      this.loadingIndicaciones = false;
     }
   }
 

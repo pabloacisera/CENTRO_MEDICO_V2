@@ -42,13 +42,13 @@
           <td class="py-2 px-4">{{ data.edad }}</td>
           <td class="py-2 px-4">{{ data.telefono }}</td>
           <td class="py-2 px-4 flex space-x-2">
-            <button [routerLink]="['/detalles', data.id]"
+            <button [routerLink]="['/ver', data.id]"
               class="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">Ver</button>
-            <button [routerLink]="['/actualizar-paciente', data.id]"
+            <button [routerLink]="['/editar', data.id]"
               class="px-2 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">Editar</button>
             <button (click)="funcionEliminarCliente(data.id)"
               class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">Eliminar</button>
-            <button [routerLink]="['/resultado-carga', data.id]"
+            <button [routerLink]="['/cargar', data.id]"
               class="px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600">Cargar</button>
           </td>
         </tr>

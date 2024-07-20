@@ -1,0 +1,77 @@
+<div *ngIf="isLoading" class="flex justify-center items-center min-h-screen">
+    <div class="loader">Cargando...</div>
+</div>
+
+<div *ngIf="!isLoading">
+    <div class="max-w-sm w-full bg-white shadow-lg rounded-lg overflow-hidden mx-auto mt-6">
+        <div class="p-6 bg-blue-500 text-white">
+            <div class="text-lg font-semibold">Protocolo: {{ datosDeCliente.protocolo }}</div>
+            <div class="text-xl font-bold">{{ datosDeCliente.nombre }}</div>
+            <div class="text-sm mt-2">DNI: {{ datosDeCliente.dni }}</div>
+        </div>
+        <div class="p-6 bg-white">
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Fecha de Nacimiento:</div>
+                <div class="text-gray-900">{{ datosDeCliente.nacimiento | dateFormat }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Edad:</div>
+                <div class="text-gray-900">{{ datosDeCliente.edad }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Teléfono:</div>
+                <div class="text-gray-900">{{ datosDeCliente.telefono }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Email:</div>
+                <div class="text-gray-900">{{ datosDeCliente.email }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Dirección:</div>
+                <div class="text-gray-900">{{ datosDeCliente.direccion }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Localidad:</div>
+                <div class="text-gray-900">{{ datosDeCliente.localidad }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Seguridad Social:</div>
+                <div class="text-gray-900">{{ datosDeCliente.seguridadSocial }}</div>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-gray-700 font-medium">Observaciones:</div>
+                <div class="text-gray-900">{{ datosDeCliente.obs }}</div>
+            </div>
+        </div>
+        <div class="p-4 bg-gray-100 text-gray-600 text-sm">
+            Creado el: {{ datosDeCliente.createdAt | date:'dd/MM/yyyy' }}
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-bold mb-4">Resultados</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 text-amber-800">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b border-gray-200 text-left">Código</th>
+                    <th class="py-2 px-4 border-b border-gray-200 text-left">Determinación</th>
+                    <th class="py-2 px-4 border-b border-gray-200 text-left">Resultado</th>
+                    <th class="py-2 px-4 border-b border-gray-200 text-left">Unidad Base</th>
+                    <th class="py-2 px-4 border-b border-gray-200 text-left">Total U.B</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let resultado of resultados">
+                    <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.codigo }}</td>
+                    <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.determinacion }}</td>
+                    <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.resultado }}</td>
+                    <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.unidadBase }}</td>
+                    <td class="py-2 px-4 border-b border-gray-200 text-black">$ {{ resultado.valorTotal }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="mt-4 text-xl font-semibold text-white">Valor Total: $ {{ valorSumar }}</p>
+</div>

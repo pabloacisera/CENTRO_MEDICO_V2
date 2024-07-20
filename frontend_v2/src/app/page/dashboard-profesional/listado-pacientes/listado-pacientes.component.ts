@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { DateFormatPipe } from '../../../date-format.pipe';
 import { SharedModule } from './shared.module';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listado-pacientes',
@@ -31,7 +32,7 @@ export class ListadoPacientesComponent implements OnInit {
   rows: number = 5;
 
   constructor(private readonly servicio: ListadoPacientesService, private route: ActivatedRoute,
-    private ruta: Router,
+    private ruta: Router, private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -89,6 +90,7 @@ export class ListadoPacientesComponent implements OnInit {
       const response = await this.servicio.borrarClientePorId(clienteId, this.userId);
       console.log('Cliente borrado exitosamente: ', response);
       this.obtenerClientPorId(this.userId);
+      this.toastr.warning('Se ha eliminado un registro', 'Actualizacion de base de datos')
     } catch (error) {
       console.error('Error al borrar cliente', error);
     }
