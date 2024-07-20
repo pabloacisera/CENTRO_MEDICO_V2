@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NuevaFichaService } from './nueva-ficha.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nueva-ficha',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './nueva-ficha.component.html',
   styleUrl: './nueva-ficha.component.css'
 })

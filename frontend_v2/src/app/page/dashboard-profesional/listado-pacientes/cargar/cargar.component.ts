@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Nomenclatura } from '../../cargar-resultados/resultado.interface';
-import { VerPacienteService } from '../ver/ver.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NomenclaturaService } from '../../buscar-nomenclatura/nomenclatura.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +10,7 @@ import { CargarService } from './cagar.service';
 @Component({
   selector: 'app-cargar',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './cargar.component.html',
   styleUrl: './cargar.component.css'
 })
@@ -27,6 +25,8 @@ export class CargarComponent {
   resultados: any[] = [];
   isLoading: boolean = false;
   valorSumar: number = 0;
+  valor_unitario: number = 0;
+  boton_actualizar: boolean = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -47,6 +47,7 @@ export class CargarComponent {
   }
 
   recolectarFunciones() {
+    this.extraerValorDeLocalStorage()
     this.obtenerDatosUsuario();
     this.obtenerDatosCliente();
     this.obtenerClientePorId(this.clienteId, this.userId);
@@ -129,14 +130,32 @@ export class CargarComponent {
       });
   }
 
-  valor_unitario: number = 0;
+  /********************************************* */
 
   obtenerValor(valor: string) {
+    // Convertir el valor a número y guardarlo en la variable
     this.valor_unitario = parseFloat(valor);
+
+    // Guardar el valor unitario en el almacenamiento local como cadena
+    localStorage.setItem('valorUB', this.valor_unitario.toString());
+
+    // Para verificar que el valor se guarda correctamente
     console.log(this.valor_unitario);
   }
 
   actualizarValoresTotales() {
+    // Leer el valor unitario desde el almacenamiento local
+    const valorGuardado = localStorage.getItem('valorUB');
+
+    // Convertir el valor guardado a número
+    if (valorGuardado) {
+      this.valor_unitario = parseFloat(valorGuardado);
+    } else {
+      console.error('Valor unitario no encontrado en localStorage');
+      return; // Si no hay valor guardado, salir del método
+    }
+
+    // Calcular y actualizar los valores totales
     for (let nomenclatura of this.nomenclaturas) {
       nomenclatura.valorTotal = this.calcularValorTotal(nomenclatura.unidadBase);
     }
@@ -145,6 +164,20 @@ export class CargarComponent {
   calcularValorTotal(unidadBase: number): number {
     return this.valor_unitario * unidadBase;
   }
+
+  extraerValorDeLocalStorage() {
+    const valorExtraido = localStorage.getItem('valorUB');
+    if (valorExtraido) {
+      this.valor_unitario = parseFloat(valorExtraido);
+      this.boton_actualizar = true;
+    }
+    console.log('Valor de unidad Base: ', valorExtraido);
+  }
+
+  
+
+
+  /************************************************************ */
 
   guardarResultado(nomenclatura: any, resultado: string) {
     nomenclatura.resultado = parseFloat(resultado);

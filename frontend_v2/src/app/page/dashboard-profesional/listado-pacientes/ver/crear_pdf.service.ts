@@ -18,17 +18,51 @@ export class Crear_pdfService {
     console.log('Available fonts:', Object.keys(pdfMakeAny.vfs));
   }
 
+  public formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+  
+
   generatePdf(datosDeCliente: any, resultados: any[], valorSumar: number) {
     const docDefinition = {
       content: [
-        { text: `Protocolo: ${datosDeCliente.protocolo}`, style: 'header' },
-        { text: datosDeCliente.nombre, style: 'subheader' },
-        { text: `DNI: ${datosDeCliente.dni}`, style: 'subheader' },
+        {
+          columns: [
+            {
+              text: 'Institución Médica XYZ',
+              style: 'institutionName'
+            },
+            {
+              text: 'Dirección: Calle Falsa 123, Ciudad, País\nTeléfono: +123 456 7890',
+              style: 'institutionDetails',
+              alignment: 'right'
+            }
+          ]
+        },
+        {
+          text: `Informe de Resultados`,
+          style: 'reportTitle',
+          margin: [0, 10, 0, 20]
+        },
+        {
+          text: `Paciente: ${datosDeCliente.nombre}`,
+          style: 'patientInfo'
+        },
+        {
+          text: `Protocolo: ${datosDeCliente.protocolo}`,
+          style: 'patientInfo',
+          margin: [0, 0, 0, 10]
+        },
+        // Datos del cliente
         {
           style: 'tableExample',
           table: {
             body: [
-              ['Fecha de Nacimiento', datosDeCliente.nacimiento],
+              ['Fecha de Nacimiento', this.formatDate(datosDeCliente.nacimiento)],
               ['Edad', datosDeCliente.edad],
               ['Teléfono', datosDeCliente.telefono],
               ['Email', datosDeCliente.email],
@@ -39,8 +73,9 @@ export class Crear_pdfService {
             ]
           }
         },
-        { text: `Creado el: ${datosDeCliente.createdAt}`, style: 'subheader' },
+        { text: `Creado el: ${this.formatDate(datosDeCliente.createdAt)}`, style: 'subheader' },
         { text: 'Resultados', style: 'header', margin: [0, 20, 0, 10] },
+        // Resultados
         {
           style: 'tableExample',
           table: {
@@ -56,16 +91,34 @@ export class Crear_pdfService {
             ]
           }
         },
-        { text: `Valor Total: $ ${valorSumar}`, style: 'total' },
+        { text: `Valor Total: $ ${valorSumar}`, style: 'total' }
       ],
       styles: {
-        header: {
+        institutionName: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 0]
+        },
+        institutionDetails: {
+          fontSize: 10,
+          margin: [0, 10, 0, 0]
+        },
+        reportTitle: {
           fontSize: 18,
           bold: true,
-          margin: [0, 0, 0, 10]
+          alignment: 'center'
+        },
+        patientInfo: {
+          fontSize: 14,
+          margin: [0, 0, 0, 5]
+        },
+        header: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 10]
         },
         subheader: {
-          fontSize: 16,
+          fontSize: 14,
           bold: true,
           margin: [0, 10, 0, 5]
         },

@@ -105,7 +105,7 @@ export class ListadoPacientesComponent implements OnInit {
     this.order = columna;
   }
 
-  irPanelDeControl(){
-    this.ruta.navigate(['/dash-prof'])
+  nuevoPaciente(){
+    this.ruta.navigate(['/nueva-ficha'])
   }
 }

@@ -3,7 +3,7 @@ import { NomenclaturaService } from '../buscar-nomenclatura/nomenclatura.service
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ListadoPacientesService } from '../listado-pacientes/listado-pacientes.service';
 import { Nomenclatura } from './resultado.interface';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +12,7 @@ import { ResultadosService } from './resultado.service';
 @Component({
   selector: 'app-cargar-resultados',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule, RouterLink],
   templateUrl: './cargar-resultados.component.html',
   styleUrl: './cargar-resultados.component.css'
 })

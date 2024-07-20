@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { VerPacienteService } from './ver.service';
 import { ResultadosService } from '../../cargar-resultados/resultado.service';
 import { DateFormatPipe } from '../../../../date-format.pipe';
@@ -9,7 +9,7 @@ import { Crear_pdfService } from './crear_pdf.service';
 @Component({
   selector: 'app-ver',
   standalone: true,
-  imports: [CommonModule, DateFormatPipe],
+  imports: [CommonModule, DateFormatPipe, RouterLink],
   templateUrl: './ver.component.html',
   styleUrl: './ver.component.css'
 })
