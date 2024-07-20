@@ -10,6 +10,8 @@ import { SharedModule } from './page/dashboard-profesional/listado-pacientes/sha
 
 
 import { provideToastr, ToastrModule } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
+import { DateFormatPipe } from './date-format.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes),
@@ -19,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     importProvidersFrom(HttpClientModule),
     importProvidersFrom(SharedModule),
+    importProvidersFrom(DateFormatPipe),
     provideAnimations(),
     provideToastr({
       timeOut:3000,

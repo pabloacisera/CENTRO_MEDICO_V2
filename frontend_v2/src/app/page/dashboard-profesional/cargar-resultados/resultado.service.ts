@@ -5,7 +5,7 @@ import { Nomenclatura } from './resultado.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class CargarResultadosService {
+export class ResultadosService {
 
   url = "http://localhost:3000/api/v2/cliente"
   urlresultado = "http://localhost:3000/api/v2/resultado"
@@ -40,6 +40,16 @@ export class CargarResultadosService {
     } catch (error) {
       console.error('Error fetching resultados:', error);
       throw new Error(`Error al obtener los resultados`);
+    }
+  }
+
+  async eliminarResultadoPorId(id: number) {
+    try {
+      const response = await axios.delete(`${this.urlresultado}/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al eliminar el resultado:', error);
+      throw new Error(`Error al eliminar el resultado`);
     }
   }
 }

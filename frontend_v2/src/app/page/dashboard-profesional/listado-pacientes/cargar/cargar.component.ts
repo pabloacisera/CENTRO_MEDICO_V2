@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { Nomenclatura } from '../../cargar-resultados/resultado.interface';
 import { VerPacienteService } from '../ver/ver.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CargarResultadosService } from '../../cargar-resultados/resultado.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NomenclaturaService } from '../../buscar-nomenclatura/nomenclatura.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { ResultadosService } from '../../cargar-resultados/resultado.service';
+import { CargarService } from './cagar.service';
 
 @Component({
   selector: 'app-cargar',
@@ -15,22 +17,26 @@ import { CommonModule } from '@angular/common';
   styleUrl: './cargar.component.css'
 })
 export class CargarComponent {
-
   clienteId: number = 0;
-  datosDeCliente: any= {};
-  userId: number = 0
+  datosDeCliente: any = {};
+  userId: number = 0;
   searchForm: FormGroup;
   resultMessage = '';
-  nomenclaturas: Nomenclatura[] = [];
+  nomenclaturas: any[] = [];
   showResult = false;
+  resultados: any[] = [];
+  isLoading: boolean = false;
+  valorSumar: number = 0;
 
-  constructor(private readonly route: ActivatedRoute,
-    private readonly peticion: VerPacienteService,
+  constructor(
+    private readonly route: ActivatedRoute,
     private nomenclaturaService: NomenclaturaService,
-    private resultadoService: CargarResultadosService,
+    private resultadoService: ResultadosService,
+    private resultService: CargarService,
     private fb: FormBuilder,
-    private ruta: Router
-  ){
+    private ruta: Router,
+    private toastr: ToastrService
+  ) {
     this.searchForm = this.fb.group({
       codigo: ['', Validators.required]
     });
@@ -40,10 +46,11 @@ export class CargarComponent {
     this.recolectarFunciones();
   }
 
-  recolectarFunciones(){
-    this.obtenerDatosUsuario()
-    this.obtenerDatosCliente()
-    this.obtenerClientePorId(this.clienteId, this.userId)
+  recolectarFunciones() {
+    this.obtenerDatosUsuario();
+    this.obtenerDatosCliente();
+    this.obtenerClientePorId(this.clienteId, this.userId);
+    this.obtenerResultados(this.clienteId); // Asegúrate de llamar a obtenerResultados
   }
 
   obtenerDatosUsuario() {
@@ -65,13 +72,25 @@ export class CargarComponent {
 
   async obtenerClientePorId(clienteId: number, userId: number) {
     try {
-      const response = await this.peticion.encontrarClienteById(clienteId, userId);
+      const response = await this.resultService.encontrarClienteById(clienteId, userId);
       console.log('Response:', response);
       this.datosDeCliente = response; // Asignamos la respuesta al objeto datosDeCliente
-      console.log('Datos guardados: ', this.datosDeCliente)
-      console.log(typeof this.datosDeCliente)
+      console.log('Datos guardados: ', this.datosDeCliente);
+      console.log(typeof this.datosDeCliente);
     } catch (error) {
       console.error('Error en .ts: ', error);
+    }
+  }
+
+  async obtenerResultados(clienteId: number) {
+    try {
+      this.isLoading = true;
+      this.resultados = await this.resultService.findAllResultados(clienteId);
+      console.log('Resultados por id:', this.resultados);
+      this.isLoading = false;
+    } catch (error) {
+      console.error('Error obteniendo resultados:', error);
+      this.isLoading = false;
     }
   }
 
@@ -87,7 +106,7 @@ export class CargarComponent {
           this.resultMessage = 'No existe código';
         } else {
           this.resultMessage = '';
-          const nuevaNomenclatura: Nomenclatura = {
+          const nuevaNomenclatura = {
             codigo: data.codigo,
             determinacion: data.determinacion,
             resultado: 0,
@@ -110,15 +129,12 @@ export class CargarComponent {
       });
   }
 
-  /*****************************************************/
   valor_unitario: number = 0;
 
   obtenerValor(valor: string) {
     this.valor_unitario = parseFloat(valor);
     console.log(this.valor_unitario);
   }
-
-  valor_resultado: number = 0;
 
   actualizarValoresTotales() {
     for (let nomenclatura of this.nomenclaturas) {
@@ -130,7 +146,7 @@ export class CargarComponent {
     return this.valor_unitario * unidadBase;
   }
 
-  guardarResultado(nomenclatura: Nomenclatura, resultado: string) {
+  guardarResultado(nomenclatura: any, resultado: string) {
     nomenclatura.resultado = parseFloat(resultado);
     console.log('Guardar resultado:', nomenclatura);
   }
@@ -144,11 +160,24 @@ export class CargarComponent {
     this.resultadoService.guardarResultados(this.nomenclaturas)
       .then(() => {
         console.log('Todos los resultados han sido enviados al backend.');
-        this.ruta.navigate([`/detalles/${this.clienteId}`])
+
+        this.toastr.success(`Se han agreagdo ${this.nomenclaturas.length} resultados a la base de datos`);
+
+        this.ruta.navigate([`/ver/${this.clienteId}`]);
       })
       .catch(error => {
-        console.error('Error al enviar resultados al backend:', error)
+        console.error('Error al enviar resultados al backend:', error);
       });
   }
-}
 
+  async eliminarResultadoPorId(id: number) {
+    console.log('Este es el id del resultado a borrar', id);
+    try {
+      await this.resultService.eliminarResultadoPorId(id);
+      console.log('Resultado eliminado');
+      this.obtenerResultados(this.clienteId);
+    } catch (error) {
+      console.error('No se ha podido borrar resultado:', error);
+    }
+  }
+}

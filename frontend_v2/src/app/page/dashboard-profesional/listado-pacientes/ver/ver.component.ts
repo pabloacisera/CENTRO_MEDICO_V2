@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VerPacienteService } from './ver.service';
-import { CargarResultadosService } from '../../cargar-resultados/resultado.service';
+import { ResultadosService } from '../../cargar-resultados/resultado.service';
 import { DateFormatPipe } from '../../../../date-format.pipe';
 import { CommonModule } from '@angular/common';
+import { Crear_pdfService } from './crear_pdf.service';
 
 @Component({
   selector: 'app-ver',
@@ -15,13 +16,16 @@ import { CommonModule } from '@angular/common';
 export class VerComponent {
   userId!: number;
   clienteId!: number;
-  datosDeCliente: any= {};
-  resultados: any[] = []; 
+  datosDeCliente: any = {};
+  resultados: any[] = [];
   isLoading: boolean = false;
   valorSumar: number = 0
 
-  constructor(private route: ActivatedRoute, private readonly peticion: VerPacienteService,
-    private resultadosService: CargarResultadosService,
+  constructor(
+    private route: ActivatedRoute, 
+    private peticion: VerPacienteService,
+    private resultService: ResultadosService, 
+    private pdfService: Crear_pdfService
   ) { }
 
   ngOnInit(): void {
@@ -65,15 +69,15 @@ export class VerComponent {
     }
   }
 
-  sumarValorTotal(){
-    this.valorSumar = this.resultados.reduce((acc, item)=> acc + item.valorTotal, 0)
+  sumarValorTotal() {
+    this.valorSumar = this.resultados.reduce((acc, item) => acc + item.valorTotal, 0)
   }
 
   async obtenerResultados(clienteId?: number) {
     try {
       this.isLoading = true;
-      this.resultados = await this.resultadosService.findAllResultados(clienteId);
-      console.log('Resutlados por id',this.resultados)
+      this.resultados = await this.resultService.findAllResultados(clienteId);
+      console.log('Resutlados por id', this.resultados)
       this.sumarValorTotal();
       this.isLoading = false;
     } catch (error) {
@@ -83,15 +87,21 @@ export class VerComponent {
     }
   }
 
-  async eliminarResultadoPorId(id:number){
-    console.log('Este es el id del resultado a borrrar',id)
+  async eliminarResultadoPorId(id: number) {
+    console.log('Este es el id del resultado a borrrar', id)
     this.peticion.eliminarResultadoPorId(id)
-      .then((resonse)=>{
+      .then((resonse) => {
         console.log('resultado eliminado')
         this.obtenerResultados(this.clienteId)
       })
-      .catch((error)=>{
+      .catch((error) => {
         throw new Error('No se ha podido borrar resultado: ', error)
       })
+  }
+
+  /*********creacion de pdf********************* */
+
+  downloadPdf() {
+    this.pdfService.generatePdf(this.datosDeCliente, this.resultados, this.valorSumar);
   }
 }
