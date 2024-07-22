@@ -9,13 +9,15 @@ import { PrismaService } from 'src/prisma-service/prisma-service.service';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Login, LoginAdmin } from './dto/login-usuario.dto';
+import { JwtService } from '@nestjs/jwt';
+
 
 @Injectable()
 export class UsuarioService {
   jwtSecret = process.env.jwtSecret || 'other key';
 
   constructor(
-    private readonly servicio: PrismaService,
+    private readonly servicio: PrismaService, private readonly jwtService: JwtService
   ) {
     this.jwtSecret
     if (!this.jwtSecret) {
@@ -101,7 +103,8 @@ export class UsuarioService {
     }
 
     // Generar el token JWT
-    const token = jwt.sign({
+    
+    const token = this.jwtService.sign({
       id: usuarioEncontrado.id,
       nombre: usuarioEncontrado.nombre,
       email: usuarioEncontrado.email,

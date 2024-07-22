@@ -1,0 +1,119 @@
+<div class="mx-auto mt-10 card-container w-[70vw]">
+  <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg rounded-lg overflow-hidden">
+    <div class="p-6 flex items-center">
+      <!-- Información Principal -->
+      <div class="flex-1">
+        <span>Nombre y apellido:</span>
+        <div class="text-lg font-bold">{{ datosObtenidoDeLocalStorage?.nombre }}</div>
+        <span>Email: </span>
+        <div class="text-sm mt-1 font-bold">{{ datosObtenidoDeLocalStorage?.email }}</div>
+        <span>Teléfono:</span>
+        <div class="text-sm mt-1 font-bold">{{ datosObtenidoDeLocalStorage?.telefono }}</div>
+        <span>Fecha de creación:</span>
+        <div class="text-sm mt-1 font-bold">{{ datosObtenidoDeLocalStorage?.createdAt | dateFormat }}</div>
+      </div>
+
+      <!-- Tarjeta del Cliente -->
+      <div class="bg-white text-black p-4 rounded-lg flex flex-col items-center">
+        <span>Nº de Protocolo</span>
+        <div class="text-lg font-bold mt-2">{{ datosObtenidoDeLocalStorage?.protocolo }}</div>
+      </div>
+    </div>
+
+    <div class="bg-white text-black p-4 text-xs font-semibold grid grid-cols-2 gap-4">
+      <div class="flex justify-between">
+        <span>Fecha de Nacimiento:</span>
+        <span>{{ datosObtenidoDeLocalStorage?.nacimiento | dateFormat }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Edad:</span>
+        <span>{{ datosObtenidoDeLocalStorage?.edad }} años</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Dirección:</span>
+        <span>{{ datosObtenidoDeLocalStorage?.direccion }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Localidad:</span>
+        <span>{{ datosObtenidoDeLocalStorage?.localidad }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Seguridad Social:</span>
+        <span>{{ datosObtenidoDeLocalStorage?.seguridadSocial }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Observaciones:</span>
+        <span>{{ datosObtenidoDeLocalStorage?.obs }}</span>
+      </div>
+    </div>
+  </div>
+
+   <!-- Datos del Profesional -->
+   <div class="mt-6 bg-gray-100 shadow-lg rounded-lg overflow-hidden p-6">
+    <h2 class="text-xl font-bold mb-4 text-blue-600">Datos del Profesional</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col">
+        <span class="font-semibold text-gray-900">Nombre:</span>
+        <span class="mt-1 text-black">{{ datosUsuarioById?.nombre }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-semibold text-gray-900">Email:</span>
+        <span class="mt-1 text-black">{{ datosUsuarioById?.email }}</span>
+      </div>
+      <!-- Añade más campos según sea necesario -->
+    </div>
+  </div>
+
+ <!-- Indicaciones médicas -->
+<!-- Indicaciones médicas -->
+<div class="card rounded mt-3 text-black">
+  <p-tabView class="text-amber-950">
+    <p-tabPanel *ngFor="let indicacion of indicaciones" [header]="indicacion.titulo" class="text-black">
+      <p class="tab-content">
+        {{ indicacion.texto }}
+      </p>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+
+
+
+  <!-- Tabla de Resultados -->
+  <div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-bold mb-4">Resultados</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200 text-amber-800">
+        <thead>
+          <tr>
+            <th class="py-2 px-4 border-b border-gray-200 text-left">Código</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left">Determinación</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left">Resultado</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left">U.B</th>
+            <th class="py-2 px-4 border-b border-gray-200 text-left">Suma U.B</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let resultado of resultados">
+            <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.codigo }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.determinacion }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.resultado }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 text-black">{{ resultado.unidadBase }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 text-black">$ {{ resultado.valorTotal }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-4 text-xl font-semibold text-white">Valor Total: $ {{ valorSumar }}</p>
+  </div>
+
+  <div class="flex justify-center mt-6">
+    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="salir()">
+      Salir
+    </button>
+  </div>
+</div>
+
+
+
+

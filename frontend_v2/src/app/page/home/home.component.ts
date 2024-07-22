@@ -14,4 +14,8 @@ export class HomeComponent {
   enrutarProfesional(){
     this.ruta.navigate(['/logear'])
   }
+
+  enrutarPacientes(){
+    this.ruta.navigate(['/logear-paciente'])
+  }
 }

@@ -14,6 +14,8 @@ import { NuevaIndicacionComponent } from './page/dashboard-profesional/perfil/nu
 import { VerComponent } from './page/dashboard-profesional/listado-pacientes/ver/ver.component';
 import { EditarComponent } from './page/dashboard-profesional/listado-pacientes/editar/editar.component';
 import { CargarComponent } from './page/dashboard-profesional/listado-pacientes/cargar/cargar.component';
+import { AutenticacionPacientesComponent } from './page/page-pacientes/login/autenticacion-pacientes/autenticacion-pacientes.component';
+import { DashboardPacComponent } from './page/page-pacientes/dashboard-pacientes/dashboard-pac/dashboard-pac.component';
 
 export const routes: Routes = [
 
@@ -37,6 +39,9 @@ export const routes: Routes = [
     {path: 'editar/:id',canActivate: [protectedRouteGuard], component: EditarComponent},
     {path: 'cargar/:id',canActivate: [protectedRouteGuard], component: CargarComponent},
 
+    /**accesos de pacientes */
+    {path: 'logear-paciente', component: AutenticacionPacientesComponent},
+    { path: 'dashboard-paciente', canActivate: [protectedRouteGuard], component: DashboardPacComponent },
+
     /**paginas de administrativos */
-    { path: '**', redirectTo: '/home' }
 ];

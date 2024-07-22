@@ -20,6 +20,6 @@
     }
   ],
   "editor.fontFamily": "monospace",
-  "editor.fontSize": 15,
+  "editor.fontSize": 13,
   "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
