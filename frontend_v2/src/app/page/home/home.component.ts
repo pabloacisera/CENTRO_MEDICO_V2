@@ -18,4 +18,8 @@ export class HomeComponent {
   enrutarPacientes(){
     this.ruta.navigate(['/logear-paciente'])
   }
+
+  enrutarAdmin(){
+    this.ruta.navigate(['/logear-admin'])
+  }
 }

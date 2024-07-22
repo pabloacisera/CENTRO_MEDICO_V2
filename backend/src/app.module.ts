@@ -8,9 +8,10 @@ import { NomenclaturaModule } from './nomenclatura/nomenclatura.module';
 import { ResultadoModule } from './resultado/resultado.module';
 import { IndicacionesModule } from './indicaciones/indicaciones.module';
 import { AutenticacionPacienteModule } from './autenticacion-paciente/autenticacion-paciente.module';
+import { AutenticacionAdministrativosModule } from './autenticacion-administrativos/autenticacion-administrativos.module';
 
 @Module({
-  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule],
+  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

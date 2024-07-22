@@ -1,5 +1,4 @@
 <div class="flex items-center space-x-2 mb-4 ml-3">
-  <i class="pi pi-arrow-left text-2xl"></i>
   <span class="text-lg font-semibold text-white" routerLink="/home">volver</span>
 </div>
 
@@ -12,14 +11,14 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" [formGroup]="formularioDeRegistro" (ngSubmit)="onSubmit()">
       <div>
-        <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+        <label for="nombre" class="block text-sm font-medium leading-6 text-white">Nombre</label>
         <div class="mt-2">
           <input id="nombre" name="nombre" type="text" autocomplete="nombre" required formControlName="nombre" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
         </div>
       </div>
       
       <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+        <label for="email" class="block text-sm font-medium leading-6 text-white">Email</label>
         <div class="mt-2">
           <input id="email" name="email" type="email" autocomplete="email" required formControlName="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
         </div>
@@ -27,7 +26,7 @@
 
       <div>
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
+          <label for="password" class="block text-sm font-medium leading-6 text-white">Contraseña</label>
           <div class="text-sm">
             <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Olvidaste tu contraseña?</a>
           </div>
@@ -38,7 +37,7 @@
       </div>
 
       <div>
-        <label for="rol" class="block text-sm font-medium leading-6 text-gray-900">Rol</label>
+        <label for="rol" class="block text-sm font-medium leading-6 text-white">Rol</label>
         <div class="mt-2">
           <select id="rol" name="rol" formControlName="rol" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             <option value="profesional">Profesional</option>
@@ -49,7 +48,7 @@
       </div>
 
       <div>
-        <label for="area" class="block text-sm font-medium leading-6 text-gray-900">Área</label>
+        <label for="area" class="block text-sm font-medium leading-6 text-white">Área</label>
         <div class="mt-2">
           <select id="area" name="area" formControlName="area" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             <option value="analisis">Análisis</option>

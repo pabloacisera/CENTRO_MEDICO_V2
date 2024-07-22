@@ -16,6 +16,9 @@ import { EditarComponent } from './page/dashboard-profesional/listado-pacientes/
 import { CargarComponent } from './page/dashboard-profesional/listado-pacientes/cargar/cargar.component';
 import { AutenticacionPacientesComponent } from './page/page-pacientes/login/autenticacion-pacientes/autenticacion-pacientes.component';
 import { DashboardPacComponent } from './page/page-pacientes/dashboard-pacientes/dashboard-pac/dashboard-pac.component';
+import { LogearAdminComponent } from './page/page-administrativos/logeo-admin/logear/logear.component';
+import { DashboardAdminComponent } from './page/page-administrativos/dashboard-admin/dashboard-admin.component';
+import { authGuardAdmin } from './page/page-administrativos/logeo-admin/logear/auth.logear-admin.guard';
 
 export const routes: Routes = [
 
@@ -44,4 +47,6 @@ export const routes: Routes = [
     { path: 'dashboard-paciente', canActivate: [protectedRouteGuard], component: DashboardPacComponent },
 
     /**paginas de administrativos */
+    {path: 'logear-admin', component: LogearAdminComponent},
+    {path: 'dashboard-admin', canActivate: [authGuardAdmin], component: DashboardAdminComponent}
 ];
