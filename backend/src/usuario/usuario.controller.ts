@@ -11,6 +11,7 @@ import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Login, LoginAdmin } from './dto/login-usuario.dto';
+import { get } from 'http';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -34,6 +35,11 @@ export class UsuarioController {
   @Get()
   findAll() {
     return this.usuarioService.findAll();
+  }
+
+  @Get('forAdmin')
+  findAllForAdmin() {
+    return this.usuarioService.FindAllForAdmin()
   }
 
   @Get(':id')

@@ -26,6 +26,11 @@ export class ClienteController {
     return this.clienteService.findAll(Number(userId));
   }
 
+  @Get('forAdmin')
+  findAllForAdmin(){
+    return this.clienteService.findAllformAdmin()
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string, @Query('userId') userId: number) {
     return this.clienteService.findOne(+id, Number(userId));

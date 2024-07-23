@@ -1,15 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
+  standalone: true,
+  imports: [RouterLink],
   selector: 'app-dashboard-admin',
   templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.css']
 })
 export class DashboardAdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: Router) { }
 
   ngOnInit() {
   }
 
+  enrutarAFicha(){
+    this.route.navigate(['/admin-nuevo-pac'])
+  }
+
+  enrutarAturno(){
+    this.route.navigate(['/admin-turno'])
+  }
 }

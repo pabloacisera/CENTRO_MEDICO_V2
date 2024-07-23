@@ -9,9 +9,10 @@ import { ResultadoModule } from './resultado/resultado.module';
 import { IndicacionesModule } from './indicaciones/indicaciones.module';
 import { AutenticacionPacienteModule } from './autenticacion-paciente/autenticacion-paciente.module';
 import { AutenticacionAdministrativosModule } from './autenticacion-administrativos/autenticacion-administrativos.module';
+import { SistTurnosModule } from './sist-turnos/sist-turnos.module';
 
 @Module({
-  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule],
+  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule, SistTurnosModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

@@ -47,6 +47,10 @@ export class ClienteService {
     });
   }
 
+  async findAllformAdmin(){
+    return this.prisma.cliente.findMany()
+  }
+
   async findOne(id: number, userId: number) {
     return this.prisma.cliente.findFirst({
       where: {

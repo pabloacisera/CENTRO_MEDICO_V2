@@ -19,6 +19,8 @@ import { DashboardPacComponent } from './page/page-pacientes/dashboard-pacientes
 import { LogearAdminComponent } from './page/page-administrativos/logeo-admin/logear/logear.component';
 import { DashboardAdminComponent } from './page/page-administrativos/dashboard-admin/dashboard-admin.component';
 import { authGuardAdmin } from './page/page-administrativos/logeo-admin/logear/auth.logear-admin.guard';
+import { NuevoPacienteComponent } from './page/page-administrativos/nuevo-paciente/nuevo-paciente.component';
+import { SistemaTurnosComponent } from './page/sistema-turnos/sistema-turnos.component';
 
 export const routes: Routes = [
 
@@ -48,5 +50,7 @@ export const routes: Routes = [
 
     /**paginas de administrativos */
     {path: 'logear-admin', component: LogearAdminComponent},
-    {path: 'dashboard-admin', canActivate: [authGuardAdmin], component: DashboardAdminComponent}
+    {path: 'dashboard-admin', canActivate: [authGuardAdmin], component: DashboardAdminComponent},
+    {path: 'admin-nuevo-pac', canActivate: [authGuardAdmin], component: NuevoPacienteComponent},
+    {path: 'admin-turno', canActivate: [authGuardAdmin], component: SistemaTurnosComponent},
 ];

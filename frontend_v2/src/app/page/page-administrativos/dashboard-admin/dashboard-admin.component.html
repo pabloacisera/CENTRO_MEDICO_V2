@@ -1,3 +1,9 @@
-<p>
-  dashboard-admin works!
-</p>
+<div class="flex justify-center items-center min-h-screen">
+  <div class="bg-white shadow-lg rounded-lg p-6 max-w-lg w-full">
+    <h2 class="text-2xl font-bold mb-4 text-center">Panel Administrativo</h2>
+    <div class="space-y-4">
+      <a (click)="enrutarAFicha()" class="block text-center py-3 px-4 bg-teal-500 text-white rounded-lg shadow hover:bg-teal-600 transition">Crear Ficha</a>
+      <a (click)="enrutarAturno()" class="block text-center py-3 px-4 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">Crear Turno</a>
+    </div>
+  </div>
+</div>

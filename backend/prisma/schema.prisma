@@ -22,6 +22,7 @@ model Usuario {
   password String
   clientes Cliente[]
   indicaciones Indicacion[]
+  Turnos Turno[]
 }
 
 model Cliente {
@@ -44,6 +45,8 @@ model Cliente {
   @@index([userId])
 
   resultados      Resultado[]
+  Turnos Turno[]
+
 }
 
 model Nomenclatura {
@@ -72,4 +75,13 @@ model Indicacion {
   usuario Usuario  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model Turno {
+  id             Int       @id @default(autoincrement())
+  fecha          DateTime
+  clienteId      Int
+  userId         Int
+  Cliente        Cliente  @relation(fields: [clienteId], references: [id])
+  Usuario        Usuario @relation(fields: [userId], references: [id])
 }

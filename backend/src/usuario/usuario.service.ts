@@ -115,7 +115,15 @@ export class UsuarioService {
   }
 
   async findAll(): Promise<any> {
-    return await this.servicio.usuario.findMany();
+    return await this.servicio.usuario.findMany({
+      where: {
+        rol: 'profesional'
+      }
+    });
+  }
+
+  async FindAllForAdmin(): Promise<any>{
+    return await this.servicio.usuario.findMany()
   }
 
   async findOne(id: number): Promise<any> {

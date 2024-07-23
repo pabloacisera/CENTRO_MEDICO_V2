@@ -1,0 +1,61 @@
+<div class="card mx-auto">
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-4">Crear Turno</h1>
+    <form class="space-y-4" (submit)="crearTurno(fecha.value, clienteSelect.value, usuarioSelect.value)">
+      <div>
+        <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha y hora:</label>
+        <input type="datetime-local" id="fecha" name="fecha" #fecha required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+      </div>
+      <div>
+        <label for="clienteSelect" class="block text-sm font-medium text-gray-700">Seleccionar Cliente:</label>
+        <select id="clienteSelect" name="clienteSelect" #clienteSelect required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+          <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nombre }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="usuarioSelect" class="block text-sm font-medium text-gray-700">Seleccionar Profesional:</label>
+        <select id="usuarioSelect" name="usuarioSelect" #usuarioSelect required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+          <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nombre }}</option>
+        </select>
+      </div>
+      <button type="submit"
+        class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        Crear Turno
+      </button>
+    </form>
+    <p *ngIf="mensaje" class="mt-4 text-red-600">{{ mensaje }}</p>
+    <div *ngIf="sugerencias.length > 0" class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Sugerencias:</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li *ngFor="let sugerencia of sugerencias">{{ sugerencia }}</li>
+      </ul>
+    </div>
+
+    <h1 class="text-2xl font-bold mt-8 mb-4">Turnos</h1>
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Fecha
+          </th>
+          <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Cliente
+          </th>
+          <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Profesional
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let turno of turnos">
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ turno.fecha }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ getClienteNombre(turno.clienteId) }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ getUsuarioNombre(turno.userId) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
