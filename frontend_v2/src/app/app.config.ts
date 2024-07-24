@@ -12,6 +12,10 @@ import { SharedModule } from './page/dashboard-profesional/listado-pacientes/sha
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from './date-format.pipe';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { config } from 'rxjs';
+
+const socketIoConfig: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes),
@@ -24,10 +28,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(DateFormatPipe),
     provideAnimations(),
     provideToastr({
-      timeOut:3000,
+      timeOut:5000,
       preventDuplicates:true,
       positionClass: 'toast-botton-right'
     }),
     provideHttpClient(withInterceptors([tokenInterceptorInterceptor])),
+    importProvidersFrom(SocketIoModule.forRoot(socketIoConfig)),
   ]
 };

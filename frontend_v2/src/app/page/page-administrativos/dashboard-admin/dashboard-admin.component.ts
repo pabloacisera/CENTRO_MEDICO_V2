@@ -22,4 +22,9 @@ export class DashboardAdminComponent implements OnInit {
   enrutarAturno(){
     this.route.navigate(['/admin-turno'])
   }
+
+  enrutarASalida(){
+    localStorage.removeItem('userData')
+    this.route.navigate(['/home'])
+  }
 }

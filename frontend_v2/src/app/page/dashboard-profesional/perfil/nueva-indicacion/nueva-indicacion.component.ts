@@ -55,4 +55,8 @@ export class NuevaIndicacionComponent implements OnInit {
       throw error;
     }
   }
+
+  volver(){
+    this.router.navigate(['/perfil'])
+  }
 }

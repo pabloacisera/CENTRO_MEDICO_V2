@@ -76,6 +76,10 @@ export class SistTurnosService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} sistTurno`;
+    return this.prisma.turno.delete({
+      where: {
+        id: id
+      }
+    })
   }
 }

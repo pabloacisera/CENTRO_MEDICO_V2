@@ -47,6 +47,7 @@ model Cliente {
   resultados      Resultado[]
   Turnos Turno[]
 
+  presente          Boolean  @default(false)
 }
 
 model Nomenclatura {

@@ -1,8 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SistemaTurnosService } from './sistema-turnos.service';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Turnos } from './turnos';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { ToastrService } from 'ngx-toastr';
+import { TableModule } from 'primeng/table';
+import { Router } from '@angular/router';
+
+export interface Turnos {
+  id?: number;
+  fecha: string; // Fecha en formato ISO
+  clienteId: number;
+  userId: number;
+}
+
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 export interface Usuario {
   id: number;
@@ -15,98 +32,123 @@ export interface Cliente {
 }
 
 @Component({
-  selector: 'app-sistema-turnos',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],
+  selector: 'app-sistema-turnos',
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, PaginatorModule, TableModule],
   templateUrl: './sistema-turnos.component.html',
-  styleUrl: './sistema-turnos.component.css'
+  styleUrls: ['./sistema-turnos.component.css'],
+  providers: [DatePipe]
 })
-export class SistemaTurnosComponent {
+export class SistemaTurnosComponent implements OnInit {
   turnos: Turnos[] = [];
   usuarios: Usuario[] = [];
   clientes: Cliente[] = [];
   mensaje: string = '';
-  sugerencias: string[] = [];
+  isLoading: boolean = false;
+  filteredTurnos: Turnos[] = [];
+  first: number = 0;
+  rows: number = 16;
+  clienteIdSeleccionado: number | null = null;
+  clienteId: number = 0
+  sortedTurnos: any[] = [];
+  sortOrder: number = 1; // 1 para ascendente, -1 para descendente
+  sortField: string = '';
 
-  constructor(private turnosService: SistemaTurnosService) { }
+
+  constructor(private turnosService: SistemaTurnosService, private datePipe: DatePipe,
+    private toastr: ToastrService, private ruta: Router
+  ) { }
 
   ngOnInit(): void {
+    this.recolectarFuncionesYMetodos()
+  }
+
+  recolectarFuncionesYMetodos(){
     this.obtenerUsuarios();
     this.obtenerClientes();
     this.obtenerTurnos();
+    this.sortedTurnos = [...this.turnos];
   }
 
-  crearTurno(fechaStr: string, clienteIdStr: string, userIdStr: string): void {
-    const fecha = new Date(fechaStr);
-    const clienteId = parseInt(clienteIdStr, 10);
-    const userId = parseInt(userIdStr, 10);
-
-    const fechaISO = fecha.toISOString(); // Convertir a cadena en formato ISO
-    const nuevoTurno: Turnos = {
-      fecha: fechaISO,
-      clienteId: clienteId,
-      userId: userId
-    };
-
-    this.turnosService.crearTurno(nuevoTurno).subscribe(
-      response => {
-        this.mensaje = 'Turno creado con éxito';
-        console.log('Message exitous: ', this.mensaje);
-        this.obtenerTurnos();
-      },
-      error => {
-        if (error.status === 409) { // Conflict
-          this.mensaje = 'Turno no disponible';
-          console.log('Message: ', this.mensaje);
-          this.sugerencias = error.error.sugerencias || [];
-          console.log('sugerencias: ', this.sugerencias);
-        } else {
-          this.mensaje = 'Error al crear el turno';
-        }
-      }
-    );
+  /**paginador */
+  onPageChange(event: PaginatorState) {
+    this.first = event.first;
+    this.rows = event.rows;
   }
-
-  obtenerTurnos(): void {
-    this.turnosService.obtenerTurno().subscribe(
-      (turnos: Turnos[]) => {
-        this.turnos = turnos.map(turno => ({
-          ...turno,
-          fecha: this.formatearFecha(turno.fecha)
-        }));
-        console.log('Turnos creados: ', this.turnos);
-      },
-      error => {
-        console.error('Error al obtener turnos', error);
-      }
-    );
-  }
+  /************/
 
   obtenerUsuarios(): void {
-    this.turnosService.obtenerUsuarios().subscribe(
-      (usuarios: Usuario[]) => {
+    this.turnosService.obtenerUsuarios().subscribe({
+      next: (usuarios) => {
         this.usuarios = usuarios;
-        console.log('usuarios obtenidos: ', this.usuarios);
+        console.log('Datos del usuario: ', this.usuarios)
       },
-      error => {
+      error: (error) => {
         console.error('Error al obtener usuarios', error);
       }
-    );
+    });
   }
 
   obtenerClientes(): void {
-    this.turnosService.obtenerClientes().subscribe(
-      (clientes: Cliente[]) => {
+    this.turnosService.obtenerClientes().subscribe({
+      next: (clientes) => {
         this.clientes = clientes;
-        console.log('clientes obtenidos: ', this.clientes);
+        console.log('Datos del cliente: ', this.clientes)
       },
-      error => {
-        console.log('Error al obtener clientes', error);
+      error: (error) => {
+        console.error('Error al obtener clientes', error);
       }
-    );
+    });
   }
 
-  // Estos métodos se pueden eliminar si no se utilizan en otro lugar
+  obtenerTurnos(): void {
+    this.isLoading = true;
+    this.turnosService.obtenerTurno().subscribe({
+      next: (turnos) => {
+        this.turnos = turnos;
+        this.filteredTurnos = turnos;
+        this.sortedTurnos = [...turnos];
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al obtener turnos', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  crearTurno(fechaStr: string, clienteIdStr: string, userIdStr: string): void {
+    const fecha = new Date(fechaStr).toISOString();
+    const clienteId = parseInt(clienteIdStr, 10);
+    const userId = parseInt(userIdStr, 10);
+
+    if (isNaN(clienteId) || isNaN(userId)) {
+      this.mensaje = 'Datos inválidos. Por favor, verifique los campos.';
+      this.ocultarMensaje();
+      return;
+    }
+
+    this.turnosService.crearTurno({ fecha, clienteId, userId }).subscribe({
+      next: (nuevoTurno) => {
+        this.turnos.push(nuevoTurno);
+        this.toastr.success('Se ha creado un nuevo turno', 'Actualizacion de turno')
+        this.mensaje = 'Turno creado exitosamente.';
+        this.ocultarMensaje();
+      },
+      error: (error) => {
+        this.mensaje = 'Error al crear el turno, el mismo ya se encuentra ocupado. Inténtelo de nuevo, con una fecha u hora diferente';
+        this.ocultarMensaje();
+      }
+    });
+  }
+
+  /**ocultar mensaje */
+  ocultarMensaje(): void {
+    setTimeout(() => {
+      this.mensaje = '';
+    }, 5000); 
+  }
+
   getClienteNombre(clienteId: number): string {
     const cliente = this.clientes.find(c => c.id === clienteId);
     return cliente ? cliente.nombre : 'Desconocido';
@@ -117,16 +159,114 @@ export class SistemaTurnosComponent {
     return usuario ? usuario.nombre : 'Desconocido';
   }
 
-  formatearFecha(fechaStr: string): string {
-    const date = new Date(fechaStr);
+  /*******************Macar presentcia*************************** */
+  
+  guardarClienteId(clienteId: number) {
+    this.clienteIdSeleccionado = clienteId;
+    this.clienteId = this.clienteIdSeleccionado
+    console.log('ID del cliente guardado:', this.clienteId);
+  }
+
+  marcarPresenciaPaciente(clienteId: number) {
+    this.turnosService.marcarPresencia(clienteId).subscribe(response => {
+      console.log('Presencia marcada para el cliente con ID:', clienteId);
+    });
+  }
+
+  /*********************ordenar tabla*************************************** */
+
+  sortData(field: string) {
+    this.sortOrder = this.sortField === field ? -this.sortOrder : 1;
+    this.sortField = field;
+    this.sortedTurnos = this.sortedTurnos.sort((a, b) => {
+      let valueA = this.getFieldValue(a, field);
+      let valueB = this.getFieldValue(b, field);
+      return (valueA < valueB ? -1 : 1) * this.sortOrder;
+    });
+  }
+
+  getFieldValue(item: any, field: string) {
+    switch(field) {
+      case 'fecha': return new Date(item.fecha).getTime();
+      case 'clienteId': return this.getClienteNombre(item.clienteId).toLowerCase();
+      case 'userId': return this.getUsuarioNombre(item.userId).toLowerCase();
+      default: return '';
+    }
+  }
+
+  /**************************filtros de tabla**********************************/
+
+
+  // Dentro de la clase SistemaTurnosComponent
+
+// Aplicar filtro por mes
+filterByMonth(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const month = input.value;
+
+  if (month) {
+    this.sortedTurnos = this.turnos.filter(turno => {
+      const turnoDate = new Date(turno.fecha);
+      const turnoMonth = turnoDate.toISOString().slice(0, 7);
+      return turnoMonth === month;
+    });
+  } else {
+    this.sortedTurnos = [...this.turnos]; // Restablecer a todos los turnos
+  }
+}
+
+// Aplicar filtro por día
+filterByDay(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const day = input.value;
+
+  if (day) {
+    this.sortedTurnos = this.turnos.filter(turno => {
+      const turnoDate = new Date(turno.fecha).toISOString().split('T')[0];
+      return turnoDate === day;
+    });
+  } else {
+    this.sortedTurnos = [...this.turnos]; // Restablecer a todos los turnos
+  }
+}
+
+
+  private getStartOfWeek(date: Date): Date {
+    const start = new Date(date);
+    const day = start.getDay();
+    const diff = start.getDate() - day + (day === 0 ? -6 : 1);
+    start.setDate(diff);
+    return start;
+  }
+
+  formatFecha(fecha: string): string {
+    const date = new Date(fecha);
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
+      hour: '2-digit',
+      minute: '2-digit'
     };
-    return date.toLocaleString('es-ES', options);
+    return new Intl.DateTimeFormat('es-ES', options).format(date);
+  }
+
+  cancelarPorId(id: number) {
+    console.log('Id para cancelar: ', id);
+    try {
+      const res = this.turnosService.borrarTurno(id);
+      this.obtenerTurnos()
+      this.toastr.warning('Se ha cancelado un turno', 'Actualizacion de turno');
+    } catch (error) {
+      console.log(error)
+    } 
+  }
+
+  volver(){
+    this.ruta.navigate(['/dashboard-admin'])
   }
 }
+
+
+
+

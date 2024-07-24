@@ -10,10 +10,11 @@ import { IndicacionesModule } from './indicaciones/indicaciones.module';
 import { AutenticacionPacienteModule } from './autenticacion-paciente/autenticacion-paciente.module';
 import { AutenticacionAdministrativosModule } from './autenticacion-administrativos/autenticacion-administrativos.module';
 import { SistTurnosModule } from './sist-turnos/sist-turnos.module';
+import { NotificacionesGateway } from './cliente/notificaciones.gateway';
 
 @Module({
   imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule, SistTurnosModule],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, NotificacionesGateway],
 })
 export class AppModule {}

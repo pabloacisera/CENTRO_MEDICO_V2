@@ -36,6 +36,11 @@ export class ClienteController {
     return this.clienteService.findOne(+id, Number(userId));
   }
 
+  @Patch(':id/presencia')
+  marcarPresencia(@Param('id') id: number, @Body() body: { presente: boolean }) {
+    return this.clienteService.marcarPresencia(id, body.presente);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
