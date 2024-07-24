@@ -7,7 +7,7 @@
   <p-progressSpinner ariaLabel="loading" />
 </div>
 <div class="bg-white shadow-md rounded-lg p-6 mb-4 w-full max-w-xl mx-auto" *ngIf="!loadingUsuario">
-  <h2 class="text-2xl font-bold mb-4">Datos del Usuario</h2>
+  <h2 class="text-2xl font-bold mb-4 text-gray-900">Datos del Usuario</h2>
   <div *ngFor="let dato of datosDeUsuario" class="text-black">
     <p><strong>Rol:</strong> {{ dato.rol }}</p>
     <p><strong>Area:</strong> {{ dato.area }}</p>
@@ -27,7 +27,7 @@
   <p-progressSpinner ariaLabel="loading" />
 </div>
 <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-xl mx-auto" *ngIf="!loadingIndicaciones">
-  <h2 class="text-2xl font-bold mb-4">Indicaciones</h2>
+  <h2 class="text-2xl font-bold mb-4 text-gray-900">Indicaciones</h2>
   <div *ngFor="let indicacion of indicacionesBackend" class="border-b border-gray-200 pb-4 mb-4">
     <div class="flex justify-between items-center">
       <div>

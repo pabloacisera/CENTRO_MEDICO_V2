@@ -41,20 +41,23 @@ export const routes: Routes = [
     { path: 'nueva-indicac', canActivate: [protectedRouteGuard], component: NuevaIndicacionComponent },
 
     /*paginas de pacientes*/
-    {path: 'ver/:id',canActivate: [protectedRouteGuard], component: VerComponent},
-    {path: 'editar/:id',canActivate: [protectedRouteGuard], component: EditarComponent},
-    {path: 'cargar/:id',canActivate: [protectedRouteGuard], component: CargarComponent},
+    { path: 'ver/:id', canActivate: [protectedRouteGuard], component: VerComponent },
+    { path: 'editar/:id', canActivate: [protectedRouteGuard], component: EditarComponent },
+    { path: 'cargar/:id', canActivate: [protectedRouteGuard], component: CargarComponent },
 
     /**accesos de pacientes */
-    {path: 'logear-paciente', component: AutenticacionPacientesComponent},
+    { path: 'logear-paciente', component: AutenticacionPacientesComponent },
     { path: 'dashboard-paciente', canActivate: [protectedRouteGuard], component: DashboardPacComponent },
 
     /**paginas de administrativos */
-    {path: 'logear-admin', component: LogearAdminComponent},
-    {path: 'dashboard-admin', canActivate: [authGuardAdmin], component: DashboardAdminComponent},
-    {path: 'admin-nuevo-pac', canActivate: [authGuardAdmin], component: NuevoPacienteComponent},
-    {path: 'admin-turno', canActivate: [authGuardAdmin], component: SistemaTurnosComponent},
+    { path: 'logear-admin', component: LogearAdminComponent },
+    { path: 'dashboard-admin', canActivate: [authGuardAdmin], component: DashboardAdminComponent },
+    { path: 'admin-nuevo-pac', canActivate: [authGuardAdmin], component: NuevoPacienteComponent },
+    { path: 'admin-turno', canActivate: [authGuardAdmin], component: SistemaTurnosComponent },
 
     /**ruta de testeo */
-    {path: 'test', component:TestComponentComponent}
+    { path: 'test', component: TestComponentComponent },
+
+    /** Ruta de redirección para rutas desconocidas */
+    { path: '**', redirectTo: '/home' }
 ];

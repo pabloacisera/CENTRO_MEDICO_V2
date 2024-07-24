@@ -14,12 +14,13 @@ import { Crear_pdfService } from './crear_pdf.service';
   styleUrl: './ver.component.css'
 })
 export class VerComponent {
-  userId!: number;
-  clienteId!: number;
-  datosDeCliente: any = {};
-  resultados: any[] = [];
-  isLoading: boolean = false;
+  userId!: number
+  clienteId!: number
+  datosDeCliente: any = {}
+  resultados: any[] = []
+  isLoading: boolean = false
   valorSumar: number = 0
+  userData: any = {}
 
   constructor(
     private route: ActivatedRoute, 
@@ -36,8 +37,12 @@ export class VerComponent {
     const userData = localStorage.getItem('userData');
     if (userData) {
       const userDataObj = JSON.parse(userData);
+      this.userData = userDataObj;
+      console.log('Datos de usuario: ', this.userData);
       this.userId = userDataObj.id;
       console.log('Id del usuario: ', this.userId);
+    } else {
+      console.error('No se encontraron datos de usuario en localStorage.');
     }
   }
 
@@ -102,6 +107,7 @@ export class VerComponent {
   /*********creacion de pdf********************* */
 
   downloadPdf() {
-    this.pdfService.generatePdf(this.datosDeCliente, this.resultados, this.valorSumar);
-  }
+    // Verifica que estás pasando los parámetros en el orden correcto
+    this.pdfService.generatePdf(this.datosDeCliente, this.resultados, this.valorSumar, this.userData);
+  }  
 }

@@ -25,9 +25,8 @@ export class Crear_pdfService {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-  
 
-  generatePdf(datosDeCliente: any, resultados: any[], valorSumar: number) {
+  generatePdf(datosDeCliente: any, resultados: any[], valorSumar: number, userData: any) {
     const docDefinition = {
       content: [
         {
@@ -44,38 +43,46 @@ export class Crear_pdfService {
           ]
         },
         {
-          text: `Informe de Resultados`,
+          text: 'Informe de Resultados',
           style: 'reportTitle',
           margin: [0, 10, 0, 20]
         },
         {
-          text: `Paciente: ${datosDeCliente.nombre}`,
-          style: 'patientInfo'
-        },
-        {
-          text: `Protocolo: ${datosDeCliente.protocolo}`,
-          style: 'patientInfo',
-          margin: [0, 0, 0, 10]
-        },
-        // Datos del cliente
-        {
-          style: 'tableExample',
-          table: {
-            body: [
-              ['Fecha de Nacimiento', this.formatDate(datosDeCliente.nacimiento)],
-              ['Edad', datosDeCliente.edad],
-              ['Teléfono', datosDeCliente.telefono],
-              ['Email', datosDeCliente.email],
-              ['Dirección', datosDeCliente.direccion],
-              ['Localidad', datosDeCliente.localidad],
-              ['Seguridad Social', datosDeCliente.seguridadSocial],
-              ['Observaciones', datosDeCliente.obs]
-            ]
-          }
+          columns: [
+            {
+              width: '50%',
+              stack: [
+                { text: `Paciente: ${datosDeCliente.nombre}`, style: 'patientInfo' },
+                { text: `Protocolo: ${datosDeCliente.protocolo}`, style: 'patientInfo' },
+                { text: `Fecha de Nacimiento: ${this.formatDate(datosDeCliente.nacimiento)}`, style: 'patientInfo' },
+                { text: `Edad: ${datosDeCliente.edad}`, style: 'patientInfo' },
+                { text: `Teléfono: ${datosDeCliente.telefono}`, style: 'patientInfo' }
+              ]
+            },
+            {
+              width: '50%',
+              stack: [
+                { text: `Email: ${datosDeCliente.email}`, style: 'patientInfo' },
+                { text: `Dirección: ${datosDeCliente.direccion}`, style: 'patientInfo' },
+                { text: `Localidad: ${datosDeCliente.localidad}`, style: 'patientInfo' },
+                { text: `Seguridad Social: ${datosDeCliente.seguridadSocial}`, style: 'patientInfo' },
+                { text: `Observaciones: ${datosDeCliente.obs}`, style: 'patientInfo' }
+              ]
+            }
+          ],
+          margin: [0, 0, 0, 20]
         },
         { text: `Creado el: ${this.formatDate(datosDeCliente.createdAt)}`, style: 'subheader' },
+        { text: 'Profesional Interviniente', style: 'header', margin: [0, 20, 0, 10] },
+        {
+          stack: [
+            { text: `Nombre: ${userData.nombre}`, style: 'professionalInfo' },
+            { text: `Área: ${userData.area}`, style: 'professionalInfo' },
+            { text: `Email: ${userData.email}`, style: 'professionalInfo' }
+          ],
+          margin: [0, 0, 0, 20]
+        },
         { text: 'Resultados', style: 'header', margin: [0, 20, 0, 10] },
-        // Resultados
         {
           style: 'tableExample',
           table: {
@@ -91,7 +98,23 @@ export class Crear_pdfService {
             ]
           }
         },
-        { text: `Valor Total: $ ${valorSumar}`, style: 'total' }
+        { text: `Valor Total: $ ${valorSumar}`, style: 'total' },
+        {
+          margin: [0, 20, 0, 0],
+          alignment: 'right',
+          columns: [
+            {
+              text: '',
+              width: '*'
+            },
+            {
+              text: 'Firma del Profesional',
+              style: 'signature',
+              alignment: 'center',
+              margin: [0, 0, 0, 10]
+            }
+          ]
+        }
       ],
       styles: {
         institutionName: {
@@ -122,6 +145,10 @@ export class Crear_pdfService {
           bold: true,
           margin: [0, 10, 0, 5]
         },
+        professionalInfo: {
+          fontSize: 14,
+          margin: [0, 0, 0, 5]
+        },
         tableExample: {
           margin: [0, 5, 0, 15]
         },
@@ -129,10 +156,17 @@ export class Crear_pdfService {
           fontSize: 14,
           bold: true,
           margin: [0, 10, 0, 5]
+        },
+        signature: {
+          fontSize: 14,
+          margin: [0, 40, 0, 0],
+          border: [true, true, false, false],
+          borderColor: 'black',
+          borderWidth: 1
         }
       }
-    };
-
+    }
     pdfMake.createPdf(docDefinition).open();
   }
 }
+

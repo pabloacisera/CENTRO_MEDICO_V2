@@ -41,7 +41,7 @@
     <button (click)="obtenerValor(valor.value)"
         class="w-32 px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">Guardar</button>
     <div class="mt-4">
-        <p class="text-red-950"><strong>Valor de U.B cargado:</strong> {{ valor_unitario }}</p>
+        <p class="text-red-950"><strong>Valor de U.B cargado:</strong>$ {{ valor_unitario }}</p>
     </div>
 </div>
 
@@ -73,11 +73,11 @@
         <table class="w-full bg-white shadow-md rounded-lg overflow-hidden mb-4">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-600">Código</th>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-600">Determinación</th>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-600">Resultado</th>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-600">U.B</th>
-                    <th class="px-4 py-2 text-left font-semibold text-gray-600">Valor</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Código</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Determinación</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Resultado</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-900">U.B</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Valor</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,7 +88,7 @@
                             class=" text-black w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </td>
                     <td class="px-4 py-2 text-black">{{ nomenclatura.unidadBase }}</td>
-                    <td class="px-4 py-2 text-black">{{ nomenclatura.valorTotal }}</td>
+                    <td class="px-4 py-2 text-black">$ {{ nomenclatura.valorTotal }}</td>
                 </tr>
             </tbody>
         </table>

@@ -3,7 +3,13 @@ import { Server, Socket } from 'socket.io';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: 'http://localhost:4200', // Permite solicitudes desde este origen
+    methods: ['GET', 'POST'],        // Métodos permitidos
+    credentials: true                // Permite enviar cookies y headers de autenticación
+  }
+})
 export class NotificacionesGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('NotificacionesGateway');
@@ -24,4 +30,5 @@ export class NotificacionesGateway implements OnGatewayInit, OnGatewayConnection
     this.server.to(`profesional-${userId}`).emit('notification', mensaje);
   }
 }
+
 
