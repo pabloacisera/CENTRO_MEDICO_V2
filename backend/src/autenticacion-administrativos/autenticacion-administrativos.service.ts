@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateAutenticacionAdministrativoDto } from './dto/create-autenticacion-administrativo.dto';
 import { UpdateAutenticacionAdministrativoDto } from './dto/update-autenticacion-administrativo.dto'
 import { Usuario } from '@prisma/client'; // Asegúrate de tener el modelo Usuario importado
@@ -34,6 +34,39 @@ export class AutenticacionAdministrativosService {
     // 3. Autenticación exitosa, devolver los datos del usuario
     return { user: usuario };
   }
+
+   /**obtener autorizacion y actualizar la contraseña */
+
+   async recuperarContraseña(data: { email: string, rol: string }) {
+    const usuario = await this.prisma.usuario.findUnique({
+      where: {
+        email: data.email,
+      }
+    });
+  
+    if (!usuario) {
+      throw new NotFoundException('Email no encontrado');
+    }
+  
+    return { success: usuario.rol === 'administrativo', data: usuario }; // Devuelve un objeto con `success`
+  }
+
+  async actualizarContraseña(id: number, nuevaContraseña: string): Promise<void> {
+    const usuario = await this.prisma.usuario.findUnique({
+      where: { id: id },
+    });
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+    }
+
+    const hashedPassword = await bcrypt.hash(nuevaContraseña, 10);
+    await this.prisma.usuario.update({
+      where: { id: id },
+      data: { password: hashedPassword },
+    });
+  }
+  
+  /********************************************* */
 
   create(createAutenticacionAdministrativoDto: CreateAutenticacionAdministrativoDto) {
     return 'This action adds a new autenticacionAdministrativo';

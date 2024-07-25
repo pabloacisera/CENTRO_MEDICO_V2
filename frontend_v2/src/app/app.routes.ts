@@ -22,6 +22,10 @@ import { authGuardAdmin } from './page/page-administrativos/logeo-admin/logear/a
 import { NuevoPacienteComponent } from './page/page-administrativos/nuevo-paciente/nuevo-paciente.component';
 import { SistemaTurnosComponent } from './page/sistema-turnos/sistema-turnos.component';
 import { TestComponentComponent } from './test-component/test-component.component';
+import { ResetearContraseñaComponent } from './page/resetar-contraseña/resetar-contraseña.component';
+import { NuevaContraseñaComponent } from './page/resetar-contraseña/nueva-contraseña/nueva-contraseña.component';
+import { NuevaContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/nueva-contraseña/nueva-contraseña.component';
+import { ResetearContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/resetar-contraseña.component';
 
 export const routes: Routes = [
 
@@ -30,6 +34,10 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'registro', component: RegistroComponent },
     { path: 'logear', component: LogeoComponent },
+    { path: 'reset-password', component: ResetearContraseñaComponent},
+    { path: 'new-password', component: NuevaContraseñaComponent},
+    { path: 'reset-password-admin', component: ResetearContraseñaAdminComponent},
+    { path: 'new-password-admin', component: NuevaContraseñaAdminComponent},
 
     /**paginas de profesionales */
     { path: 'dash-prof', canActivate: [protectedRouteGuard], component: DashboardProfesionalComponent },
@@ -57,7 +65,7 @@ export const routes: Routes = [
 
     /**ruta de testeo */
     { path: 'test', component: TestComponentComponent },
-
+  
     /** Ruta de redirección para rutas desconocidas */
     { path: '**', redirectTo: '/home' }
 ];

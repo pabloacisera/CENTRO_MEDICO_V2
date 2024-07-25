@@ -103,7 +103,7 @@ export class UsuarioService {
     }
 
     // Generar el token JWT
-    
+
     const token = this.jwtService.sign({
       id: usuarioEncontrado.id,
       nombre: usuarioEncontrado.nombre,
@@ -114,6 +114,39 @@ export class UsuarioService {
     return { data: usuarioEncontrado, token };
   }
 
+  /**obtener autorizacion y actualizar la contraseña */
+
+  async recuperarContraseña(data: { email: string, rol: string }) {
+    const usuario = await this.servicio.usuario.findUnique({
+      where: {
+        email: data.email,
+      }
+    });
+  
+    if (!usuario) {
+      throw new NotFoundException('Email no encontrado');
+    }
+  
+    return { success: usuario.rol === 'profesional', data: usuario }; // Devuelve un objeto con `success`
+  }
+
+  async actualizarContraseña(id: number, nuevaContraseña: string): Promise<void> {
+    const usuario = await this.servicio.usuario.findUnique({
+      where: { id: id },
+    });
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+    }
+
+    const hashedPassword = await bcrypt.hash(nuevaContraseña, 10);
+    await this.servicio.usuario.update({
+      where: { id: id },
+      data: { password: hashedPassword },
+    });
+  }
+  
+  /********************************************* */
+
   async findAll(): Promise<any> {
     return await this.servicio.usuario.findMany({
       where: {
@@ -122,7 +155,7 @@ export class UsuarioService {
     });
   }
 
-  async FindAllForAdmin(): Promise<any>{
+  async FindAllForAdmin(): Promise<any> {
     return await this.servicio.usuario.findMany()
   }
 
