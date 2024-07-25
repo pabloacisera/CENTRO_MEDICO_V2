@@ -26,6 +26,7 @@ import { ResetearContraseñaComponent } from './page/resetar-contraseña/resetar
 import { NuevaContraseñaComponent } from './page/resetar-contraseña/nueva-contraseña/nueva-contraseña.component';
 import { NuevaContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/nueva-contraseña/nueva-contraseña.component';
 import { ResetearContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/resetar-contraseña.component';
+import { CorreosComponent } from './page/correos/correos.component';
 
 export const routes: Routes = [
 
@@ -47,6 +48,7 @@ export const routes: Routes = [
     { path: 'cargar-resultados', canActivate: [protectedRouteGuard], component: CargarResultadosComponent },
     { path: 'perfil', canActivate: [protectedRouteGuard], component: PerfilComponent },
     { path: 'nueva-indicac', canActivate: [protectedRouteGuard], component: NuevaIndicacionComponent },
+    { path: 'enviar-correo', canActivate: [protectedRouteGuard], component: CorreosComponent},
 
     /*paginas de pacientes*/
     { path: 'ver/:id', canActivate: [protectedRouteGuard], component: VerComponent },

@@ -12,9 +12,10 @@ import { AutenticacionAdministrativosModule } from './autenticacion-administrati
 import { SistTurnosModule } from './sist-turnos/sist-turnos.module';
 import { NotificacionesGateway } from './cliente/notificaciones.gateway';
 import { ConfigModule } from '@nestjs/config';
+import { CorreosModule } from "./correos-backend/correos.module";
 
 @Module({
-  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule, SistTurnosModule,
+  imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule, SistTurnosModule, CorreosModule,
     ConfigModule.forRoot({
       isGlobal: true, // Hace que el módulo esté disponible en toda la aplicación
     }),
