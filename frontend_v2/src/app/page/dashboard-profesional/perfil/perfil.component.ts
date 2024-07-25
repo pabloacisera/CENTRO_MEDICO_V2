@@ -57,7 +57,7 @@ export class PerfilComponent {
     localStorage.removeItem('userData');
     localStorage.removeItem('token')
     localStorage.removeItem('valorUB')
-    this.ruta.navigate(['/logear'])
+    this.ruta.navigate(['/home'])
   }
 
   /***********************************obtener indicaciones********************************/

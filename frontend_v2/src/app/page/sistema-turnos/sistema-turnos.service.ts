@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import axios from 'axios';
 import { Cliente, Turnos, Usuario } from './sistema-turnos.component';
+import { environment } from '../../../environment/development';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ export class SistemaTurnosService {
   private apiUsuarioUrl = 'http://localhost:3000/api/v2/usuario'
   private apiClienteUrl = 'http://localhost:3000/api/v2/cliente/forAdmin'
   private apiUrlPresenciaCliente = 'http://localhost:3000/api/v2/cliente';
+  privateUrlTurno = environment.mailServiceUrl
 
   constructor() { }
 
@@ -40,5 +42,19 @@ export class SistemaTurnosService {
     return from(axios.delete(`${this.apiUrl}/${id}`).then(response => response.data));
   }
 
+  notificarTurnoPorEmail(emailData: { turno: Turnos, clienteEmail: string, clienteNombre: string, fechaTurno: string }): Observable<void> {
+    const { turno, clienteEmail, clienteNombre, fechaTurno } = emailData;
+
+    const emailDataToSend = {
+      to: clienteEmail,
+      clienteNombre: clienteNombre,
+      fechaTurno: fechaTurno,
+      subject: 'Confirmación de Turno',
+      text: `Estimado/a ${clienteNombre},\n\nEste es un recordatorio de que tiene un turno programado para el ${fechaTurno}. Por favor, no falte.\n\nSaludos cordiales,\nAdministración.`
+    };
+
+    return from(axios.post(`${this.privateUrlTurno}/notificar-turno`, emailDataToSend).then(() => { }));
+  }
 }
+
 

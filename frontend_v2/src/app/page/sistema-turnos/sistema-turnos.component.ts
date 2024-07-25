@@ -6,6 +6,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
+import { format } from 'date-fns';
 
 export interface Turnos {
   id?: number;
@@ -29,6 +30,7 @@ export interface Usuario {
 export interface Cliente {
   id: number;
   nombre: string;
+  email: string;
 }
 
 @Component({
@@ -117,30 +119,64 @@ export class SistemaTurnosComponent implements OnInit {
     });
   }
 
+  
   crearTurno(fechaStr: string, clienteIdStr: string, userIdStr: string): void {
     const fecha = new Date(fechaStr).toISOString();
     const clienteId = parseInt(clienteIdStr, 10);
     const userId = parseInt(userIdStr, 10);
 
     if (isNaN(clienteId) || isNaN(userId)) {
-      this.mensaje = 'Datos inválidos. Por favor, verifique los campos.';
-      this.ocultarMensaje();
-      return;
+        this.mensaje = 'Datos inválidos. Por favor, verifique los campos.';
+        this.ocultarMensaje();
+        return;
     }
 
+    // Crear el turno
     this.turnosService.crearTurno({ fecha, clienteId, userId }).subscribe({
-      next: (nuevoTurno) => {
-        this.turnos.push(nuevoTurno);
-        this.toastr.success('Se ha creado un nuevo turno', 'Actualizacion de turno')
-        this.mensaje = 'Turno creado exitosamente.';
-        this.ocultarMensaje();
-      },
-      error: (error) => {
-        this.mensaje = 'Error al crear el turno, el mismo ya se encuentra ocupado. Inténtelo de nuevo, con una fecha u hora diferente';
-        this.ocultarMensaje();
-      }
+        next: (nuevoTurno) => {
+            this.turnos.push(nuevoTurno);
+            this.toastr.success('Se ha creado un nuevo turno', 'Actualización de turno');
+            this.mensaje = 'Turno creado exitosamente.';
+            this.obtenerTurnos()
+            this.ocultarMensaje();
+
+            // Obtener cliente y usuario para la notificación
+            const cliente = this.clientes.find(c => c.id === clienteId);
+            const usuario = this.usuarios.find(u => u.id === userId);
+
+            const formattedFechaTurno = format(new Date(fecha), 'dd/MM/yyyy HH:mm');
+
+            if (cliente && usuario) {
+                // Enviar notificación por email
+                const emailData = {
+                    turno: nuevoTurno,
+                    clienteEmail: cliente.email,
+                    clienteNombre: cliente.nombre, // Asegúrate de enviar el nombre del cliente
+                    fechaTurno: formattedFechaTurno
+                };
+
+                this.turnosService.notificarTurnoPorEmail(emailData).subscribe({
+                    next: () => {
+                        console.log('Correo electrónico enviado exitosamente.');
+                    },
+                    error: (error) => {
+                        console.error('Error al enviar el correo electrónico', error);
+                    }
+                });
+            } else {
+                console.warn('Cliente o usuario no encontrado para la notificación.');
+            }
+        },
+        error: (error) => {
+            this.mensaje = 'Error al crear el turno, el mismo ya se encuentra ocupado. Inténtelo de nuevo, con una fecha u hora diferente';
+            this.ocultarMensaje();
+        }
     });
-  }
+}
+
+
+  /**notificar turno por email */
+  notificarTurnoPorEmail(){}
 
   /**ocultar mensaje */
   ocultarMensaje(): void {

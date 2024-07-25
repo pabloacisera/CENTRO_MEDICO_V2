@@ -18,4 +18,15 @@ export class MailController {
         await this.mailService.sendMail(from, to, subject, text, file);
         return { message: 'Correo enviado!' };
     }
+    @Post('notificar-turno')
+    async notificarTurno(
+        @Body('to') to: string,
+        @Body('clienteNombre') clienteNombre: string,
+        @Body('fechaTurno') fechaTurno: string
+    ) {
+        const subject = 'Recordatorio de Turno';
+        const text = `Estimado/a ${clienteNombre},\n\nEste es un recordatorio de que tiene un turno programado para el ${fechaTurno}. Por favor, no falte.\n\nSaludos,\nSu Clínica`;
+        await this.mailService.sendMailNotification(to, subject, text);
+        return { message: 'Notificación de turno enviada!' };
+    }
 }
