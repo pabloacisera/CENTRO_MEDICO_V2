@@ -1,16 +1,19 @@
-<div class="flex items-center space-x-2 mb-4 ml-3">
-  <span class="cursor-pointer text-lg font-semibold text-white" routerLink="/dash-prof">volver</span>
-</div>
+<p routerLink="/dash-prof" class="cursor-pointer text-white font-bold">volver</p>
 
 <div class="container mx-auto mt-4 p-4" style="width: 70vw;">
   <!-- Buscador -->
   <div class="card p-4 shadow-lg rounded-lg bg-white">
     <label class="block text-lg font-medium text-gray-700">Búsqueda</label>
-    <input  placeholder="Busqueda por determinacion" type="text" [(ngModel)]="filtroDeBusqueda.busquedaDeterminacion" class="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+    <input placeholder="Busqueda por determinacion" type="text" [(ngModel)]="filtroDeBusqueda.busquedaDeterminacion" class="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="isLoading" class="spinner-container">
+    <div class="spinner"></div>
   </div>
 
   <!-- Tabla -->
-  <div class="overflow-x-auto mt-6">
+  <div class="overflow-x-auto mt-6" *ngIf="!isLoading">
     <table class="min-w-full bg-white rounded-lg shadow-lg">
       <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
         <tr>
@@ -28,11 +31,12 @@
       </tbody>
     </table>
   </div>
-  
+
   <!-- Paginación -->
-  <div class="mt-4 flex justify-center bg-green-100 p-4 rounded-lg">
+  <div *ngIf="!isLoading" class="mt-4 flex justify-center bg-green-100 p-4 rounded-lg">
     <pagination-controls class="pagination" (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
   </div>
 </div>
+
 
   

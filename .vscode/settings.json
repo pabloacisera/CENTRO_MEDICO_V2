@@ -19,7 +19,10 @@
       "username": "postgres"
     }
   ],
-  "editor.fontFamily": "\"Fira Code\"",
-  "editor.fontSize": 13,
-  "CodeGPT.apiKey": "CodeGPT Plus Beta"
+  " editor.fontFamily": "JetBrains Mono",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 15,
+  "CodeGPT.apiKey": "CodeGPT Plus Beta",
+  "editor.fontVariations": false,
+  "editor.fontFamily": "\"JetBrains Mono\""
 }

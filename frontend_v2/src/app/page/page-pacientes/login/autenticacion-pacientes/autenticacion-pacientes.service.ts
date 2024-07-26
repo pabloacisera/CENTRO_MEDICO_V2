@@ -1,18 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
+import { environment } from '../../../../../environment/development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogearService {
 
-  url = "http://localhost:3000/api/v2/autenticacion-paciente/logear-paciente"
+  //url = "http://localhost:3000/api/v2/autenticacion-paciente/logear-paciente"
+
+  url = environment.urlAutenticacionPaciente
+
 
   constructor(private http: HttpClient) { }
 
   registrar(data: any) {
-    return this.http.post<any>(this.url, data)
+    return this.http.post<any>(`${this.url}/logear-paciente`, data)
       .pipe(
         catchError((error) => {
           console.error('Error al autenticar paciente:', error);

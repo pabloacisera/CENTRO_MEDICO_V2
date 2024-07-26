@@ -18,6 +18,7 @@ export class BuscarNomenclaturaComponent implements OnInit {
   nomenclaturaCompleta: any[] = [];
   filtroDeBusqueda: any = {busquedaDeterminacion: ''}
   p: number = 1;
+  isLoading: boolean = false
  
 
   constructor(private readonly peticion: NomenclaturaService) { }
@@ -27,12 +28,16 @@ export class BuscarNomenclaturaComponent implements OnInit {
   }
 
   async traerNomenclatura() {
+    this.isLoading = true
     try {
       const response = await this.peticion.traerTodos();
       this.nomenclaturaCompleta = response;
       console.log('Datos del backend: ', this.nomenclaturaCompleta); 
+      this.isLoading = false
     } catch (error) {
       console.error('Error al obtener nomenclatura', error);
+      throw new Error( 'Error al obtener nomenclaturas', error )
+      this.isLoading = false
     }
   }  
 }

@@ -10,11 +10,11 @@ import { environment } from '../../../environment/development';
 })
 export class SistemaTurnosService {
 
-  private apiUrl = 'http://localhost:3000/api/v2/sist-turnos'
-  private apiUsuarioUrl = 'http://localhost:3000/api/v2/usuario'
-  private apiClienteUrl = 'http://localhost:3000/api/v2/cliente/forAdmin'
-  private apiUrlPresenciaCliente = 'http://localhost:3000/api/v2/cliente';
-  privateUrlTurno = environment.mailServiceUrl
+  private apiUrl = environment.urlTurnos
+  private apiUsuarioUrl = environment.urlUsuario
+  private apiClienteUrl = environment.urlCliente
+  private apiUrlPresenciaCliente = environment.urlCliente
+  private privateUrlTurno = environment.mailServiceUrl 
 
   constructor() { }
 
@@ -31,7 +31,7 @@ export class SistemaTurnosService {
   }
 
   obtenerClientes(): Observable<Cliente[]> {
-    return from(axios.get(this.apiClienteUrl).then(response => response.data as Cliente[]));
+    return from(axios.get(`${this.apiClienteUrl}/forAdmin`).then(response => response.data as Cliente[]));
   }
 
   marcarPresencia(clienteId: number): Observable<any> {

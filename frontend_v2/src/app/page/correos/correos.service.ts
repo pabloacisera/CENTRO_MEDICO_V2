@@ -14,7 +14,7 @@ export class CorreosService {
   sendMail(formData: FormData) {
     return axios.post(`${this.urlSendMail}/send`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data' // o applicaction/json
       }
     });
   }

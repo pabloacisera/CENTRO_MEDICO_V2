@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environment/development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistroProfesionalService {
 
-  url = "http://localhost:3000/api/v2/usuario"
+  url = environment.urlUsuario
 
   constructor(private http: HttpClient) { }
 

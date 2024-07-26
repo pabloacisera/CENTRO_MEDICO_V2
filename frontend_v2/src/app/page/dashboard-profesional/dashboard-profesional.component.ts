@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,14 +13,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DashboardProfesionalComponent implements OnInit {
 
+
   userId: number = 0;
 
-  constructor(private socket: Socket, private Toastr: ToastrService) { }
+  constructor(private socket: Socket, private Toastr: ToastrService,
+    private route: Router,
+  ) { }
 
   ngOnInit(): void {
     this.socket.fromEvent(`profesional-${this.userId}`).subscribe((mensaje: string) => {
       this.Toastr.success(mensaje);
-    });
+    })
   }
 
   obtenerIdUsuario() {
@@ -30,5 +33,13 @@ export class DashboardProfesionalComponent implements OnInit {
       const userDataObj = JSON.parse(userData);
       this.userId = userDataObj.id;
     }
+  }
+
+  salir(){
+    localStorage.removeItem('Id de cliente')
+    localStorage.removeItem('Id de usuario')
+    localStorage.removeItem('userData')
+    localStorage.removeItem('token')
+    this.route.navigate(['/home'])
   }
 }

@@ -53,13 +53,6 @@ export class PerfilComponent {
       })
   }
 
-  funcionSalir() {
-    localStorage.removeItem('userData');
-    localStorage.removeItem('token')
-    localStorage.removeItem('valorUB')
-    this.ruta.navigate(['/home'])
-  }
-
   /***********************************obtener indicaciones********************************/
   indicacionesBackend: any[] = []
 
