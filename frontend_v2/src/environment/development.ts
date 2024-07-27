@@ -9,6 +9,6 @@ export const environment = {
     urlAdministrativos: 'http://localhost:3000/api/v2/autenticacion-administrativos',
     urlTurnos: 'http://localhost:3000/api/v2/sist-turnos',
     mailServiceUrl: 'http://localhost:3000/api/v2/mail',
-    urlAutenticacionPaciente : 'http://localhost:3000/api/v2/autenticacion-paciente'
-    // Otras configuraciones específicas de desarrollo
+    urlAutenticacionPaciente : 'http://localhost:3000/api/v2/autenticacion-paciente',
+    urlFile: 'http://localhost:3000/api/v2/upload-file'
   };

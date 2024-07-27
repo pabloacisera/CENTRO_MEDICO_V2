@@ -1,1 +1,1 @@
-SELECT * FROM "Cliente";
+SELECT * FROM "File";

@@ -66,7 +66,7 @@ async findAll(userId: number) {
 
   async findAllformAdmin(){
   return this.prisma.cliente.findMany()
-}
+} 
 
   async findOne(id: number, userId: number) {
   return this.prisma.cliente.findFirst({

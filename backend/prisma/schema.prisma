@@ -48,6 +48,8 @@ model Cliente {
   Turnos Turno[]
 
   presente          Boolean  @default(false)
+
+  files      File[]
 }
 
 model Nomenclatura {
@@ -85,4 +87,17 @@ model Turno {
   userId         Int
   Cliente        Cliente  @relation(fields: [clienteId], references: [id])
   Usuario        Usuario @relation(fields: [userId], references: [id])
+}
+
+model File {
+  id         Int      @id @default(autoincrement())
+  filename   String
+  path       String
+  mimeType   String
+  size       Int
+  createdAt  DateTime @default(now())
+  clienteId  Int
+  cliente    Cliente  @relation(fields: [clienteId], references: [id])
+
+  @@index([clienteId])
 }

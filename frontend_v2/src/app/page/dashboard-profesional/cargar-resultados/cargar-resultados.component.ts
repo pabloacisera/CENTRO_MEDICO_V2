@@ -32,6 +32,8 @@ export class CargarResultadosComponent {
   resultados: any[] = []; 
   isLoading: boolean = false;
   valorSumar: number = 0
+  valorUB: number = 0
+  botonTexto: string = 'Guardar';
 
   constructor(
     private readonly servicio: ListadoPacientesService,
@@ -47,6 +49,24 @@ export class CargarResultadosComponent {
   }
 
   ngOnInit(): void {
+    this.recolectarFunciones()
+  }
+
+
+  recolectarFunciones(){
+    this.extraerValorDeUb()
+    this.extraerValorDeUsuario()
+  }
+
+  extraerValorDeUb(){
+    const storedValue = localStorage.getItem('valorUnitario');
+    if (storedValue) {
+      this.valor_unitario = parseFloat(storedValue);
+      this.botonTexto = 'Actualizar';
+    }
+  }
+
+  extraerValorDeUsuario(){
     const userData = localStorage.getItem('userData');
     if (userData) {
       const userDataObj = JSON.parse(userData);
@@ -128,10 +148,13 @@ export class CargarResultadosComponent {
   /*****************************************************/
   valor_unitario: number = 0;
 
-  obtenerValor(valor: string) {
+  obtenerValor(valor: string): void {
     this.valor_unitario = parseFloat(valor);
+    localStorage.setItem('valorUnitario', valor);
     console.log(this.valor_unitario);
+    this.botonTexto = 'Actualizar';
   }
+
 
   valor_resultado: number = 0;
 

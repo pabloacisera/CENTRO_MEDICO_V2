@@ -27,4 +27,8 @@ export class DashboardAdminComponent implements OnInit {
     localStorage.removeItem('userData')
     this.route.navigate(['/home'])
   }
+
+  enrutarAUpload(){
+    this.route.navigate(['/upload-file'])
+  }
 }

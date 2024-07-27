@@ -5,11 +5,12 @@ import { ResultadosService } from '../../cargar-resultados/resultado.service';
 import { DateFormatPipe } from '../../../../date-format.pipe';
 import { CommonModule } from '@angular/common';
 import { Crear_pdfService } from './crear_pdf.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-ver',
   standalone: true,
-  imports: [CommonModule, DateFormatPipe, RouterLink],
+  imports: [CommonModule, DateFormatPipe, RouterLink, ProgressSpinnerModule],
   templateUrl: './ver.component.html',
   styleUrl: './ver.component.css'
 })

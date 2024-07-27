@@ -27,6 +27,7 @@ import { NuevaContraseñaComponent } from './page/resetar-contraseña/nueva-cont
 import { NuevaContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/nueva-contraseña/nueva-contraseña.component';
 import { ResetearContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/resetar-contraseña.component';
 import { CorreosComponent } from './page/correos/correos.component';
+import { UploadFileComponent } from './page/page-administrativos/upload-file/upload-file.component';
 
 export const routes: Routes = [
 
@@ -64,6 +65,7 @@ export const routes: Routes = [
     { path: 'dashboard-admin', canActivate: [authGuardAdmin], component: DashboardAdminComponent },
     { path: 'admin-nuevo-pac', canActivate: [authGuardAdmin], component: NuevoPacienteComponent },
     { path: 'admin-turno', canActivate: [authGuardAdmin], component: SistemaTurnosComponent },
+    { path: 'upload-file', canActivate: [authGuardAdmin], component: UploadFileComponent},
 
     /**ruta de testeo */
     { path: 'test', component: TestComponentComponent },

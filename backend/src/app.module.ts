@@ -13,12 +13,14 @@ import { SistTurnosModule } from './sist-turnos/sist-turnos.module';
 import { NotificacionesGateway } from './cliente/notificaciones.gateway';
 import { ConfigModule } from '@nestjs/config';
 import { CorreosModule } from "./correos-backend/correos.module";
+import { UploadFileModule } from './upload-file/upload-file.module';
 
 @Module({
   imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule, SistTurnosModule, CorreosModule,
     ConfigModule.forRoot({
       isGlobal: true, // Hace que el módulo esté disponible en toda la aplicación
     }),
+    UploadFileModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, NotificacionesGateway],

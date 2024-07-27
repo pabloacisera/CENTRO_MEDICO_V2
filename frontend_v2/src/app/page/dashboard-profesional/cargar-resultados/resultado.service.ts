@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { Nomenclatura } from './resultado.interface';
+import { environment } from '../../../../environment/development';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResultadosService {
 
-  url = "http://localhost:3000/api/v2/cliente"
-  urlresultado = "http://localhost:3000/api/v2/resultado"
+  url = environment.urlCliente
+  urlresultado = environment.urlResultado
 
   constructor() { }
 

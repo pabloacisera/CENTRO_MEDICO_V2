@@ -40,6 +40,8 @@ export class DashboardProfesionalComponent implements OnInit {
     localStorage.removeItem('Id de usuario')
     localStorage.removeItem('userData')
     localStorage.removeItem('token')
+    localStorage.removeItem('valorUB')
+    localStorage.removeItem('valorUnitario')
     this.route.navigate(['/home'])
   }
 }
