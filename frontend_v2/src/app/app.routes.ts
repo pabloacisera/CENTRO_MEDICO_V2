@@ -28,6 +28,7 @@ import { NuevaContraseñaAdminComponent } from './page/page-administrativos/rese
 import { ResetearContraseñaAdminComponent } from './page/page-administrativos/resetar-contraseña/resetar-contraseña.component';
 import { CorreosComponent } from './page/correos/correos.component';
 import { UploadFileComponent } from './page/page-administrativos/upload-file/upload-file.component';
+import { ArchivosComponent } from './page/dashboard-profesional/listado-pacientes/archivos/archivos.component';
 
 export const routes: Routes = [
 
@@ -50,6 +51,7 @@ export const routes: Routes = [
     { path: 'perfil', canActivate: [protectedRouteGuard], component: PerfilComponent },
     { path: 'nueva-indicac', canActivate: [protectedRouteGuard], component: NuevaIndicacionComponent },
     { path: 'enviar-correo', canActivate: [protectedRouteGuard], component: CorreosComponent},
+    { path:'docs/:id', canActivate: [protectedRouteGuard], component: ArchivosComponent},
 
     /*paginas de pacientes*/
     { path: 'ver/:id', canActivate: [protectedRouteGuard], component: VerComponent },

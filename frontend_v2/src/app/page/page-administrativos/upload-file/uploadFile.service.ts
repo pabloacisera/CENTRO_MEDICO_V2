@@ -8,16 +8,16 @@ import { from, Observable } from 'rxjs';
 })
 export class UploadFileService {
 
-  clienteUrl = environment.urlCliente
-  fileUrl = environment.urlFile
+  clienteUrl = environment.urlCliente;
+  fileUrl = environment.urlFile;
 
   constructor() { }
 
   obtenerManyClientes(): Observable<any> {
-    return from(axios.get(`${this.clienteUrl}/forAdmin`).then(response => response.data))
+    return from(axios.get(`${this.clienteUrl}/forAdmin`).then(response => response.data));
   }
 
-  createFile(file: File, clienteId: number): Observable<any> {
+  createFile(clienteId: number, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
     return from(axios.post(`${this.fileUrl}/${clienteId}`, formData, {
@@ -27,3 +27,4 @@ export class UploadFileService {
     }));
   }  
 }
+

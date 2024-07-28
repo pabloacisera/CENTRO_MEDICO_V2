@@ -76,6 +76,10 @@
               class="px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600">
               <i class="pi pi-upload mr-2"></i>Cargar
             </button>
+            <button [routerLink]="['/docs', data.id]"
+              class="px-2 py-1 bg-slate-700 text-white rounded-md hover:bg-slate-800">
+              <i class="pi pi-folder mr-2"></i>Archivos
+            </button>
           </td>
         </tr>
       </ng-template>

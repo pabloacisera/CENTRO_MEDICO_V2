@@ -62,6 +62,11 @@ export class UsuarioController {
     return this.usuarioService.findAll();
   }
 
+  @Get('/agend/:id')
+  findAllExcept(@Param('id') userId: number) {
+    return this.usuarioService.findAllExcept(Number(userId));
+  }
+
   @Get('forAdmin')
   findAllForAdmin() {
     return this.usuarioService.FindAllForAdmin()

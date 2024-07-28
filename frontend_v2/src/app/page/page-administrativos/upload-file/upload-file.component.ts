@@ -6,6 +6,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
+import { Router, RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   standalone: true,
@@ -17,6 +19,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     TableModule,
     ButtonModule,
     FileUploadModule,
+    RouterLink
   ],
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.css']
@@ -24,7 +27,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 export class UploadFileComponent implements OnInit {
 
   public clientes = [];
-  public email: string;
   public isLoading: boolean = false;
   id_cliente: number = 0;
   public page: number = 0;
@@ -33,9 +35,13 @@ export class UploadFileComponent implements OnInit {
   file: File | null = null;
   success: boolean = false;
   error: boolean = false;
+  message: string = '';
 
-  constructor(private readonly service: UploadFileService,
-              private readonly fileUpload: UploadFileService) { }
+  constructor(
+    private readonly service: UploadFileService,
+    private readonly route: Router,
+    private toastr: ToastrService,
+  ) { }
 
   ngOnInit() {
     this.recolectarMetodos();
@@ -50,7 +56,6 @@ export class UploadFileComponent implements OnInit {
     this.service.obtenerManyClientes().subscribe({
       next: (data) => {
         this.clientes = data;
-        console.log('Datos de cliente: ', this.clientes);
         this.isLoading = false;
       },
       error: (error) => {
@@ -62,7 +67,6 @@ export class UploadFileComponent implements OnInit {
 
   capturarId(id: number) {
     this.id_cliente = id;
-    console.log(this.id_cliente);
     this.obtenerNombrePorId(this.id_cliente);
   }
 
@@ -85,9 +89,10 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
-  onFileChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
     }
   }
 
@@ -96,31 +101,29 @@ export class UploadFileComponent implements OnInit {
     console.log('Palabra para buscar:', this.text);
   }
 
-  async cargarDoc() {
-    if (this.file && this.id_cliente) {
-      const clienteId = Number(this.id_cliente)
-      console.log('Tipo de id: ', typeof clienteId)
-      this.fileUpload.createFile(this.file, clienteId).subscribe({
-        next: (response) => {
-          if (response.data.success) { 
-            this.success = true;
-            this.error = false;
-            setTimeout(() => {
-              this.success = false; 
-            }, 5000);
-          } else {
-            this.error = true;
-            console.error('Error al guardar el archivo: ', response.data.message);
-          }
-        },
-        error: (err) => {
-          console.error('Error al cargar el archivo: ', err);
-          this.error = true;
-        }
-      });
-    } else {
-      console.error('No hay archivo seleccionado o ID de cliente no está definido.');
+  cargarDoc(): void {
+    if (!this.file) {
+      this.message = 'Por favor, selecciona un archivo.';
+      this.error = true;
+      return;
     }
-  }   
-}
 
+    this.service.createFile(this.id_cliente, this.file).subscribe({
+      next: (response) => {
+        this.success = true;
+        this.error = false;
+        this.message = 'Archivo guardado correctamente.';
+        console.log(response);
+        this.toastr.success('Se ha cargado 1 archivo exitosamente', 'Actualizacion:')
+        this.route.navigate(['/dashboard-admin'])
+      },
+      error: (err) => {
+        console.error('Error al guardar el archivo:', err);
+        this.success = false;
+        this.error = true;
+        this.message = 'Error al guardar el archivo: ' + (err.response?.data?.message || 'Error desconocido');
+        this.toastr.warning('Se ha producido un error al intentar guardar archivo', 'Actualizacion:')
+      }
+    });
+  }
+}

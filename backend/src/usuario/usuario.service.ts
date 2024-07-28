@@ -155,6 +155,16 @@ export class UsuarioService {
     });
   }
 
+  async findAllExcept(userId: number) {
+    return await this.servicio.usuario.findMany({
+      where: {
+        id: {
+          not: parseInt(userId as any)  // Asegúrate de que userId sea un número
+        }
+      }
+    });
+  }
+
   async FindAllForAdmin(): Promise<any> {
     return await this.servicio.usuario.findMany()
   }
