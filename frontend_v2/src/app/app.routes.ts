@@ -29,6 +29,7 @@ import { ResetearContraseñaAdminComponent } from './page/page-administrativos/r
 import { CorreosComponent } from './page/correos/correos.component';
 import { UploadFileComponent } from './page/page-administrativos/upload-file/upload-file.component';
 import { ArchivosComponent } from './page/dashboard-profesional/listado-pacientes/archivos/archivos.component';
+import { ImapflowBandejaCorreosComponent } from './page/imapflow-bandeja-correos/imapflow-bandeja-correos.component';
 
 export const routes: Routes = [
 
@@ -68,6 +69,7 @@ export const routes: Routes = [
     { path: 'admin-nuevo-pac', canActivate: [authGuardAdmin], component: NuevoPacienteComponent },
     { path: 'admin-turno', canActivate: [authGuardAdmin], component: SistemaTurnosComponent },
     { path: 'upload-file', canActivate: [authGuardAdmin], component: UploadFileComponent},
+    { path: 'bandeja-correo', canActivate: [authGuardAdmin], component: ImapflowBandejaCorreosComponent},
 
     /**ruta de testeo */
     { path: 'test', component: TestComponentComponent },

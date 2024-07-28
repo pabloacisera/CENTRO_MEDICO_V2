@@ -31,4 +31,8 @@ export class DashboardAdminComponent implements OnInit {
   enrutarAUpload(){
     this.route.navigate(['/upload-file'])
   }
+
+  enrutarABandeja(){
+    this.route.navigate(['/bandeja-correo'])
+  }
 }

@@ -14,6 +14,7 @@ import { NotificacionesGateway } from './cliente/notificaciones.gateway';
 import { ConfigModule } from '@nestjs/config';
 import { CorreosModule } from "./correos-backend/correos.module";
 import { UploadFileModule } from './upload-file/upload-file.module';
+import { ImapflowCorreosModule } from './imapflow-correos/imapflow-correos.module';
 
 @Module({
   imports: [UsuarioModule, ClienteModule, NomenclaturaModule, ResultadoModule, IndicacionesModule, AutenticacionPacienteModule, AutenticacionAdministrativosModule, SistTurnosModule, CorreosModule,
@@ -21,6 +22,7 @@ import { UploadFileModule } from './upload-file/upload-file.module';
       isGlobal: true, // Hace que el módulo esté disponible en toda la aplicación
     }),
     UploadFileModule,
+    ImapflowCorreosModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, NotificacionesGateway],

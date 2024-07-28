@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiBaseUrl: 'http://localhost:3000',
+    apiBaseUrl: 'http://localhost:3000/api/v2',
     urlUsuario: 'http://localhost:3000/api/v2/usuario',
     urlCliente: 'http://localhost:3000/api/v2/cliente',
     urlNomenclatura: 'http://localhost:3000/api/v2/nomenclatura',
