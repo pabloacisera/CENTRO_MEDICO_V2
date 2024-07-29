@@ -1,34 +1,33 @@
 import { Injectable } from '@angular/core';
-import axios, { AxiosInstance } from 'axios';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environment/development';
+
+export interface Email {
+  seqno: number;
+  headers: {
+    from: string[];
+    date: string[];
+    subject: string[];
+    to: string[];
+  };
+  body: string;
+}
+
+export interface EmailsResponse {
+  emails: Email[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class ImapflowBandejaCorreosService {
+export class EmailService {
+  private apiUrl = environment.apiBaseUrl; // Reemplaza con la URL de tu backend
 
-  constructor() { 
-  }
+  constructor(private http: HttpClient) {}
 
-  async fetchEmails() {
-    try {
-      const response = await axios.get('http://localhost:3000/api/v2/imapflow-correos/fetch');
-      console.log('Respuesta de Axios:', response.data);
-      return response.data;
-    } catch (error) {
-      if (error.response) {
-        // El servidor respondió con un código de estado fuera del rango 2xx
-        console.error('Error en la respuesta del servidor:', error.response.data);
-      } else if (error.request) {
-        // La solicitud fue hecha pero no se recibió respuesta
-        console.error('No se recibió respuesta del servidor:', error.request);
-      } else {
-        // Algo sucedió al configurar la solicitud que provocó un error
-        console.error('Error en la configuración de la solicitud:', error.message);
-      }
-      console.error('Error completo:', error.config);
-      throw error;
-    }
+  getEmails(): Observable<EmailsResponse> {
+    return this.http.get<EmailsResponse>(`${this.apiUrl}/imap/fetch-emails`); // Ajusta la ruta según tu backend
   }
-  
 }
+

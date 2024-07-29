@@ -21,7 +21,7 @@
   ],
   "editor.fontFamily": "'Cascadia Code PL',  Menlo",
   "editor.fontLigatures": true,
-  "editor.fontSize": 14,
+  "editor.fontSize": 11,
   "CodeGPT.apiKey": "CodeGPT Plus Beta",
   "editor.fontVariations": false,
 }

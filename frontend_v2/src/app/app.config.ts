@@ -10,10 +10,8 @@ import { SharedModule } from './page/dashboard-profesional/listado-pacientes/sha
 
 
 import { provideToastr, ToastrModule } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from './date-format.pipe';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-import { config } from 'rxjs';
 
 const socketIoConfig: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 

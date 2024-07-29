@@ -1,58 +1,113 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { ImapFlow } from 'imapflow';
+import { Injectable, Logger } from '@nestjs/common';
+import * as Imap from 'node-imap';
 
 @Injectable()
-export class ImapflowCorreosService implements OnModuleInit, OnModuleDestroy {
-  private client: ImapFlow;
-  private emails: any[] = [];
+export class ImapService {
+  private readonly logger = new Logger(ImapService.name);
+  private imap: Imap;
 
   constructor() {
-    this.client = new ImapFlow({
+    const imapOptions: Imap.ImapOptions = {
+      user: 'software.medilink.business@gmail.com',
+      password: 'rgab zkky zsej pgci',
       host: 'imap.gmail.com',
       port: 993,
-      secure: true,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: 'rgab zkky zsej pgci',
-      },
+      tls: true,
+    };
+    this.imap = new Imap(imapOptions);
+  }
+
+  private openInbox(cb: (err: any, box: Imap.Box) => void): void {
+    this.imap.openBox('INBOX', true, cb);
+  }
+
+  async fetchEmails(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.imap.once('ready', () => {
+        this.openInbox((err, box) => {
+          if (err) {
+            this.logger.error('Error opening inbox', err);
+            reject(err);
+            return;
+          }
+
+          const f = this.imap.seq.fetch('1:3', {
+            bodies: ['HEADER.FIELDS (FROM TO SUBJECT DATE)', 'TEXT'],
+            struct: true,
+          });
+
+          const messages: any[] = [];
+
+          f.on('message', (msg, seqno) => {
+            this.logger.log(`Message #${seqno}`);
+            const prefix = `(#${seqno}) `;
+
+            let headers: any = {};
+            let body: Buffer[] = [];
+
+            msg.on('body', (stream, info) => {
+              if (info.which === 'TEXT') {
+                this.logger.log(`${prefix} Body [${info.which}]`);
+
+                stream.on('data', (chunk) => {
+                  body.push(chunk);
+                });
+
+                stream.once('end', () => {
+                  const bodyString = Buffer.concat(body).toString('utf-8');
+                  this.logger.log(`${prefix} Body [${info.which}] received`);
+                  
+                  // Verifica el contenido para asegurarte de que los caracteres se muestran correctamente
+                  this.logger.log(`${prefix} Body content: ${bodyString}`);
+                });
+              } else {
+                // Procesar los encabezados
+                stream.on('data', (chunk) => {
+                  const headerChunk = chunk.toString('utf-8');
+                  headers = Imap.parseHeader(headerChunk);
+                  this.logger.log(`${prefix} Header parsed: ${JSON.stringify(headers)}`);
+                });
+              }
+            });
+
+            msg.once('attributes', (attrs) => {
+              this.logger.log(`${prefix} Attributes: ${JSON.stringify(attrs, null, 8)}`);
+            });
+
+            msg.once('end', () => {
+              this.logger.log(`${prefix} Finished`);
+              messages.push({
+                seqno,
+                headers,
+                body: Buffer.concat(body).toString('utf-8'), // Convertir a string UTF-8
+              });
+            });
+          });
+
+          f.once('error', (err) => {
+            this.logger.error('Fetch error:', err);
+            reject(err);
+          });
+
+          f.once('end', () => {
+            this.logger.log('Done fetching all messages!');
+            this.imap.end();
+            resolve(messages);
+          });
+        });
+      });
+
+      this.imap.once('error', (err) => {
+        this.logger.error('IMAP error:', err);
+        reject(err);
+      });
+
+      this.imap.once('end', () => {
+        this.logger.log('Connection ended');
+      });
+
+      this.imap.connect();
     });
   }
-
-  async onModuleInit() {
-    await this.connectAndFetchEmails();
-  }
-
-  async onModuleDestroy() {
-    await this.client.logout();
-  }
-
-  public async connectAndFetchEmails() {
-    try {
-      await this.client.connect();
-
-      const lock = await this.client.getMailboxLock('INBOX');
-      try {
-        if (this.client.mailbox && typeof this.client.mailbox !== 'boolean') {
-          for await (const msg of this.client.fetch('1:*', { envelope: true })) {
-            this.emails.push({
-              uid: msg.uid,
-              subject: msg.envelope.subject,
-              from: msg.envelope.from[0].address,
-              date: msg.envelope.date,
-            });
-          }
-        } else {
-          console.error('No se pudo seleccionar el buzón de correo.');
-        }
-      } finally {
-        lock.release();
-      }
-    } catch (err) {
-      console.error('Error al conectar o al obtener correos:', err);
-    }
-  }
-
-  public getEmails() {
-    return this.emails;
-  }
 }
+

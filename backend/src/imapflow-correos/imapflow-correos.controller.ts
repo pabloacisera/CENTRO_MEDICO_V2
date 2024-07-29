@@ -1,19 +1,17 @@
-import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { ImapflowCorreosService } from './imapflow-correos.service';
+import { Controller, Get } from '@nestjs/common';
+import { ImapService } from './imapflow-correos.service';
 
-@Controller('imapflow-correos')
-export class ImapflowCorreosController {
-  constructor(private readonly imapflowCorreosService: ImapflowCorreosService) {}
+@Controller('imap')
+export class ImapController {
+  constructor(private readonly imapService: ImapService) {}
 
-  @Get('fetch')
+  @Get('fetch-emails')
   async fetchEmails() {
     try {
-      await this.imapflowCorreosService.connectAndFetchEmails();
-      const emails = this.imapflowCorreosService.getEmails();
-      return { message: 'Emails fetched successfully', emails };
+      const emails = await this.imapService.fetchEmails();
+      return { emails };
     } catch (error) {
-      throw new HttpException('Failed to fetch emails', HttpStatus.INTERNAL_SERVER_ERROR);
+      return { error: 'Failed to fetch emails', details: error };
     }
   }
 }
-
