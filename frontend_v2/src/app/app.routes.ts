@@ -30,6 +30,7 @@ import { CorreosComponent } from './page/correos/correos.component';
 import { UploadFileComponent } from './page/page-administrativos/upload-file/upload-file.component';
 import { ArchivosComponent } from './page/dashboard-profesional/listado-pacientes/archivos/archivos.component';
 import { ImapflowBandejaCorreosComponent } from './page/imapflow-bandeja-correos/imapflow-bandeja-correos.component';
+import { ChatWebsocketComponent } from './components/chat-websocket/chat-websocket.component';
 
 export const routes: Routes = [
 
@@ -73,7 +74,9 @@ export const routes: Routes = [
 
     /**ruta de testeo */
     { path: 'test', component: TestComponentComponent },
-  
+
+    /**ruta de chat */
+    { path: 'chat', canActivate: [protectedRouteGuard], component: ChatWebsocketComponent},  
     /** Ruta de redirección para rutas desconocidas */
     { path: '**', redirectTo: '/home' }
 ];
