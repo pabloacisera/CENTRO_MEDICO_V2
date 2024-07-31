@@ -10,7 +10,6 @@ import { IndicacionesModule } from './indicaciones/indicaciones.module';
 import { AutenticacionPacienteModule } from './autenticacion-paciente/autenticacion-paciente.module';
 import { AutenticacionAdministrativosModule } from './autenticacion-administrativos/autenticacion-administrativos.module';
 import { SistTurnosModule } from './sist-turnos/sist-turnos.module';
-import { NotificacionesGateway } from './cliente/notificaciones.gateway';
 import { ConfigModule } from '@nestjs/config';
 import { CorreosModule } from "./correos-backend/correos.module";
 import { UploadFileModule } from './upload-file/upload-file.module';
@@ -25,6 +24,6 @@ import { ImapflowCorreosModule } from './imapflow-correos/imapflow-correos.modul
     ImapflowCorreosModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, NotificacionesGateway],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

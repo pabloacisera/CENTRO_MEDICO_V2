@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ChatComponent } from '../../../components/chat-desplegable/chat-desplegable.component';
+
 
 @Component({
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ChatComponent],
   selector: 'app-dashboard-admin',
   templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.css']

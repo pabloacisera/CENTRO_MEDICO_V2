@@ -34,10 +34,6 @@ export class SistemaTurnosService {
     return from(axios.get(`${this.apiClienteUrl}/forAdmin`).then(response => response.data as Cliente[]));
   }
 
-  marcarPresencia(clienteId: number): Observable<any> {
-    return from(axios.patch(`${this.apiUrlPresenciaCliente}/${clienteId}/presencia`, { presente: true }).then(response => response.data));
-  }
-
   borrarTurno(id: number) {
     return from(axios.delete(`${this.apiUrl}/${id}`).then(response => response.data));
   }

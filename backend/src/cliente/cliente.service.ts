@@ -2,13 +2,10 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { PrismaService } from 'src/prisma-service/prisma-service.service';
-import { NotificacionesGateway } from './notificaciones.gateway';
 
 @Injectable()
 export class ClienteService {
   constructor(private readonly prisma: PrismaService) { }
-
-  private notificacionesGateway: NotificacionesGateway;
 
  async create(createClienteDto: CreateClienteDto) {
   try {
@@ -42,20 +39,6 @@ export class ClienteService {
     console.log(error);
     throw new InternalServerErrorException('Error al crear cliente');
   }
-}
-
-async marcarPresencia(id: number, presente: boolean) {
-  const cliente = await this.prisma.cliente.update({
-    where: { id },
-    data: { presente },
-  });
-
-  this.notificacionesGateway.notificarProfesional(cliente.userId, 'El cliente ha llegado a la consulta.');
-  return cliente;
-}
-
-private notificarProfesional(userId: number) {
-  this.notificacionesGateway.notificarProfesional(userId, 'El cliente ha llegado a la consulta.');
 }
 
 async findAll(userId: number) {

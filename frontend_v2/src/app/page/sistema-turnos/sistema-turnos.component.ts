@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Socket } from 'ngx-socket-io';
+import { NotificacionPresenciaService } from "../../../../../notificacion/src/notificacion-presencia/notificacion-presencia.service";
 
 export interface Turnos {
   id?: number;
@@ -58,7 +60,8 @@ export class SistemaTurnosComponent implements OnInit {
 
 
   constructor(private turnosService: SistemaTurnosService, private datePipe: DatePipe,
-    private toastr: ToastrService, private ruta: Router
+    private toastr: ToastrService, private ruta: Router, private notificar: NotificacionPresenciaService,
+    private socket: Socket,
   ) { }
 
   ngOnInit(): void {
@@ -199,14 +202,22 @@ export class SistemaTurnosComponent implements OnInit {
   
   guardarClienteId(clienteId: number) {
     this.clienteIdSeleccionado = clienteId;
-    this.clienteId = this.clienteIdSeleccionado
-    console.log('ID del cliente guardado:', this.clienteId);
+    console.log('ID del cliente guardado:', this.clienteIdSeleccionado);
   }
 
-  marcarPresenciaPaciente(clienteId: number) {
-    this.turnosService.marcarPresencia(clienteId).subscribe(response => {
-      console.log('Presencia marcada para el cliente con ID:', clienteId);
-    });
+  marcarPresenciaPaciente(clienteIdSeleccionado: number) {
+   
+    if(!clienteIdSeleccionado) {
+      this.toastr.error('Por favor, seleccione un paciente', 'Error')
+    }
+
+    this.socket.emit('paciente-presente', clienteIdSeleccionado, (response: any )=> {
+      if(response.success) {
+        this.toastr.success('Info paciente', 'El paciente se encuentra en el establecimiento')
+      } else {
+        this.toastr.error('Info paciente:', 'error al marcar la presencia')
+      }
+    })
   }
 
   /*********************ordenar tabla*************************************** */

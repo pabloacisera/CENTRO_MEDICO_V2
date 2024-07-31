@@ -59,7 +59,7 @@ export class ChatWebsocketComponent implements OnInit, OnDestroy {
   }
 
   conectarSocket() {
-    this.socket = io('http://localhost:4000', {
+    this.socket = io('http://localhost:8000', {
       query: { nombre: this.nombre, id: this.id },
       transports: ['websocket'],
     });
