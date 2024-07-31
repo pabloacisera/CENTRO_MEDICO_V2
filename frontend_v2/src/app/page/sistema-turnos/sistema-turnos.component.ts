@@ -8,7 +8,7 @@ import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import { Socket } from 'ngx-socket-io';
-import { NotificacionPresenciaService } from "../../../../../notificacion/src/notificacion-presencia/notificacion-presencia.service";
+import { NotificacionService } from "../../../../../notificacion_de_presencia/src/notificacion/notificacion.service"; 
 
 export interface Turnos {
   id?: number;
@@ -60,7 +60,7 @@ export class SistemaTurnosComponent implements OnInit {
 
 
   constructor(private turnosService: SistemaTurnosService, private datePipe: DatePipe,
-    private toastr: ToastrService, private ruta: Router, private notificar: NotificacionPresenciaService,
+    private toastr: ToastrService, private ruta: Router, private notificar: NotificacionService,
     private socket: Socket,
   ) { }
 
