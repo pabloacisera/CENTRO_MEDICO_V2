@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "types": ["node", "socket.io-client"],
     "outDir": "./dist/out-tsc",
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,

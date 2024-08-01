@@ -90,7 +90,7 @@
             <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{{ getClienteNombre(item.clienteId) }}</td>
             <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{{ getUsuarioNombre(item.userId) }}</td>
             <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-              <button (click)="guardarClienteId(item.clienteId)"
+              <button (click)="seleccionarPaciente(item.clienteId)"
                 class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <i class="pi pi-check-circle mr-2"></i> Marcar presencia
               </button>
@@ -112,3 +112,5 @@
     </div>
   </div>
 </div>
+
+<app-aviso-presencia></app-aviso-presencia>

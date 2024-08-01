@@ -10,11 +10,12 @@ import { environment } from '../../../environment/development';
 })
 export class SistemaTurnosService {
 
+  private baseUrl = environment.apiBaseUrl
   private apiUrl = environment.urlTurnos
   private apiUsuarioUrl = environment.urlUsuario
   private apiClienteUrl = environment.urlCliente
   private apiUrlPresenciaCliente = environment.urlCliente
-  private privateUrlTurno = environment.mailServiceUrl 
+  private privateUrlTurno = environment.mailServiceUrl
 
   constructor() { }
 

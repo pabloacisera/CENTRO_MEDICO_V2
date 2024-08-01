@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SistemaTurnosService } from './sistema-turnos.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,10 @@ import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import { Socket } from 'ngx-socket-io';
-import { NotificacionService } from "../../../../../notificacion_de_presencia/src/notificacion/notificacion.service"; 
+import { WebsocketService } from '../../services/websocket.service';
+import { Subscription } from 'rxjs';
+import { AvisoPresenciaComponent } from '../../aviso-presencia/aviso-presencia.component';
+import { NotificationService } from '../../aviso-presencia/notificacion-global.service';
 
 export interface Turnos {
   id?: number;
@@ -38,12 +41,15 @@ export interface Cliente {
 @Component({
   standalone: true,
   selector: 'app-sistema-turnos',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, PaginatorModule, TableModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, PaginatorModule, TableModule, AvisoPresenciaComponent],
   templateUrl: './sistema-turnos.component.html',
   styleUrls: ['./sistema-turnos.component.css'],
   providers: [DatePipe]
 })
 export class SistemaTurnosComponent implements OnInit {
+
+  @ViewChild(AvisoPresenciaComponent) notification: AvisoPresenciaComponent;
+
   turnos: Turnos[] = [];
   usuarios: Usuario[] = [];
   clientes: Cliente[] = [];
@@ -57,22 +63,28 @@ export class SistemaTurnosComponent implements OnInit {
   sortedTurnos: any[] = [];
   sortOrder: number = 1; // 1 para ascendente, -1 para descendente
   sortField: string = '';
+  respuestaSocket: Subscription
 
 
-  constructor(private turnosService: SistemaTurnosService, private datePipe: DatePipe,
-    private toastr: ToastrService, private ruta: Router, private notificar: NotificacionService,
+  constructor(private turnosService: SistemaTurnosService,
+    private datePipe: DatePipe,
+    private toastr: ToastrService,
+    private ruta: Router,
     private socket: Socket,
+    private webSocketService: WebsocketService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
     this.recolectarFuncionesYMetodos()
   }
 
-  recolectarFuncionesYMetodos(){
+  recolectarFuncionesYMetodos() {
     this.obtenerUsuarios();
     this.obtenerClientes();
     this.obtenerTurnos();
     this.sortedTurnos = [...this.turnos];
+    this.capturarRespuestaSocket()
   }
 
   /**paginador */
@@ -122,70 +134,70 @@ export class SistemaTurnosComponent implements OnInit {
     });
   }
 
-  
+
   crearTurno(fechaStr: string, clienteIdStr: string, userIdStr: string): void {
     const fecha = new Date(fechaStr).toISOString();
     const clienteId = parseInt(clienteIdStr, 10);
     const userId = parseInt(userIdStr, 10);
 
     if (isNaN(clienteId) || isNaN(userId)) {
-        this.mensaje = 'Datos inválidos. Por favor, verifique los campos.';
-        this.ocultarMensaje();
-        return;
+      this.mensaje = 'Datos inválidos. Por favor, verifique los campos.';
+      this.ocultarMensaje();
+      return;
     }
 
     // Crear el turno
     this.turnosService.crearTurno({ fecha, clienteId, userId }).subscribe({
-        next: (nuevoTurno) => {
-            this.turnos.push(nuevoTurno);
-            this.toastr.success('Se ha creado un nuevo turno', 'Actualización de turno');
-            this.mensaje = 'Turno creado exitosamente.';
-            this.obtenerTurnos()
-            this.ocultarMensaje();
+      next: (nuevoTurno) => {
+        this.turnos.push(nuevoTurno);
+        this.toastr.success('Se ha creado un nuevo turno', 'Actualización de turno');
+        this.mensaje = 'Turno creado exitosamente.';
+        this.obtenerTurnos()
+        this.ocultarMensaje();
 
-            // Obtener cliente y usuario para la notificación
-            const cliente = this.clientes.find(c => c.id === clienteId);
-            const usuario = this.usuarios.find(u => u.id === userId);
+        // Obtener cliente y usuario para la notificación
+        const cliente = this.clientes.find(c => c.id === clienteId);
+        const usuario = this.usuarios.find(u => u.id === userId);
 
-            const formattedFechaTurno = format(new Date(fecha), 'dd/MM/yyyy HH:mm');
+        const formattedFechaTurno = format(new Date(fecha), 'dd/MM/yyyy HH:mm');
 
-            if (cliente && usuario) {
-                // Enviar notificación por email
-                const emailData = {
-                    turno: nuevoTurno,
-                    clienteEmail: cliente.email,
-                    clienteNombre: cliente.nombre, // Asegúrate de enviar el nombre del cliente
-                    fechaTurno: formattedFechaTurno
-                };
+        if (cliente && usuario) {
+          // Enviar notificación por email
+          const emailData = {
+            turno: nuevoTurno,
+            clienteEmail: cliente.email,
+            clienteNombre: cliente.nombre, // Asegúrate de enviar el nombre del cliente
+            fechaTurno: formattedFechaTurno
+          };
 
-                this.turnosService.notificarTurnoPorEmail(emailData).subscribe({
-                    next: () => {
-                        console.log('Correo electrónico enviado exitosamente.');
-                    },
-                    error: (error) => {
-                        console.error('Error al enviar el correo electrónico', error);
-                    }
-                });
-            } else {
-                console.warn('Cliente o usuario no encontrado para la notificación.');
+          this.turnosService.notificarTurnoPorEmail(emailData).subscribe({
+            next: () => {
+              console.log('Correo electrónico enviado exitosamente.');
+            },
+            error: (error) => {
+              console.error('Error al enviar el correo electrónico', error);
             }
-        },
-        error: (error) => {
-            this.mensaje = 'Error al crear el turno, el mismo ya se encuentra ocupado. Inténtelo de nuevo, con una fecha u hora diferente';
-            this.ocultarMensaje();
+          });
+        } else {
+          console.warn('Cliente o usuario no encontrado para la notificación.');
         }
+      },
+      error: (error) => {
+        this.mensaje = 'Error al crear el turno, el mismo ya se encuentra ocupado. Inténtelo de nuevo, con una fecha u hora diferente';
+        this.ocultarMensaje();
+      }
     });
-}
+  }
 
 
   /**notificar turno por email */
-  notificarTurnoPorEmail(){}
+  notificarTurnoPorEmail() { }
 
   /**ocultar mensaje */
   ocultarMensaje(): void {
     setTimeout(() => {
       this.mensaje = '';
-    }, 5000); 
+    }, 5000);
   }
 
   getClienteNombre(clienteId: number): string {
@@ -199,27 +211,26 @@ export class SistemaTurnosComponent implements OnInit {
   }
 
   /*******************Macar presentcia*************************** */
-  
-  guardarClienteId(clienteId: number) {
-    this.clienteIdSeleccionado = clienteId;
-    console.log('ID del cliente guardado:', this.clienteIdSeleccionado);
-  }
 
-  marcarPresenciaPaciente(clienteIdSeleccionado: number) {
-   
-    if(!clienteIdSeleccionado) {
-      this.toastr.error('Por favor, seleccione un paciente', 'Error')
+  seleccionarPaciente(clienteId: number): void {
+    const cliente = this.clientes.find(c => c.id === clienteId);
+    if (cliente) {
+      this.webSocketService.sendNombrePaciente(cliente.nombre);
+    } else {
+      console.error('Cliente no encontrado.');
     }
+  }  
 
-    this.socket.emit('paciente-presente', clienteIdSeleccionado, (response: any )=> {
-      if(response.success) {
-        this.toastr.success('Info paciente', 'El paciente se encuentra en el establecimiento')
-      } else {
-        this.toastr.error('Info paciente:', 'error al marcar la presencia')
-      }
+  
+  capturarRespuestaSocket() {
+    this.respuestaSocket = this.webSocketService.mensajeEvent().subscribe((data)=> {
+      console.log('Respuesta del socket', data)
+      const message = `El paciente ${data} se encuentra presente en el establecimiento`;
+      this.notification.showMessage(message);
+      this.notificationService.notify(message);
     })
   }
-
+  
   /*********************ordenar tabla*************************************** */
 
   sortData(field: string) {
@@ -233,7 +244,7 @@ export class SistemaTurnosComponent implements OnInit {
   }
 
   getFieldValue(item: any, field: string) {
-    switch(field) {
+    switch (field) {
       case 'fecha': return new Date(item.fecha).getTime();
       case 'clienteId': return this.getClienteNombre(item.clienteId).toLowerCase();
       case 'userId': return this.getUsuarioNombre(item.userId).toLowerCase();
@@ -246,36 +257,36 @@ export class SistemaTurnosComponent implements OnInit {
 
   // Dentro de la clase SistemaTurnosComponent
 
-// Aplicar filtro por mes
-filterByMonth(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const month = input.value;
+  // Aplicar filtro por mes
+  filterByMonth(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const month = input.value;
 
-  if (month) {
-    this.sortedTurnos = this.turnos.filter(turno => {
-      const turnoDate = new Date(turno.fecha);
-      const turnoMonth = turnoDate.toISOString().slice(0, 7);
-      return turnoMonth === month;
-    });
-  } else {
-    this.sortedTurnos = [...this.turnos]; // Restablecer a todos los turnos
+    if (month) {
+      this.sortedTurnos = this.turnos.filter(turno => {
+        const turnoDate = new Date(turno.fecha);
+        const turnoMonth = turnoDate.toISOString().slice(0, 7);
+        return turnoMonth === month;
+      });
+    } else {
+      this.sortedTurnos = [...this.turnos]; // Restablecer a todos los turnos
+    }
   }
-}
 
-// Aplicar filtro por día
-filterByDay(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const day = input.value;
+  // Aplicar filtro por día
+  filterByDay(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const day = input.value;
 
-  if (day) {
-    this.sortedTurnos = this.turnos.filter(turno => {
-      const turnoDate = new Date(turno.fecha).toISOString().split('T')[0];
-      return turnoDate === day;
-    });
-  } else {
-    this.sortedTurnos = [...this.turnos]; // Restablecer a todos los turnos
+    if (day) {
+      this.sortedTurnos = this.turnos.filter(turno => {
+        const turnoDate = new Date(turno.fecha).toISOString().split('T')[0];
+        return turnoDate === day;
+      });
+    } else {
+      this.sortedTurnos = [...this.turnos]; // Restablecer a todos los turnos
+    }
   }
-}
 
 
   private getStartOfWeek(date: Date): Date {
@@ -306,10 +317,10 @@ filterByDay(event: Event): void {
       this.toastr.warning('Se ha cancelado un turno', 'Actualizacion de turno');
     } catch (error) {
       console.log(error)
-    } 
+    }
   }
 
-  volver(){
+  volver() {
     this.ruta.navigate(['/dashboard-admin'])
   }
 }
