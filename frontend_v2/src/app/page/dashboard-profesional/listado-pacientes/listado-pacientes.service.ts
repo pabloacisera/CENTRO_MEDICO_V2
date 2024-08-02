@@ -1,5 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import axios from 'axios';
+import { environment } from '../../../../environment/development';
 
 
 @Injectable({
@@ -7,7 +8,7 @@ import axios from 'axios';
 })
 export class ListadoPacientesService{
 
-  url = "http://localhost:3000/api/v2/cliente"
+  url =  environment.urlCliente
 
   constructor() { }
 

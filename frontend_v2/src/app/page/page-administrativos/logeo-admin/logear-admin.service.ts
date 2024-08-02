@@ -7,8 +7,6 @@ import { environment } from '../../../../environment/development';
 })
 export class LogearAdminService {
 
-  //url = "http://localhost:3000/api/v2/autenticacion-administrativos/login"
-
   url = environment.urlAdministrativos
 
   constructor() { }

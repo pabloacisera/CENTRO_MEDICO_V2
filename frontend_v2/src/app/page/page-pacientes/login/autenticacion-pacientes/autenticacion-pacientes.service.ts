@@ -8,8 +8,6 @@ import { environment } from '../../../../../environment/development';
 })
 export class LogearService {
 
-  //url = "http://localhost:3000/api/v2/autenticacion-paciente/logear-paciente"
-
   url = environment.urlAutenticacionPaciente
 
 

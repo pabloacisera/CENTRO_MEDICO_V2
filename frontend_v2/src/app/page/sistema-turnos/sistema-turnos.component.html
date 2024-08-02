@@ -60,6 +60,8 @@
         <input class="text-black" type="date" id="filterDay" (change)="filterByDay($event)" />
       </div>
 
+      <button (click)="actualizarListaturnos()">actualizar</button>
+
       <!-- Tabla -->
       <table *ngIf="!isLoading" class="min-w-full bg-white shadow-md rounded-lg overflow-hidden mb-3">
         <thead class="bg-gray-50">

@@ -7,8 +7,6 @@ import { environment } from '../../../../../environment/development';
 })
 export class NuevaContraseñaAdminService {
 
-  //urlNewPassword = 'http://localhost:3000/api/v2/autenticacion-administrativos/update-password'
-
   urlNewPassword = environment.urlAdministrativos
 
   constructor() { }

@@ -134,6 +134,10 @@ export class SistemaTurnosComponent implements OnInit {
     });
   }
 
+  async actualizarListaturnos(){
+    return this.obtenerTurnos()
+  }
+
 
   crearTurno(fechaStr: string, clienteIdStr: string, userIdStr: string): void {
     const fecha = new Date(fechaStr).toISOString();

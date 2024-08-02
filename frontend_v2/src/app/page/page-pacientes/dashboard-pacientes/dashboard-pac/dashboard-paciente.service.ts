@@ -9,10 +9,6 @@ export class DashboardPacienteService {
 
   constructor() { }
 
-  //url = "http://localhost:3000/api/v2/usuario"
-  //indUrl = "http://localhost:3000/api/v2/indicaciones"
-  //resultadoUrl = "http://localhost:3000/api/v2/resultado"
-
   url= environment.urlUsuario
   indUrl = environment.urlIndicaciones
   resultadoUrl = environment.urlResultado

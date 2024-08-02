@@ -19,8 +19,21 @@ export class VerTurnosService {
   }
 
   async getClientsByIds(ids: number[]): Promise<any[]> {
-    const response = await axios.post(`${this.clienteBaseUrl}/find-by-ids`, { ids });
-    return response.data;
+    try {
+      const response = await axios.post(`${this.clienteBaseUrl}/find-by-ids`, { ids });
+      return response.data;
+    } catch (error) {
+      throw new Error('Error al obtener clientes', error)
+    }
+  }
+
+  async deleteClienteById(id: number) {
+    try {
+      const response = await axios.delete(`${this.turnoBaseUrl}/${id}`)
+      return response.data
+    } catch (error) {
+      throw new Error('Error al eliminar turno', error)
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios'
+import { environment } from '../../../../environment/development';
 
 
 @Injectable({
@@ -7,8 +8,8 @@ import axios from 'axios'
 })
 export class PerfilService {
 
-  url = "http://localhost:3000/api/v2/usuario"
-  indUrl = "http://localhost:3000/api/v2/indicaciones"
+  url = environment.urlUsuario
+  indUrl = environment.urlIndicaciones
 
   constructor() { }
 

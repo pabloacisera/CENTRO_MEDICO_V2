@@ -3,10 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { VerTurnosService } from './ver-turnos.service';
 import { CommonModule } from '@angular/common';
 import { DateTimeFormatPipe } from '../../date-fns.pipe';
+import { RouterLink } from '@angular/router';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, DateTimeFormatPipe],
+  imports: [CommonModule, DateTimeFormatPipe, RouterLink],
   selector: 'app-ver-turnos',
   templateUrl: './ver-turnos.component.html',
   styleUrls: ['./ver-turnos.component.css']
@@ -66,8 +68,19 @@ export class VerTurnosComponent implements OnInit {
     }
   }
 
-  eliminarTurno(id: number) {
-    console.log('id de turno: ', id)
+  async eliminarTurno(id: number) {
+    try {
+      const response = await this.turnoService.deleteClienteById(id)
+      this.obtenerTurnoPorIdDeUsuario(this.userId)
+      return response;
+    } catch (error) {
+      throw new Error('Erros al eliminar turno', error)
+    }
+  }
+
+  async actualizarTurnos() {
+    return await this.obtenerTurnoPorIdDeUsuario(this.userId);
   }
 }
+
 

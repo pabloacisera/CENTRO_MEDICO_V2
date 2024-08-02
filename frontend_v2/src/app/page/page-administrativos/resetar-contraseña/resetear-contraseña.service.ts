@@ -7,8 +7,6 @@ import { environment } from '../../../../environment/development';
 })
 export class ResetearContraseñaAdminService {
 
-  //urlReseteo = 'http://localhost:3000/api/v2/autenticacion-administrativos/reset-password';
-
   url = environment.urlAdministrativos
 
   constructor() { }

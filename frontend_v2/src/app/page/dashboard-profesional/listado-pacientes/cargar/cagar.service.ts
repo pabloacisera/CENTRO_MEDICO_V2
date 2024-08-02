@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
+import { environment } from '../../../../../environment/development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CargarService {
 
-  url = "http://localhost:3000/api/v2/cliente"
-  urlresultado = "http://localhost:3000/api/v2/resultado"
+  url = environment.urlCliente
+  urlresultado =  environment.urlResultado
 
   constructor() { }
 
