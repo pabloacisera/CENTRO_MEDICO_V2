@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,20 +8,20 @@ datasource db {
 }
 
 model Usuario {
-  id       Int      @id @default(autoincrement())
-  rol      String
-  area     String
-  nombre   String
-  email    String   @unique
-  password String
-  clientes Cliente[]
+  id           Int          @id @default(autoincrement())
+  rol          String
+  area         String
+  nombre       String
+  email        String       @unique
+  password     String
+  clientes     Cliente[]
   indicaciones Indicacion[]
-  Turnos Turno[]
+  Turnos       Turno[]
 }
 
 model Cliente {
-  id              Int          @id @default(autoincrement())
-  protocolo       Int          @unique
+  id              Int         @id @default(autoincrement())
+  protocolo       Int         @unique
   nombre          String
   dni             String
   nacimiento      DateTime
@@ -35,21 +29,18 @@ model Cliente {
   direccion       String
   localidad       String
   telefono        String
-  email           String       @unique
+  email           String      @unique
   seguridadSocial String
   obs             String?
   userId          Int
-  createdAt       DateTime     @default(now())
-  usuario         Usuario      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime    @default(now())
+  presente        Boolean     @default(false)
+  usuario         Usuario     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  files           File[]
+  resultados      Resultado[]
+  Turnos          Turno[]
 
   @@index([userId])
-
-  resultados      Resultado[]
-  Turnos Turno[]
-
-  presente          Boolean  @default(false)
-
-  files      File[]
 }
 
 model Nomenclatura {
@@ -60,44 +51,46 @@ model Nomenclatura {
 }
 
 model Resultado {
-  id            Int       @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   codigo        Int
   determinacion String
-  resultado     Float
   unidadBase    Int
   valorTotal    Float
   clienteId     Int
-  cliente       Cliente   @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  resultado     Float
+  cliente       Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
 }
 
 model Indicacion {
-  id      Int      @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   titulo  String
   texto   String
   userId  Int
-  usuario Usuario  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usuario Usuario @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model Turno {
-  id             Int       @id @default(autoincrement())
-  fecha          DateTime
-  clienteId      Int
-  userId         Int
-  Cliente        Cliente  @relation(fields: [clienteId], references: [id])
-  Usuario        Usuario @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  fecha     DateTime
+  clienteId Int
+  userId    Int
+  Cliente   Cliente  @relation(fields: [clienteId], references: [id])
+  Usuario   Usuario  @relation(fields: [userId], references: [id])
+
+  @@map("turnos")
 }
 
 model File {
-  id         Int      @id @default(autoincrement())
-  filename   String
-  path       String
-  mimeType   String
-  size       Int
-  createdAt  DateTime @default(now())
-  clienteId  Int
-  cliente    Cliente  @relation(fields: [clienteId], references: [id])
+  id        Int      @id @default(autoincrement())
+  filename  String
+  path      String
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+  clienteId Int
+  cliente   Cliente  @relation(fields: [clienteId], references: [id])
 
   @@index([clienteId])
 }

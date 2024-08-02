@@ -31,6 +31,7 @@ import { UploadFileComponent } from './page/page-administrativos/upload-file/upl
 import { ArchivosComponent } from './page/dashboard-profesional/listado-pacientes/archivos/archivos.component';
 import { ImapflowBandejaCorreosComponent } from './page/imapflow-bandeja-correos/imapflow-bandeja-correos.component';
 import { ChatWebsocketComponent } from './components/chat-websocket/chat-websocket.component';
+import { VerTurnosComponent } from './page/ver-turnos/ver-turnos.component';
 
 export const routes: Routes = [
 
@@ -54,6 +55,7 @@ export const routes: Routes = [
     { path: 'nueva-indicac', canActivate: [protectedRouteGuard], component: NuevaIndicacionComponent },
     { path: 'enviar-correo', canActivate: [protectedRouteGuard], component: CorreosComponent},
     { path:'docs/:id', canActivate: [protectedRouteGuard], component: ArchivosComponent},
+    { path: 'ver-turnos', canActivate: [protectedRouteGuard], component: VerTurnosComponent},
 
     /*paginas de pacientes*/
     { path: 'ver/:id', canActivate: [protectedRouteGuard], component: VerComponent },

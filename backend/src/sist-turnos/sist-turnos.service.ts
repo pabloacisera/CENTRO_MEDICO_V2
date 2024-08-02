@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateSistTurnoDto } from './dto/create-sist-turno.dto';
 import { UpdateSistTurnoDto } from './dto/update-sist-turno.dto';
 import { PrismaService } from 'src/prisma-service/prisma-service.service';
@@ -67,14 +67,17 @@ export class SistTurnosService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sistTurno`;
-  }
-
-  update(id: number, updateSistTurnoDto: UpdateSistTurnoDto) {
-    return `This action updates a #${id} sistTurno`;
-  }
-
+  async obtenerTurnosPorUsuarioId(userId: number) {
+    try {
+      return await this.prisma.turno.findMany({
+        where: { userId: userId },
+      });
+    } catch (error) {
+      console.error('Error al obtener los turnos:', error);
+      throw new InternalServerErrorException('No se ha podido obtener los turnos');
+    }
+  }  
+  
   remove(id: number) {
     return this.prisma.turno.delete({
       where: {

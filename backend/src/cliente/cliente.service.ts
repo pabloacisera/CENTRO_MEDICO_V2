@@ -52,11 +52,12 @@ export class ClienteService {
     return this.prisma.cliente.findMany()
   }
 
-  async findOne(id: number, userId: number) {
-    return this.prisma.cliente.findFirst({
+  async getClientsByIds(ids: number[]): Promise<any[]> {
+    return this.prisma.cliente.findMany({
       where: {
-        id,
-        userId,
+        id: {
+          in: ids,
+        },
       },
     });
   }

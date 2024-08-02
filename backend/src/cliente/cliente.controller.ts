@@ -35,9 +35,9 @@ export class ClienteController {
     return this.clienteService.findAllformAdmin()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('userId') userId: number) {
-    return this.clienteService.findOne(+id, Number(userId));
+  @Post('find-by-ids')
+  async getClientsByIds(@Body('ids') ids: number[]) {
+    return this.clienteService.getClientsByIds(ids);
   }
 
   @Patch(':id')
