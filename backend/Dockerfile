@@ -18,7 +18,7 @@ COPY backend/tsconfig*.json ./
 RUN npm run build
 
 # Exponer el puerto que la aplicación usará (esto es informativo)
-EXPOSE 10000
+EXPOSE 3000
 
 # Comando para iniciar la aplicación
 CMD ["npm", "run", "start:prod"]

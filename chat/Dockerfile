@@ -18,7 +18,7 @@ COPY chat/tsconfig*.json ./
 # RUN npm run build
 
 # Exponer el puerto que el chat usará (ajústalo según tu configuración)
-EXPOSE 3001
+EXPOSE 8000
 
 # Comando para iniciar el chat
 CMD ["npm", "run", "start"]
