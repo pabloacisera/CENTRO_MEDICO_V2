@@ -30,6 +30,12 @@ export class ClienteController {
     return this.clienteService.findAll(Number(userId));
   }
 
+  @Get(':id')
+  async encontrarClienteById(@Param('id') id: string) {
+    const idNumber = +id; // o parseInt(id, 10)
+    return this.clienteService.encontrarClienteById(idNumber);
+  }
+
   @Get('forAdmin')
   findAllForAdmin() {
     return this.clienteService.findAllformAdmin()

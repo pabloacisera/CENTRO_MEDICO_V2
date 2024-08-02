@@ -62,6 +62,14 @@ export class ClienteService {
     });
   }
 
+  async encontrarClienteById(id: number) {
+    return this.prisma.cliente.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
   async update(id: number, updateClienteDto: UpdateClienteDto, userId: number) {
     try {
       return this.prisma.cliente.update({

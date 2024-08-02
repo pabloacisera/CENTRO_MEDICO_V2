@@ -1,3 +1,3 @@
-SELECT * FROM turnos WHERE "userId" = 1;
+SELECT * FROM "Cliente";
 
 
