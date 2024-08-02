@@ -5,9 +5,6 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log('MAIL_USER:', process.env.MAIL_USER);
-console.log('MAIL_PASSWORD:', process.env.MAIL_PASSWORD);
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

@@ -14,12 +14,12 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsuarioService {
-  jwtSecret = process.env.jwtSecret || 'other key';
+  private readonly jwtSecret: string;
 
   constructor(
     private readonly servicio: PrismaService, private readonly jwtService: JwtService
   ) {
-    this.jwtSecret
+    this.jwtSecret = process.env.JWT_SECRET || 'other key'
     if (!this.jwtSecret) {
       throw new Error('JWT_SECRET is not set in config.json');
     }
@@ -37,14 +37,13 @@ export class UsuarioService {
       data: datosDeUsuario,
     });
 
-    const token = jwt.sign(
+    const token = this.jwtService.sign(
       {
         id: usuarioCreado.id,
         nombre: usuarioCreado.nombre,
         email: usuarioCreado.email,
       },
-      this.jwtSecret,
-      { expiresIn: '1d' },
+      { secret: this.jwtSecret, expiresIn: '1d' },
     );
 
     return { data: usuarioCreado, token };
@@ -65,14 +64,13 @@ export class UsuarioService {
     if (!verificarContraseña) {
       throw new UnauthorizedException('Error en el proceso de logeo');
     }
-    const token = jwt.sign(
+    const token = this.jwtService.sign(
       {
         id: usuarioEncontrado.id,
         nombre: usuarioEncontrado.nombre,
         email: usuarioEncontrado.email,
       },
-      this.jwtSecret,
-      { expiresIn: '1d' },
+      { secret: this.jwtSecret, expiresIn: '1d' },
     );
 
     return { data: usuarioEncontrado, token };
@@ -109,7 +107,7 @@ export class UsuarioService {
       nombre: usuarioEncontrado.nombre,
       email: usuarioEncontrado.email,
       rol: usuarioEncontrado.rol,
-    }, { expiresIn: '1d' });
+    }, { secret: this.jwtSecret, expiresIn: '1d' });
 
     return { data: usuarioEncontrado, token };
   }
